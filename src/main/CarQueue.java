@@ -1,4 +1,7 @@
-package src;
+package main;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class CarQueue {
     private Queue<Car> queue = new LinkedList<>();
@@ -11,7 +14,7 @@ public class CarQueue {
         return queue.poll();
     }
 
-    public int carsInQueue(){
-    	return queue.size();
+    public int carsInQueue() {
+        return queue.size();
     }
 }
