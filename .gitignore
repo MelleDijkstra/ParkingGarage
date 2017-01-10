@@ -1,5 +1,6 @@
 # Intellij IDEA Files
-.idea/
+.idea
+*.iml
 
 *.class
 
