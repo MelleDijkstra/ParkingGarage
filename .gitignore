@@ -1,3 +1,6 @@
+# Intellij IDEA Files
+.idea/
+
 *.class
 
 # Mobile Tools for Java (J2ME)
