@@ -1,4 +1,4 @@
-package main;
+package parkinggarage;
 
 import java.util.LinkedList;
 import java.util.Queue;

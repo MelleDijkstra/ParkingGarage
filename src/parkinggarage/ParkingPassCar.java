@@ -1,4 +1,4 @@
-package main;
+package parkinggarage;
 
 import java.awt.*;
 import java.util.Random;

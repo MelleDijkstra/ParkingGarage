@@ -1,5 +1,9 @@
-package main;
+package parkinggarage;
 
+/**
+ * This class represents the location of vehicles of this application
+ * It stores the floor row and place
+ */
 public class Location {
 
     private int floor;
@@ -7,7 +11,7 @@ public class Location {
     private int place;
 
     /**
-     * Constructor for objects of class main.Location
+     * Constructor for objects of class parkinggarage.Location
      */
     public Location(int floor, int row, int place) {
         this.floor = floor;

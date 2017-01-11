@@ -1,4 +1,4 @@
-package main;
+package parkinggarage;
 
 import java.awt.*;
 
@@ -10,16 +10,24 @@ public abstract class Car {
     private boolean hasToPay;
 
     /**
-     * Constructor for objects of class main.Car
+     * Constructor for objects of class parkinggarage.Car
      */
     public Car() {
 
     }
 
+    /**
+     * Retrieve the location of this car
+     * @return The location
+     */
     public Location getLocation() {
         return location;
     }
 
+    /**
+     *
+     * @param location
+     */
     public void setLocation(Location location) {
         this.location = location;
     }

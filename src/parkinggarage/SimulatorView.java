@@ -1,4 +1,4 @@
-package main;
+package parkinggarage;
 
 import javax.swing.*;
 import java.awt.*;

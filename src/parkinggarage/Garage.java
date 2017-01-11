@@ -1,8 +1,8 @@
-package main;
+package parkinggarage;
 
 import java.util.Random;
 
-public class Simulator {
+public class Garage {
 
     private static final String AD_HOC = "1";
     private static final String PASS = "2";
@@ -18,7 +18,7 @@ public class Simulator {
     private int hour = 0;
     private int minute = 0;
 
-    private int tickPause = 100;
+    private int tickPause = 1000;
 
     int weekDayArrivals = 100; // average number of arriving cars per hour
     int weekendArrivals = 200; // average number of arriving cars per hour
@@ -29,7 +29,7 @@ public class Simulator {
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
 
-    public Simulator() {
+    public Garage() {
         entranceCarQueue = new CarQueue();
         entrancePassQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
