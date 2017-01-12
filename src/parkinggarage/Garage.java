@@ -4,8 +4,10 @@ import java.util.Random;
 
 public class Garage {
 
-    private static final String AD_HOC = "1";
-    private static final String PASS = "2";
+    private enum CarType {
+        AD_HOC,
+        PASS,
+    }
 
 
     private CarQueue entranceCarQueue;
@@ -13,12 +15,13 @@ public class Garage {
     private CarQueue paymentCarQueue;
     private CarQueue exitCarQueue;
     private SimulatorView simulatorView;
+    private MainScreen mainScreen;
 
     private int day = 0;
     private int hour = 0;
     private int minute = 0;
 
-    private int tickPause = 1000;
+    private int tickPause = 100;
 
     int weekDayArrivals = 100; // average number of arriving cars per hour
     int weekendArrivals = 200; // average number of arriving cars per hour
@@ -93,9 +96,9 @@ public class Garage {
 
     private void carsArriving() {
         int numberOfCars = getNumberOfCars(weekDayArrivals, weekendArrivals);
-        addArrivingCars(numberOfCars, AD_HOC);
+        addArrivingCars(numberOfCars, CarType.AD_HOC);
         numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
-        addArrivingCars(numberOfCars, PASS);
+        addArrivingCars(numberOfCars, CarType.PASS);
     }
 
     private void carsEntering(CarQueue queue) {
@@ -159,7 +162,7 @@ public class Garage {
         return (int) Math.round(numberOfCarsPerHour / 60);
     }
 
-    private void addArrivingCars(int numberOfCars, String type) {
+    private void addArrivingCars(int numberOfCars, CarType type) {
         // Add the cars to the back of the queue.
         switch (type) {
             case AD_HOC:

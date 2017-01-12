@@ -6,7 +6,7 @@ package parkinggarage;
 public class Application {
     public static void main(String args[]) {
         // The start of the simulation
-        Garage garage = new Garage();
-        garage.run();
+        MainScreen mainScreen = new MainScreen();
+        mainScreen.setVisible(true);
     }
 }
