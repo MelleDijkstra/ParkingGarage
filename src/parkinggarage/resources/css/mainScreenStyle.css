@@ -1,0 +1,8 @@
+#pane {
+    -fx-background-image: url("../images/parkinggarage.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-attachment: fixed;
+    -fx-background-position: center;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
+}
+
