@@ -15,7 +15,6 @@ public class Garage {
     private CarQueue paymentCarQueue;
     private CarQueue exitCarQueue;
     private SimulatorView simulatorView;
-    private MainScreen mainScreen;
 
     private int day = 0;
     private int hour = 0;
