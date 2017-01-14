@@ -10,12 +10,13 @@ import javafx.stage.Stage;
  * Created by melle on 10-1-2017.
  */
 public class MainScreen extends Application {
+
+    Scene mainScene;
+
     public static void main(String args[]) {
         // Launches JavaFX initialization
         launch(args);
     }
-
-    Scene mainScene;
 
     @Override
     public void start(Stage primaryStage) throws Exception {

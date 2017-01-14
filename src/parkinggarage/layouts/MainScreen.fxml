@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane id="pane" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane id="pane" prefHeight="500.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parkinggarage.controllers.MainController">
     <top>
         <Label text="Parking Garage Simulation" textFill="WHITE" BorderPane.alignment="CENTER">
             <font>
@@ -19,38 +19,34 @@
     </top>
     <bottom>
         <HBox>
-            <children>
-                <Button id="button" mnemonicParsing="true" text="Settings" HBox.hgrow="ALWAYS">
-                    <HBox.margin>
-                        <Insets bottom="30.0" left="80.0" />
-                    </HBox.margin>
-                </Button>
-                <Button id="button" layoutX="170.0" layoutY="60.0" mnemonicParsing="true" text="Simulate" HBox.hgrow="ALWAYS">
-                    <HBox.margin>
-                        <Insets left="80.0" />
-                    </HBox.margin>
-                </Button>
-                <Button id="button" layoutX="249.0" layoutY="60.0" mnemonicParsing="true" text="Credits" HBox.hgrow="ALWAYS">
-                    <HBox.margin>
-                        <Insets left="80.0" />
-                    </HBox.margin>
-                </Button>
-            </children>
+            <Button id="button" text="Settings" HBox.hgrow="ALWAYS">
+                <HBox.margin>
+                    <Insets bottom="30.0" left="80.0" />
+                </HBox.margin>
+            </Button>
+            <Button id="btnSimulate" layoutX="170.0" layoutY="60.0" onAction="#onBtnSimulateClick" text="Simulate" HBox.hgrow="ALWAYS">
+                <HBox.margin>
+                    <Insets left="80.0" />
+                </HBox.margin>
+            </Button>
+            <Button id="button" layoutX="249.0" layoutY="60.0" text="Credits" HBox.hgrow="ALWAYS">
+                <HBox.margin>
+                    <Insets left="80.0" />
+                </HBox.margin>
+            </Button>
         </HBox>
     </bottom>
    <center>
-      <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="How many ticks do you want the simulation to play?" textFill="WHITE">
-               <StackPane.margin>
+       <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+           <Label text="How many ticks do you want the simulation to play?" textFill="WHITE">
+              <StackPane.margin>
                   <Insets bottom="150.0" />
-               </StackPane.margin>
-               <font>
+              </StackPane.margin>
+              <font>
                   <Font size="18.0" />
-               </font>
-            </Label>
-            <Spinner />
-         </children>
-      </StackPane>
+              </font>
+           </Label>
+           <Spinner editable="true" />
+       </StackPane>
    </center>
 </BorderPane>

@@ -2,7 +2,7 @@ package parkinggarage;
 
 import java.util.Random;
 
-public class Garage {
+public class Simulation {
 
     private enum CarType {
         AD_HOC,
@@ -31,7 +31,7 @@ public class Garage {
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
 
-    public Garage() {
+    public Simulation() {
         entranceCarQueue = new CarQueue();
         entrancePassQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
