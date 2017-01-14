@@ -9,7 +9,6 @@ public class Simulation {
         PASS,
     }
 
-
     private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
     private CarQueue paymentCarQueue;
@@ -31,7 +30,14 @@ public class Simulation {
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
 
-    public Simulation() {
+    private final int iterationCount;
+
+    /**
+     * Creates a Parking Car simulation
+     * @param iterations The amount of iteration you want the simulation to run
+     */
+    public Simulation(int iterations) {
+        this.iterationCount = iterations;
         entranceCarQueue = new CarQueue();
         entrancePassQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
@@ -40,7 +46,7 @@ public class Simulation {
     }
 
     public void run() {
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < iterationCount; i++) {
             tick();
         }
     }
@@ -151,9 +157,7 @@ public class Simulation {
         Random random = new Random();
 
         // Get the average number of cars that arrive per hour.
-        int averageNumberOfCarsPerHour = day < 5
-                ? weekDay
-                : weekend;
+        int averageNumberOfCarsPerHour = day < 5 ? weekDay : weekend;
 
         // Calculate the number of cars that arrive this minute.
         double standardDeviation = averageNumberOfCarsPerHour * 0.3;
