@@ -46,7 +46,7 @@ public class Simulation {
     }
 
     public void run() {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < iterationCount; i++) {
             tick();
         }
     }
