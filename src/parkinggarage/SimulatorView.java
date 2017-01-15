@@ -183,8 +183,28 @@ public class SimulatorView extends JFrame {
                 for (int row = 0; row < getNumberOfRows(); row++) {
                     for (int place = 0; place < getNumberOfPlaces(); place++) {
                         Location location = new Location(floor, row, place);
+                        // Reserves first floor
+                        if (floor == 0) {
+                            location.setReserved(true);
+                        }
                         Car car = getCarAt(location);
-                        Color color = car == null ? Color.white : car.getColor();
+
+                        Color color;
+                        // Checks if there is a car, if so then the color of that car is given.
+                        if (car != null) {
+                            color = car.getColor();
+                        }
+                        else {
+                            // Checks if the location is reserved.
+                            if (location.isReserved()) {
+                                color = Color.cyan;
+                            } else {
+                                color = Color.white;
+                            }
+
+                        }
+
+
                         drawPlace(graphics, location, color);
                     }
                 }
