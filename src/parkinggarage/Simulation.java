@@ -4,6 +4,8 @@ import java.util.Random;
 
 public class Simulation {
 
+    private int currentIteration = 1;
+
     private enum CarType {
         AD_HOC,
         PASS,
@@ -20,6 +22,8 @@ public class Simulation {
     private int minute = 0;
 
     private int tickPause = 100;
+
+    private boolean paused = false;
 
     int weekDayArrivals = 100; // average number of arriving cars per hour
     int weekendArrivals = 200; // average number of arriving cars per hour
@@ -42,12 +46,16 @@ public class Simulation {
         entrancePassQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
-        simulatorView = new SimulatorView(3, 6, 30);
+        simulatorView = new SimulatorView(this, 3, 6, 30);
     }
 
     public void run() {
-        for (int i = 0; i < iterationCount; i++) {
-            tick();
+        while (true) {
+            while (!this.paused && this.currentIteration <= 200) {
+                System.out.println("current iter: "+this.currentIteration);
+                tick();
+                this.currentIteration++;
+            }
         }
     }
 
@@ -62,6 +70,11 @@ public class Simulation {
             e.printStackTrace();
         }
         handleEntrance();
+    }
+
+    public void toggle() {
+        this.paused = !this.paused;
+        System.out.println(this.paused);
     }
 
     private void advanceTime() {
