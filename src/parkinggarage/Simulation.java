@@ -6,6 +6,10 @@ public class Simulation {
 
     private int currentIteration = 1;
 
+    public void setTickPause(int tickSpeed) {
+        this.tickPause = tickSpeed;
+    }
+
     private enum CarType {
         AD_HOC,
         PASS,

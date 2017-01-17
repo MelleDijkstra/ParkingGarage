@@ -1,6 +1,7 @@
 package parkinggarage;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -24,13 +25,29 @@ public class SimulatorView extends JFrame implements KeyListener {
 
         carParkView = new CarParkView();
         Container contentPane = getContentPane();
+        contentPane.setLayout(new BorderLayout(5,5));
         contentPane.add(carParkView, BorderLayout.CENTER);
+
+        JSlider slider = new JSlider(100,1000,100);
+        slider.setMinorTickSpacing(1);
+        slider.setMajorTickSpacing(5);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        slider.setLabelTable(slider.createStandardLabels(50));
+        slider.addChangeListener(changeListener);
+        contentPane.add(slider, BorderLayout.SOUTH);
+
         pack();
         setVisible(true);
 
         updateView();
         this.addKeyListener(this);
     }
+
+    private ChangeListener changeListener = e -> {
+        JSlider slider = (JSlider)e.getSource();
+        simulation.setTickPause(slider.getValue());
+    };
 
     public void updateView() {
         carParkView.updateView();

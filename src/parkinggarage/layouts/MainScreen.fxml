@@ -49,7 +49,7 @@
                   <Font size="18.0" />
               </font>
            </Label>
-           <Spinner fx:id="spinIterationCount" editable="true" min="1" max="1000000" />
+           <Spinner fx:id="spinIterationCount" editable="true" min="1" max="100" />
        </StackPane>
    </center>
 </BorderPane>
