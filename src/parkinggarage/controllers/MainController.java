@@ -22,9 +22,9 @@ public class MainController {
     @FXML
     public void onBtnSimulateClick(ActionEvent actionEvent) {
         int iterations = spinIterationCount.getValue();
-        System.out.println("Simulation iterations: "+iterations);
+        System.out.println("Simulation iterations: " + iterations);
         new Thread(() -> {
-            if(simulation == null) {
+            if (simulation == null) {
                 simulation = new Simulation(iterations);
                 simulation.run();
             }
