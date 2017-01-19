@@ -1,9 +1,11 @@
 package parkinggarage;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
@@ -23,7 +25,7 @@ public class MainScreen extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("layouts/MainScreen.fxml"));
         primaryStage.setTitle("Dashboard");
 
-        mainScene = new Scene(root, 500, 500);
+        mainScene = new Scene(root, 850, 650);
         mainScene.getStylesheets().add(getClass().getResource("resources/css/mainScreenStyle.css").toString());
 
         primaryStage.setScene(mainScene);

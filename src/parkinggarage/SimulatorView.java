@@ -1,17 +1,24 @@
 package parkinggarage;
 
+import com.sun.istack.internal.Nullable;
+
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 public class SimulatorView extends JFrame implements KeyListener {
     private CarParkView carParkView;
     private int numberOfFloors;
     private int numberOfRows;
+
     private int numberOfPlaces;
+    private int reservedFloor;
+
     private int numberOfOpenSpots;
+
     private Car[][][] cars;
     private Simulation simulation;
 
@@ -19,11 +26,13 @@ public class SimulatorView extends JFrame implements KeyListener {
         this.simulation = simulation;
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
+        this.reservedFloor = 1;
         this.numberOfPlaces = numberOfPlaces;
         this.numberOfOpenSpots = numberOfFloors * numberOfRows * numberOfPlaces;
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
 
         carParkView = new CarParkView();
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout(5,5));
         contentPane.add(carParkView, BorderLayout.CENTER);
@@ -104,12 +113,32 @@ public class SimulatorView extends JFrame implements KeyListener {
         return car;
     }
 
-    public Location getFirstFreeLocation() {
+    /**
+     * Returns first free location in garage otherwise null
+     * @return The first free location
+     * @param includeReservedSpace boolean if reserved space should be included
+     */
+    @Nullable
+    public Location getFirstFreeLocation(boolean includeReservedSpace) {
+        // Check if we need to include reserved space
+        if(includeReservedSpace) {
+            for(int row = 0; row < getNumberOfRows(); row++) {
+                for(int place = 0; place < getNumberOfPlaces(); place++) {
+                    Location location = new Location(this.reservedFloor,row,place);
+                    // check all rows and places of the reserved space for a free spot (car == null)
+                    if(getCarAt(location) == null) {
+                        return location;
+                    }
+                }
+            }
+        }
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+            // We have already been through the reserved space
+            if(floor == this.reservedFloor) continue;
             for (int row = 0; row < getNumberOfRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
-                    if (getCarAt(location) == null) {
+                    if (getCarAt(location) == null && (this.reservedFloor != floor || includeReservedSpace)) {
                         return location;
                     }
                 }
@@ -134,6 +163,7 @@ public class SimulatorView extends JFrame implements KeyListener {
     }
 
     public void tick() {
+
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
@@ -221,27 +251,21 @@ public class SimulatorView extends JFrame implements KeyListener {
                 for (int row = 0; row < getNumberOfRows(); row++) {
                     for (int place = 0; place < getNumberOfPlaces(); place++) {
                         Location location = new Location(floor, row, place);
-                        // Reserves first floor
-                        if (floor == 0) {
-                            location.setReserved(true);
-                        }
-                        Car car = getCarAt(location);
-
                         Color color;
+                        Car car = getCarAt(location);
                         // Checks if there is a car, if so then the color of that car is given.
                         if (car != null) {
                             color = car.getColor();
                         }
                         else {
                             // Checks if the location is reserved.
-                            if (location.isReserved()) {
-                                color = Color.cyan;
+                            if (floor == SimulatorView.this.reservedFloor) {
+                                color = Color.CYAN;
                             } else {
-                                color = Color.white;
+                                color = Color.WHITE;
                             }
 
                         }
-
 
                         drawPlace(graphics, location, color);
                     }

@@ -11,18 +11,18 @@ import parkinggarage.Simulation;
  */
 public class MainController {
 
-    Simulation simulation;
+    private Simulation simulation;
 
     @FXML
-    public Spinner<Integer> spinIterationCount;
+    public Spinner spinIterationCount;
 
     @FXML
     private Button btnSimulate;
 
     @FXML
     public void onBtnSimulateClick(ActionEvent actionEvent) {
-        int iterations = spinIterationCount.getValue();
-        System.out.println("Simulation iterations: " + iterations);
+        int iterations = Integer.parseInt(spinIterationCount.getValue().toString());
+        System.out.println("Simulation iterations: "+iterations);
         new Thread(() -> {
             if (simulation == null) {
                 simulation = new Simulation(iterations);

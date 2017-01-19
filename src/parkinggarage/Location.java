@@ -9,7 +9,6 @@ public class Location {
     private int floor;
     private int row;
     private int place;
-    private boolean isReserved = false;
 
     /**
      * Constructor for objects of class parkinggarage.Location
@@ -18,13 +17,6 @@ public class Location {
         this.floor = floor;
         this.row = row;
         this.place = place;
-    }
-
-    public Location(int floor, int row, int place, boolean isReserved) {
-        this.floor = floor;
-        this.row = row;
-        this.place = place;
-        this.isReserved = isReserved;
     }
 
     /**
@@ -78,21 +70,6 @@ public class Location {
      */
     public int getPlace() {
         return place;
-    }
-
-    /**
-     *
-     * @return Boolean isReserved;
-     */
-    public boolean isReserved() { return isReserved; }
-
-    /**
-     * Sets isReserved
-     *
-     * @param isReserved
-     */
-    public void setReserved(boolean isReserved) {
-        this.isReserved = isReserved;
     }
 
 }

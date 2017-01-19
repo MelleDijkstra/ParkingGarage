@@ -4,12 +4,6 @@ import java.util.Random;
 
 public class Simulation {
 
-    private int currentIteration = 1;
-
-    public void setTickPause(int tickSpeed) {
-        this.tickPause = tickSpeed;
-    }
-
     private enum CarType {
         AD_HOC,
         PASS,
@@ -20,6 +14,8 @@ public class Simulation {
     private CarQueue paymentCarQueue;
     private CarQueue exitCarQueue;
     private SimulatorView simulatorView;
+
+    private int currentIteration = 1;
 
     private int day = 0;
     private int hour = 0;
@@ -54,12 +50,10 @@ public class Simulation {
     }
 
     public void run() {
-        while (true) {
-            while (!this.paused && this.currentIteration <= 200) {
-                System.out.println("current iter: "+this.currentIteration);
-                tick();
-                this.currentIteration++;
-            }
+        while(!this.paused && this.currentIteration <= 800) {
+            System.out.println("current iter: "+this.currentIteration);
+            tick();
+            this.currentIteration++;
         }
     }
 
@@ -98,6 +92,10 @@ public class Simulation {
 
     }
 
+    public void setTickPause(int tickPause) {
+        this.tickPause = tickPause;
+    }
+
     private void handleEntrance() {
         carsArriving();
         carsEntering(entrancePassQueue);
@@ -126,13 +124,15 @@ public class Simulation {
     private void carsEntering(CarQueue queue) {
         int i = 0;
         // Remove car from the front of the queue and assign to a parking space.
-        while (queue.carsInQueue() > 0 &&
-                simulatorView.getNumberOfOpenSpots() > 0 &&
-                i < enterSpeed) {
-            Car car = queue.removeCar();
-            Location freeLocation = simulatorView.getFirstFreeLocation();
-            simulatorView.setCarAt(freeLocation, car);
-            i++;
+        while(queue.carsInQueue() > 0 && i < enterSpeed) {
+            Location freeLocation = simulatorView.getFirstFreeLocation((queue.peek() instanceof ParkingPassCar));
+            if(freeLocation != null) {
+                Car car = queue.removeCar();
+                simulatorView.setCarAt(freeLocation, car);
+                i++;
+            } else {
+                break;
+            }
         }
     }
 
