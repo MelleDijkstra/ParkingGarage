@@ -18,7 +18,7 @@
     </top>
    <center>
        <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-           <Label text="Copyright © MelleJanSilvanBjorn en Co" textFill="WHITE">
+           <Label text="Copyright © Eudora" textFill="WHITE">
               <StackPane.margin>
                   <Insets bottom="150.0" />
               </StackPane.margin>
@@ -26,7 +26,7 @@
                   <Font size="18.0" />
               </font>
            </Label>
-           <Label text="Bla die bla Bla die bla Bla die bla" textFill="WHITE">
+           <Label text="Melle Dijkstra, Jan Duursma, Bjorn van den Akker, Silvan Visscher" textFill="WHITE">
                <StackPane.margin>
                    <Insets bottom="100.0" />
                </StackPane.margin>
