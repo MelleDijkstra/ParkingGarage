@@ -1,4 +1,4 @@
-package parkinggarage;
+package parkinggarage.views;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -22,11 +22,11 @@ public class MainScreen extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("layouts/MainScreen.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../layouts/MainScreen.fxml"));
         primaryStage.setTitle("Dashboard");
 
         mainScene = new Scene(root, 850, 650);
-        mainScene.getStylesheets().add(getClass().getResource("resources/css/mainScreenStyle.css").toString());
+        mainScene.getStylesheets().add(getClass().getResource("../resources/css/style.css").toString());
 
         primaryStage.setScene(mainScene);
         primaryStage.show();

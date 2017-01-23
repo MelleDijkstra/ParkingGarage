@@ -4,7 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
-import parkinggarage.CreditsScreen;
+import parkinggarage.views.CreditsScreen;
 import parkinggarage.Simulation;
 
 import java.io.IOException;
@@ -41,6 +41,7 @@ public class MainController {
     public void onBtnCreditsClick(ActionEvent actionEvent) {
         try {
             CreditsScreen creditsScreen = new CreditsScreen();
+            creditsScreen.show();
         } catch (IOException e) {
             System.out.println("Credits file not found");
             e.printStackTrace();
