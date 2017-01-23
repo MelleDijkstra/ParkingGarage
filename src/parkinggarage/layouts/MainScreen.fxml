@@ -22,7 +22,7 @@
     </top>
     <bottom>
         <HBox>
-            <Button id="button" text="Settings" HBox.hgrow="ALWAYS">
+            <Button fx:id="btnSettings" id="button" text="Settings" HBox.hgrow="ALWAYS">
                 <HBox.margin>
                     <Insets bottom="30.0" left="80.0" />
                 </HBox.margin>
@@ -32,7 +32,7 @@
                     <Insets left="80.0" />
                 </HBox.margin>
             </Button>
-            <Button id="button" layoutX="249.0" layoutY="60.0" text="Credits" HBox.hgrow="ALWAYS">
+            <Button fx:id="btnCredits" layoutX="249.0" layoutY="60.0" onAction="#onBtnCreditsClick" text="Credits" HBox.hgrow="ALWAYS">
                 <HBox.margin>
                     <Insets left="80.0" />
                 </HBox.margin>

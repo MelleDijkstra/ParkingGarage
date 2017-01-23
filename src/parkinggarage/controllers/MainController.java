@@ -4,7 +4,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
+import parkinggarage.CreditsScreen;
 import parkinggarage.Simulation;
+
+import java.io.IOException;
 
 /**
  * Created by jandu on 12/01/2017.
@@ -29,5 +32,18 @@ public class MainController {
                 simulation.run();
             }
         }).start();
+    }
+
+    @FXML
+    private Button btnCredits;
+
+    @FXML
+    public void onBtnCreditsClick(ActionEvent actionEvent) {
+        try {
+            CreditsScreen creditsScreen = new CreditsScreen();
+        } catch (IOException e) {
+            System.out.println("Credits file not found");
+            e.printStackTrace();
+        }
     }
 }
