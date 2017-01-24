@@ -1,5 +1,7 @@
 package parkinggarage;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 public class Simulation {
@@ -9,21 +11,35 @@ public class Simulation {
         PASS,
     }
 
-    private CarQueue entranceCarQueue;
-    private CarQueue entrancePassQueue;
-    private CarQueue paymentCarQueue;
-    private CarQueue exitCarQueue;
+    // The queues in (and in-front of) the garage
+    private LinkedList<Car> entranceCarQueue;
+    private LinkedList<Car> entrancePassQueue;
+    private LinkedList<Car> paymentCarQueue;
+    private LinkedList<Car> exitCarQueue;
+
+    /**
+     * The Simulation View which displays the actual simulation
+     */
     private SimulatorView simulatorView;
 
+    /**
+     * The iteration where the simulation is currently at
+     */
     private int currentIteration = 1;
 
     private int day = 0;
     private int hour = 0;
     private int minute = 0;
 
+    /**
+     * The amount of waiting time for each iteration
+     */
     private int tickPause = 100;
 
-    private boolean paused = false;
+    /**
+     * Specifies if the simulation is running
+     */
+    private boolean running = true;
 
     int weekDayArrivals = 100; // average number of arriving cars per hour
     int weekendArrivals = 200; // average number of arriving cars per hour
@@ -34,6 +50,9 @@ public class Simulation {
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
 
+    /**
+     * The amount of iterations the simulator should run
+     */
     private final int iterationCount;
 
     /**
@@ -42,16 +61,16 @@ public class Simulation {
      */
     public Simulation(int iterations) {
         this.iterationCount = iterations;
-        entranceCarQueue = new CarQueue();
-        entrancePassQueue = new CarQueue();
-        paymentCarQueue = new CarQueue();
-        exitCarQueue = new CarQueue();
+        entranceCarQueue = new LinkedList<>();
+        entrancePassQueue = new LinkedList<>();
+        paymentCarQueue = new LinkedList<>();
+        exitCarQueue = new LinkedList<>();
         simulatorView = new SimulatorView(this, 3, 6, 30);
     }
 
     public void run() {
-        while(!this.paused && this.currentIteration <= 800) {
-            System.out.println("current iter: "+this.currentIteration);
+        while(this.running && this.currentIteration <= iterationCount) {
+            System.out.println("current iteration: "+this.currentIteration);
             tick();
             this.currentIteration++;
         }
@@ -71,8 +90,8 @@ public class Simulation {
     }
 
     public void toggle() {
-        this.paused = !this.paused;
-        System.out.println(this.paused);
+        this.running = !this.running;
+        System.out.println(this.running);
     }
 
     private void advanceTime() {
@@ -90,6 +109,14 @@ public class Simulation {
             day -= 7;
         }
 
+    }
+
+    /**
+     * Get the current time in int[day,hour,min] format
+     * @return integer array format: int[day,hour,min]
+     */
+    public int[] getTime() {
+        return new int[] {day,hour,minute};
     }
 
     public void setTickPause(int tickPause) {
@@ -121,13 +148,13 @@ public class Simulation {
         addArrivingCars(numberOfCars, CarType.PASS);
     }
 
-    private void carsEntering(CarQueue queue) {
+    private void carsEntering(Queue<Car> queue) {
         int i = 0;
         // Remove car from the front of the queue and assign to a parking space.
-        while(queue.carsInQueue() > 0 && i < enterSpeed) {
+        while(queue.size() > 0 && i < enterSpeed) {
             Location freeLocation = simulatorView.getFirstFreeLocation((queue.peek() instanceof ParkingPassCar));
             if(freeLocation != null) {
-                Car car = queue.removeCar();
+                Car car = queue.poll();
                 simulatorView.setCarAt(freeLocation, car);
                 i++;
             } else {
@@ -142,7 +169,7 @@ public class Simulation {
         while (car != null) {
             if (car.getHasToPay()) {
                 car.setIsPaying(true);
-                paymentCarQueue.addCar(car);
+                paymentCarQueue.add(car);
             } else {
                 carLeavesSpot(car);
             }
@@ -153,8 +180,8 @@ public class Simulation {
     private void carsPaying() {
         // Let cars pay.
         int i = 0;
-        while (paymentCarQueue.carsInQueue() > 0 && i < paymentSpeed) {
-            Car car = paymentCarQueue.removeCar();
+        while (paymentCarQueue.size() > 0 && i < paymentSpeed) {
+            Car car = paymentCarQueue.poll();
             // TODO Handle payment.
             carLeavesSpot(car);
             i++;
@@ -164,8 +191,8 @@ public class Simulation {
     private void carsLeaving() {
         // Let cars leave.
         int i = 0;
-        while (exitCarQueue.carsInQueue() > 0 && i < exitSpeed) {
-            exitCarQueue.removeCar();
+        while (exitCarQueue.size() > 0 && i < exitSpeed) {
+            exitCarQueue.poll();
             i++;
         }
     }
@@ -187,12 +214,12 @@ public class Simulation {
         switch (type) {
             case AD_HOC:
                 for (int i = 0; i < numberOfCars; i++) {
-                    entranceCarQueue.addCar(new AdHocCar());
+                    entranceCarQueue.add(new AdHocCar());
                 }
                 break;
             case PASS:
                 for (int i = 0; i < numberOfCars; i++) {
-                    entrancePassQueue.addCar(new ParkingPassCar());
+                    entrancePassQueue.add(new ParkingPassCar());
                 }
                 break;
         }
@@ -200,7 +227,7 @@ public class Simulation {
 
     private void carLeavesSpot(Car car) {
         simulatorView.removeCarAt(car.getLocation());
-        exitCarQueue.addCar(car);
+        exitCarQueue.add(car);
     }
 
 }

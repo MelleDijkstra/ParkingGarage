@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.control.Spinner?>
-<?import javafx.scene.control.Button?>
-
-<BorderPane
-        id="pane"
-        prefHeight="500.0" prefWidth="500.0"
-        xmlns="http://javafx.com/javafx/8.0.72"
-        xmlns:fx="http://javafx.com/fxml/1"
-        fx:controller="parkinggarage.controllers.MainController">
+<?import parkinggarage.views.control.NumberTextField?>
+<BorderPane id="pane" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parkinggarage.controllers.MainController">
     <top>
         <Label text="Parking Garage Simulation" textFill="WHITE" BorderPane.alignment="CENTER">
             <font>
@@ -22,7 +15,7 @@
     </top>
     <bottom>
         <HBox>
-            <Button fx:id="btnSettings" id="button" text="Settings" HBox.hgrow="ALWAYS">
+            <Button fx:id="btnSettings" text="Settings" HBox.hgrow="ALWAYS">
                 <HBox.margin>
                     <Insets bottom="30.0" left="80.0" />
                 </HBox.margin>
@@ -49,7 +42,7 @@
                   <Font size="18.0" />
               </font>
            </Label>
-           <Spinner fx:id="spinIterationCount" editable="true" min="1" max="100" />
+           <NumberTextField fx:id="tfIterationCount" maxWidth="200" text="100" />
        </StackPane>
    </center>
 </BorderPane>
