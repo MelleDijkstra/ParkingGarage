@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<BorderPane id="pane" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parkinggarage.controllers.MainController">
+    <top>
+        <Label text="Credits" textFill="WHITE" BorderPane.alignment="CENTER">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+    </top>
+   <center>
+       <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+           <Label text="Copyright © MelleJanSilvanBjorn en Co" textFill="WHITE">
+              <StackPane.margin>
+                  <Insets bottom="150.0" />
+              </StackPane.margin>
+              <font>
+                  <Font size="18.0" />
+              </font>
+           </Label>
+           <Label text="Bla die bla Bla die bla Bla die bla" textFill="WHITE">
+               <StackPane.margin>
+                   <Insets bottom="100.0" />
+               </StackPane.margin>
+               <font>
+                   <Font size="18.0" />
+               </font>
+           </Label>
+       </StackPane>
+   </center>
+</BorderPane>

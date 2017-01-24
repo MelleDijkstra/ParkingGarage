@@ -2,12 +2,11 @@ package parkinggarage.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
-import javafx.scene.layout.Pane;
 import parkinggarage.SettingsScreen;
 import parkinggarage.Simulation;
+import parkinggarage.views.CreditsScreen;
 
 import java.io.IOException;
 
@@ -28,6 +27,9 @@ public class MainController {
     private Button btnSettings;
 
     @FXML
+    private Button btnCredits;
+
+    @FXML
     public void onBtnSimulateClick(ActionEvent actionEvent) {
         int iterations = Integer.parseInt(spinIterationCount.getValue().toString());
         System.out.println("Simulation iterations: " + iterations);
@@ -46,6 +48,17 @@ public class MainController {
             settingsScreen.show();
         } catch (IOException e) {
             System.out.println("Settings file not found");
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void onBtnCreditsClick(ActionEvent actionEvent) {
+        try {
+            CreditsScreen creditsScreen = new CreditsScreen();
+            creditsScreen.show();
+        } catch (IOException e) {
+            System.out.println("Credits file not found");
             e.printStackTrace();
         }
     }
