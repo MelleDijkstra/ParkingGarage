@@ -2,7 +2,7 @@ package parkinggarage.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import parkinggarage.SettingsScreen;
+import parkinggarage.views.SettingsScreen;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
