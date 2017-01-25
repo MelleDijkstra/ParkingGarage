@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Spinner?>
-
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
-<BorderPane id="pane"
-        prefHeight="500.0" prefWidth="500.0"
-        xmlns="http://javafx.com/javafx/8.0.112"
-        xmlns:fx="http://javafx.com/fxml/1"
-        fx:controller="parkinggarage.controllers.MainController">
+<?import parkinggarage.views.control.NumberTextField?>
+<BorderPane id="pane" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parkinggarage.controllers.MainController">
     <top>
         <Label text="Parking Garage Simulation" textFill="WHITE" BorderPane.alignment="CENTER">
             <font>
@@ -49,16 +39,7 @@
                   <Font size="18.0" />
               </font>
            </Label>
-         <HBox prefHeight="100.0" prefWidth="200.0">
-            <children>
-                 <Spinner fx:id="spinIterationCount" editable="true" max="100" min="1" minWidth="70.0" prefWidth="150.0">
-                  <HBox.margin>
-                     <Insets right="100.0" top="150.0" />
-                  </HBox.margin>
-               </Spinner>
-               <DatePicker fx:id="datePicker" />
-            </children>
-         </HBox>
+           <NumberTextField fx:id="tfIterationCount" maxWidth="200" text="100" />
        </StackPane>
    </center>
 </BorderPane>
