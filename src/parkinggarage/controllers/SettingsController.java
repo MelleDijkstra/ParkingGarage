@@ -1,28 +1,26 @@
 package parkinggarage.controllers;
 
-import javafx.fxml.FXML;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
-import parkinggarage.views.SettingsScreen;
-
-import java.awt.event.ActionEvent;
-import java.io.IOException;
 
 /**
  * Created by jandu on 19/01/2017.
  */
 public class SettingsController {
 
-    @FXML
-    private Button btnSettings;
+    public Button btnApply, btnOk;
 
-    @FXML
-    public void onBtnSettingsClick(ActionEvent actionEvent) {
-        try {
-            SettingsScreen settingsScreen = new SettingsScreen();
-        } catch (IOException e) {
-            System.out.println("Settings file not found");
-            e.printStackTrace();
-        }
+    public void btnApplyOnClick(ActionEvent actionEvent) {
+        // TODO: read all values from UI form
+
+        // TODO: store every value to file
     }
 
+    public void btnOkOnClick(ActionEvent actionEvent) {
+        // TODO: check if settings are saved
+
+        // TODO: if not save settings
+
+        // TODO: close screen after saving settings
+    }
 }

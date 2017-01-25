@@ -7,22 +7,26 @@
 <?import javafx.scene.layout.HBox?>
 
 <?import parkinggarage.views.control.NumberTextField?>
-<BorderPane id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane
+        id="pane"
+        prefHeight="400.0"
+        prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parkinggarage.controllers.SettingsController">
    <center>
       <HBox fillHeight="false" BorderPane.alignment="CENTER">
          <children>
             <NumberTextField fx:id="tfIterationCount" maxWidth="200" text="100" />
-            <DatePicker id="datePicker" fx:id="" />
+            <DatePicker fx:id="" id="datePicker" />
          </children>
          <padding>
             <Insets left="200.0" top="180.0" />
-         </padding></HBox>
+         </padding>
+      </HBox>
    </center>
    <bottom>
       <HBox spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="Apply" />
-            <Button mnemonicParsing="false" text="Ok" />
+            <Button fx:id="btnApply" onAction="#btnApplyOnClick" mnemonicParsing="false" text="Apply" />
+            <Button fx:id="btnOk" onAction="#btnOkOnClick" mnemonicParsing="false" text="Ok" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
