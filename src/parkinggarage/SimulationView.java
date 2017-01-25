@@ -7,9 +7,10 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
-public class SimulatorView extends JFrame implements KeyListener {
+public class SimulationView extends JFrame implements KeyListener {
     private CarParkView carParkView;
     private int numberOfFloors;
     private int numberOfRows;
@@ -22,7 +23,7 @@ public class SimulatorView extends JFrame implements KeyListener {
     private Car[][][] cars;
     private Simulation simulation;
 
-    public SimulatorView(Simulation simulation, int numberOfFloors, int numberOfRows, int numberOfPlaces) {
+    public SimulationView(Simulation simulation, int numberOfFloors, int numberOfRows, int numberOfPlaces) {
         this.simulation = simulation;
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
@@ -51,7 +52,45 @@ public class SimulatorView extends JFrame implements KeyListener {
 
         updateView();
         this.addKeyListener(this);
+        this.addWindowListener(windowListener);
     }
+
+    private WindowListener windowListener = new WindowListener() {
+        @Override
+        public void windowOpened(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowClosed(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowIconified(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowDeiconified(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowActivated(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowDeactivated(WindowEvent e) {
+
+        }
+    };
 
     private ChangeListener changeListener = e -> {
         JSlider slider = (JSlider)e.getSource();
@@ -259,7 +298,7 @@ public class SimulatorView extends JFrame implements KeyListener {
                         }
                         else {
                             // Checks if the location is reserved.
-                            if (floor == SimulatorView.this.reservedFloor) {
+                            if (floor == SimulationView.this.reservedFloor) {
                                 color = Color.CYAN;
                             } else {
                                 color = Color.WHITE;

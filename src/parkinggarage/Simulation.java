@@ -20,7 +20,7 @@ public class Simulation {
     /**
      * The Simulation View which displays the actual simulation
      */
-    private SimulatorView simulatorView;
+    private SimulationView simulationView;
 
     /**
      * The iteration where the simulation is currently at
@@ -65,7 +65,7 @@ public class Simulation {
         entrancePassQueue = new LinkedList<>();
         paymentCarQueue = new LinkedList<>();
         exitCarQueue = new LinkedList<>();
-        simulatorView = new SimulatorView(this, 3, 6, 30);
+        simulationView = new SimulationView(this, 3, 6, 30);
     }
 
     public void run() {
@@ -136,9 +136,9 @@ public class Simulation {
     }
 
     private void updateViews() {
-        simulatorView.tick();
+        simulationView.tick();
         // Update the car park view.
-        simulatorView.updateView();
+        simulationView.updateView();
     }
 
     private void carsArriving() {
@@ -152,10 +152,10 @@ public class Simulation {
         int i = 0;
         // Remove car from the front of the queue and assign to a parking space.
         while(queue.size() > 0 && i < enterSpeed) {
-            Location freeLocation = simulatorView.getFirstFreeLocation((queue.peek() instanceof ParkingPassCar));
+            Location freeLocation = simulationView.getFirstFreeLocation((queue.peek() instanceof ParkingPassCar));
             if(freeLocation != null) {
                 Car car = queue.poll();
-                simulatorView.setCarAt(freeLocation, car);
+                simulationView.setCarAt(freeLocation, car);
                 i++;
             } else {
                 break;
@@ -165,7 +165,7 @@ public class Simulation {
 
     private void carsReadyToLeave() {
         // Add leaving cars to the payment queue.
-        Car car = simulatorView.getFirstLeavingCar();
+        Car car = simulationView.getFirstLeavingCar();
         while (car != null) {
             if (car.getHasToPay()) {
                 car.setIsPaying(true);
@@ -173,7 +173,7 @@ public class Simulation {
             } else {
                 carLeavesSpot(car);
             }
-            car = simulatorView.getFirstLeavingCar();
+            car = simulationView.getFirstLeavingCar();
         }
     }
 
@@ -226,7 +226,7 @@ public class Simulation {
     }
 
     private void carLeavesSpot(Car car) {
-        simulatorView.removeCarAt(car.getLocation());
+        simulationView.removeCarAt(car.getLocation());
         exitCarQueue.add(car);
     }
 
