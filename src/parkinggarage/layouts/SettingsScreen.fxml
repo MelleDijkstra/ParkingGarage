@@ -15,7 +15,7 @@
       <HBox fillHeight="false" BorderPane.alignment="CENTER">
          <children>
             <NumberTextField fx:id="tfIterationCount" maxWidth="200" text="100" />
-            <DatePicker fx:id="" id="datePicker" />
+            <DatePicker fx:id="dpDay" id="datePicker" />
          </children>
          <padding>
             <Insets left="200.0" top="180.0" />

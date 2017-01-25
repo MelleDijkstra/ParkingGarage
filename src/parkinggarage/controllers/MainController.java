@@ -9,7 +9,10 @@ import parkinggarage.views.SettingsScreen;
 import parkinggarage.Simulation;
 import parkinggarage.views.CreditsScreen;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Properties;
 
 /**
  * Created by jandu on 12/01/2017.
@@ -33,12 +36,21 @@ public class MainController {
     @FXML
     public void onBtnSimulateClick(ActionEvent actionEvent) {
         int iterations = Integer.parseInt(tfIterationCount.getText());
+        // Read the settings file to load all settings
+        Properties settings = new Properties();
+        try {
+            settings.load(new FileInputStream(SettingsController.settingsFile));
+        } catch (IOException e) {
+            System.out.println("Settings file does not exist");
+        }
         // Simulation should run at least 1 time!
+        // TODO: change to settings.getOrDefault("iterations");
         if(iterations >= 1) {
             System.out.println("Iterations Specified: "+iterations);
             new Thread(() -> {
                 if (simulation == null) {
-                    simulation = new Simulation(iterations);
+                    // TODO: remove iterations and only give settings (which includes the iterationCount)
+                    simulation = new Simulation(iterations, settings);
                     simulation.run();
                 }
             }).start();

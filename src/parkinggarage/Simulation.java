@@ -6,6 +6,7 @@ import parkinggarage.models.Location;
 import parkinggarage.models.ParkingPassCar;
 
 import java.util.LinkedList;
+import java.util.Properties;
 import java.util.Queue;
 import java.util.Random;
 
@@ -15,6 +16,9 @@ public class Simulation {
         AD_HOC,
         PASS,
     }
+
+    // Settings for the simulation
+    private Properties settings = new Properties();
 
     // The queues in (and in-front of) the garage
     private LinkedList<Car> entranceCarQueue;
@@ -32,28 +36,33 @@ public class Simulation {
      */
     private int currentIteration = 1;
 
-    private int day = 0;
-    private int hour = 0;
-    private int minute = 0;
+    private Integer day = 0;
+    private Integer hour = 0;
+    private Integer minute = 0;
 
     /**
      * The amount of waiting time for each iteration
      */
-    private int tickPause = 100;
+    private Integer tickPause = 100;
 
     /**
-     * Specifies if the simulation is running
+     * Specifies if the simulation is running or paused
      */
     private boolean running = true;
 
-    int weekDayArrivals = 100; // average number of arriving cars per hour
-    int weekendArrivals = 200; // average number of arriving cars per hour
-    int weekDayPassArrivals = 50; // average number of arriving cars per hour
-    int weekendPassArrivals = 5; // average number of arriving cars per hour
+    /**
+     * Specifies if the simulation should stop
+     */
+    private boolean stop = true;
 
-    int enterSpeed = 3; // number of cars that can enter per minute
-    int paymentSpeed = 7; // number of cars that can pay per minute
-    int exitSpeed = 5; // number of cars that can leave per minute
+    private Integer weekDayArrivals = 100; // average number of arriving cars per hour
+    private Integer weekendArrivals = 200; // average number of arriving cars per hour
+    private Integer weekDayPassArrivals = 50; // average number of arriving cars per hour
+    private Integer weekendPassArrivals = 5; // average number of arriving cars per hour
+
+    private Integer enterSpeed = 3; // number of cars that can enter per minute
+    private Integer paymentSpeed = 7; // number of cars that can pay per minute
+    private Integer exitSpeed = 5; // number of cars that can leave per minute
 
     /**
      * The amount of iterations the simulator should run
@@ -61,16 +70,38 @@ public class Simulation {
     private final int iterationCount;
 
     /**
-     * Creates a Parking Car simulation
-     * @param iterations The amount of iteration you want the simulation to run
+     * Creates a parking garage simulation
+     * @param iterations The amount of iteration to run
      */
     public Simulation(int iterations) {
-        this.iterationCount = iterations;
+        iterationCount = iterations;
         entranceCarQueue = new LinkedList<>();
         entrancePassQueue = new LinkedList<>();
         paymentCarQueue = new LinkedList<>();
         exitCarQueue = new LinkedList<>();
         simulationView = new SimulationView(this, 3, 6, 30);
+    }
+
+    /**
+     * Creates a parking garage simulation with given settings
+     * @param iterations The amount of iteration you want the simulation to run
+     * @param settings The settings for the simulation
+     */
+    public Simulation(int iterations, Properties settings) {
+        this(iterations);
+        this.settings = settings;
+        processSettings();
+    }
+
+    private void processSettings() {
+        day = (settings.getProperty("day") != null) ? Integer.parseInt(settings.get("day").toString()) : day;
+        hour = (settings.getProperty("hour") != null) ? Integer.parseInt(settings.get("hour").toString()) : hour;
+        minute = (settings.getProperty("minute") != null) ? Integer.parseInt(settings.get("minute").toString()) : minute;
+        weekDayArrivals = (settings.getProperty("weekDayArrivals") != null) ? Integer.parseInt(settings.get("weekDayArrivals").toString()) : weekDayArrivals;
+        weekDayPassArrivals = (settings.getProperty("weekDayPassArrivals") != null) ? Integer.parseInt(settings.get("weekDayPassArrivals").toString()) : weekDayPassArrivals;
+        weekendArrivals = (settings.getProperty("weekendArrivals") != null) ? Integer.parseInt(settings.get("weekendArrivals").toString()) : weekendArrivals;
+        weekendPassArrivals = (settings.getProperty("weekendPassArrivals") != null) ? Integer.parseInt(settings.get("weekendPassArrivals").toString()) : weekendPassArrivals;
+
     }
 
     public void run() {
