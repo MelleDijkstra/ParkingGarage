@@ -1,6 +1,8 @@
 package parkinggarage;
 
 import com.sun.istack.internal.Nullable;
+import parkinggarage.models.Car;
+import parkinggarage.models.Location;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;

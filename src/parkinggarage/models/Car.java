@@ -1,4 +1,4 @@
-package parkinggarage;
+package parkinggarage.models;
 
 import java.awt.*;
 
@@ -10,7 +10,7 @@ public abstract class Car {
     private boolean hasToPay;
 
     /**
-     * Constructor for objects of class parkinggarage.Car
+     * Constructor for objects of class parkinggarage.models.Car
      */
     public Car() {
 

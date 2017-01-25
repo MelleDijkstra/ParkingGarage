@@ -1,5 +1,10 @@
 package parkinggarage;
 
+import parkinggarage.models.AdHocCar;
+import parkinggarage.models.Car;
+import parkinggarage.models.Location;
+import parkinggarage.models.ParkingPassCar;
+
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
@@ -91,7 +96,6 @@ public class Simulation {
 
     public void toggle() {
         this.running = !this.running;
-        System.out.println(this.running);
     }
 
     private void advanceTime() {

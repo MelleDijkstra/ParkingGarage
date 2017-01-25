@@ -1,4 +1,4 @@
-package parkinggarage;
+package parkinggarage.models;
 
 /**
  * This class represents the location of vehicles of this application
@@ -11,7 +11,7 @@ public class Location {
     private int place;
 
     /**
-     * Constructor for objects of class parkinggarage.Location
+     * Constructor for objects of class parkinggarage.models.Location
      */
     public Location(int floor, int row, int place) {
         this.floor = floor;
