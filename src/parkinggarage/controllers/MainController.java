@@ -4,12 +4,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
-import javafx.scene.input.InputMethodEvent;
-import javafx.scene.input.KeyEvent;
-import parkinggarage.views.CreditsScreen;
+import parkinggarage.SettingsScreen;
 import parkinggarage.Simulation;
+import parkinggarage.views.CreditsScreen;
 
 import java.io.IOException;
 
@@ -18,13 +16,19 @@ import java.io.IOException;
  */
 public class MainController {
 
-    @FXML
-    private TextField tfIterationCount;
-
     private Simulation simulation;
 
     @FXML
+    private TextField tfIterationCount;
+
+    @FXML
     private Button btnSimulate;
+
+    @FXML
+    private Button btnSettings;
+
+    @FXML
+    private Button btnCredits;
 
     @FXML
     public void onBtnSimulateClick(ActionEvent actionEvent) {
@@ -44,7 +48,15 @@ public class MainController {
     }
 
     @FXML
-    private Button btnCredits;
+    public void onBtnSettingsClick(ActionEvent actionEvent) {
+        try {
+            SettingsScreen settingsScreen = new SettingsScreen();
+            settingsScreen.show();
+        } catch (IOException e) {
+            System.out.println("Settings file not found");
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     public void onBtnCreditsClick(ActionEvent actionEvent) {

@@ -15,7 +15,7 @@
     </top>
     <bottom>
         <HBox>
-            <Button fx:id="btnSettings" text="Settings" HBox.hgrow="ALWAYS">
+            <Button fx:id="btnSettings" onAction="#onBtnSettingsClick" id="button" text="Settings" HBox.hgrow="ALWAYS">
                 <HBox.margin>
                     <Insets bottom="30.0" left="80.0" />
                 </HBox.margin>
@@ -35,9 +35,6 @@
    <center>
        <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
            <Label text="How many ticks do you want the simulation to play?" textFill="WHITE">
-              <StackPane.margin>
-                  <Insets bottom="150.0" />
-              </StackPane.margin>
               <font>
                   <Font size="18.0" />
               </font>
