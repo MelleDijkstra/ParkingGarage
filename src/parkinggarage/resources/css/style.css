@@ -7,3 +7,6 @@
     -fx-background-opacity: 0.5;
 }
 
+#datePicker {
+    fx-padding-top: 150px;
+}
