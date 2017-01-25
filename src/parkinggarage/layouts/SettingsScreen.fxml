@@ -6,11 +6,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<?import parkinggarage.views.control.NumberTextField?>
+<BorderPane id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <HBox fillHeight="false" opacity="0.32" BorderPane.alignment="CENTER">
+      <HBox fillHeight="false" BorderPane.alignment="CENTER">
          <children>
-            <DatePicker />
+            <NumberTextField fx:id="tfIterationCount" maxWidth="200" text="100" />
+            <DatePicker id="datePicker" fx:id="" />
          </children>
          <padding>
             <Insets left="200.0" top="180.0" />
