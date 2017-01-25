@@ -10,3 +10,11 @@
 #datePicker {
     fx-padding-top: 150px;
 }
+
+.text-area, .text-area .viewport, .text-area .content {
+    -fx-background-color: transparent ;
+}
+
+.creditsText {
+    -fx-text-fill: #ffffff;
+}
