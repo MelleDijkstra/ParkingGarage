@@ -2,20 +2,31 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-
 <?import parkinggarage.views.control.NumberTextField?>
-<BorderPane
-        id="pane"
-        prefHeight="400.0"
-        prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parkinggarage.controllers.SettingsController">
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<BorderPane id="pane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parkinggarage.controllers.SettingsController">
    <center>
       <HBox fillHeight="false" BorderPane.alignment="CENTER">
          <children>
+             <ComboBox fx:id="cbDays" onAction="#setComboBox" prefWidth="150.0" value="Monday">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Monday" />
+                        <String fx:value="Tuesday" />
+                        <String fx:value="Wednesday" />
+                        <String fx:value="Thursday" />
+                        <String fx:value="Friday" />
+                        <String fx:value="Saturday" />
+                        <String fx:value="Sunday" />
+                    </FXCollections>
+                </items>
+             </ComboBox>
             <NumberTextField fx:id="tfIterationCount" maxWidth="200" text="100" />
-            <DatePicker fx:id="" id="datePicker" />
          </children>
          <padding>
             <Insets left="200.0" top="180.0" />
@@ -25,8 +36,8 @@
    <bottom>
       <HBox spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnApply" onAction="#btnApplyOnClick" mnemonicParsing="false" text="Apply" />
-            <Button fx:id="btnOk" onAction="#btnOkOnClick" mnemonicParsing="false" text="Ok" />
+            <Button fx:id="btnApply" mnemonicParsing="false" onAction="#btnApplyOnClick" text="Apply" />
+            <Button fx:id="btnOk" mnemonicParsing="false" onAction="#btnOkOnClick" text="Ok" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
