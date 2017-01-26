@@ -1,45 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import parkinggarage.views.control.NumberTextField?>
-<BorderPane id="pane" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parkinggarage.controllers.MainController">
+
+<BorderPane id="pane" minHeight="400" minWidth="400" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parkinggarage.controllers.MainController">
     <top>
         <Label text="Parking Garage Simulation" textFill="WHITE" BorderPane.alignment="CENTER">
             <font>
-                <Font size="24.0" />
+                <Font size="30.0" />
             </font>
+            <BorderPane.margin>
+                <Insets top="10.0" />
+            </BorderPane.margin>
         </Label>
     </top>
+    <center>
+        <VBox alignment="CENTER" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <Label text="How many ticks do you want the simulation to play?" textFill="WHITE">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Label>
+            <NumberTextField fx:id="tfIterationCount" maxWidth="200" text="100">
+            <VBox.margin>
+               <Insets top="20.0" />
+            </VBox.margin>
+            <font>
+               <Font size="16.0" />
+            </font></NumberTextField>
+        </VBox>
+    </center>
     <bottom>
-        <HBox>
-            <Button fx:id="btnSettings" onAction="#onBtnSettingsClick" id="button" text="Settings" HBox.hgrow="ALWAYS">
-                <HBox.margin>
-                    <Insets bottom="30.0" left="80.0" />
-                </HBox.margin>
+        <HBox alignment="CENTER" spacing="50.0" BorderPane.alignment="CENTER">
+            <Button id="button" fx:id="btnSettings" alignment="BOTTOM_LEFT" onAction="#onBtnSettingsClick" text="Settings" HBox.hgrow="ALWAYS">
+                <font>
+                    <Font size="16.0" />
+                </font>
             </Button>
-            <Button fx:id="btnSimulate" layoutX="170.0" layoutY="60.0" onAction="#onBtnSimulateClick" text="Simulate" HBox.hgrow="ALWAYS">
-                <HBox.margin>
-                    <Insets left="80.0" />
-                </HBox.margin>
+            <Button fx:id="btnSimulate" defaultButton="true" layoutX="170.0" layoutY="60.0" onAction="#onBtnSimulateClick" text="Simulate" HBox.hgrow="ALWAYS">
+                <font>
+                    <Font size="20.0" />
+                </font>
             </Button>
             <Button fx:id="btnCredits" layoutX="249.0" layoutY="60.0" onAction="#onBtnCreditsClick" text="Credits" HBox.hgrow="ALWAYS">
-                <HBox.margin>
-                    <Insets left="80.0" />
-                </HBox.margin>
+                <font>
+                    <Font size="16.0" />
+                </font>
             </Button>
+            <padding>
+                <Insets bottom="30.0" right="5.0" top="5.0" />
+            </padding>
         </HBox>
     </bottom>
-   <center>
-       <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-           <Label text="How many ticks do you want the simulation to play?" textFill="WHITE">
-              <font>
-                  <Font size="18.0" />
-              </font>
-           </Label>
-           <NumberTextField fx:id="tfIterationCount" maxWidth="200" text="100" />
-       </StackPane>
-   </center>
 </BorderPane>

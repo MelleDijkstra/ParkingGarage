@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
+
 <BorderPane id="pane" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parkinggarage.controllers.MainController">
     <top>
         <Label text="Credits" textFill="WHITE" BorderPane.alignment="CENTER">
@@ -13,23 +17,30 @@
         </Label>
     </top>
    <center>
-       <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-           <Label text="Copyright © MelleJanSilvanBjorn en Co" textFill="WHITE">
+       <StackPane prefHeight="312.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+           <Label text="Copyright © Eudora" textFill="#fffafa">
               <StackPane.margin>
-                  <Insets bottom="150.0" />
+                  <Insets top="350.0" />
               </StackPane.margin>
               <font>
                   <Font size="18.0" />
               </font>
            </Label>
-           <Label text="Bla die bla Bla die bla Bla die bla" textFill="WHITE">
-               <StackPane.margin>
-                   <Insets bottom="100.0" />
-               </StackPane.margin>
-               <font>
-                   <Font size="18.0" />
-               </font>
-           </Label>
+         <Label layoutX="180.0" layoutY="379.0" textFill="WHITE">
+            <font>
+               <Font size="15.0" />
+            </font>
+            <graphic>
+               <TextArea id="creditsText" editable="false" prefHeight="336.0" prefWidth="250.0" styleClass="creditsText" text="Mede mogelijk gemaakt door&#10;&#10;Cityparking Groningen&#10;&#10;In samenwerking met &#10;&#10;Gemeente Groningen,&#10;Eudora: &#10;- Melle Dijkstra&#10;- Jan Duursma&#10;- Bjorn van den Akker&#10;- Silvan Visscher&#10;&#10;Software:&#10;Eudora ">
+                  <font>
+                     <Font size="15.0" />
+                  </font>
+                  <cursor>
+                     <Cursor fx:constant="DEFAULT" />
+                  </cursor>
+               </TextArea>
+            </graphic>
+         </Label>
        </StackPane>
    </center>
 </BorderPane>
