@@ -7,9 +7,13 @@ public class ParkingPassCar extends Car {
     private static final Color COLOR = Color.blue;
 
     public ParkingPassCar() {
-        Random random = new Random();
-        this.setMinutesLeft((int) (15 + random.nextFloat() * 3 * 60));
         this.setHasToPay(false);
+    }
+
+    @Override
+    protected int startingMinutes() {
+        Random random = new Random();
+        return (int) (15 + random.nextFloat() * 3 * 60);
     }
 
     public Color getColor() {

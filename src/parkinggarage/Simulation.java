@@ -1,19 +1,21 @@
 package parkinggarage;
 
-import parkinggarage.models.AdHocCar;
-import parkinggarage.models.Car;
-import parkinggarage.models.Location;
-import parkinggarage.models.ParkingPassCar;
+import parkinggarage.models.*;
 
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Queue;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Simulation {
+
+    private boolean stop = false;
 
     private enum CarType {
         AD_HOC,
         PASS,
+        RESERVED,
     }
 
     // The queues in (and in-front of) the garage
@@ -50,7 +52,10 @@ public class Simulation {
     int weekendArrivals = 200; // average number of arriving cars per hour
     int weekDayPassArrivals = 50; // average number of arriving cars per hour
     int weekendPassArrivals = 5; // average number of arriving cars per hour
+    int weekDayReservedArrivals = 60;
+    int weekendReservedArrivals = 95;
 
+    // The different speeds for the garage operations
     int enterSpeed = 3; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
@@ -73,14 +78,27 @@ public class Simulation {
         simulationView = new SimulationView(this, 3, 6, 30);
     }
 
+    /**
+     * Runs the simulation for a specified amount of iterations
+     */
     public void run() {
-        while(this.running && this.currentIteration <= iterationCount) {
+        long startTime = System.currentTimeMillis();
+        while(this.currentIteration <= iterationCount) {
             System.out.println("current iteration: "+this.currentIteration);
             tick();
             this.currentIteration++;
+            if(this.stop) break;
         }
+        long timeTaken = (System.currentTimeMillis() - startTime);
+        System.out.println(String.format("SIMULATION DONE - time in minutes: %d:%d",
+                TimeUnit.MILLISECONDS.toMinutes(timeTaken),
+                TimeUnit.MILLISECONDS.toSeconds(timeTaken)));
     }
 
+    /**
+     * All the logic for a single tick.
+     * This will run every (virtual) minute.
+     */
     private void tick() {
         advanceTime();
         handleExit();
@@ -150,13 +168,15 @@ public class Simulation {
         addArrivingCars(numberOfCars, CarType.AD_HOC);
         numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
         addArrivingCars(numberOfCars, CarType.PASS);
+        numberOfCars = getNumberOfCars(weekDayReservedArrivals,weekDayReservedArrivals);
+        addArrivingCars(numberOfCars, CarType.RESERVED);
     }
 
     private void carsEntering(Queue<Car> queue) {
         int i = 0;
         // Remove car from the front of the queue and assign to a parking space.
         while(queue.size() > 0 && i < enterSpeed) {
-            Location freeLocation = simulationView.getFirstFreeLocation((queue.peek() instanceof ParkingPassCar));
+            Location freeLocation = simulationView.getFirstFreeLocation((queue.peek() instanceof ParkingPassCar || queue.peek() instanceof  ReservedCar));
             if(freeLocation != null) {
                 Car car = queue.poll();
                 simulationView.setCarAt(freeLocation, car);
@@ -217,13 +237,18 @@ public class Simulation {
         // Add the cars to the back of the queue.
         switch (type) {
             case AD_HOC:
-                for (int i = 0; i < numberOfCars; i++) {
+                for(int i = 0; i < numberOfCars; i++) {
                     entranceCarQueue.add(new AdHocCar());
                 }
                 break;
             case PASS:
-                for (int i = 0; i < numberOfCars; i++) {
+                for(int i = 0; i < numberOfCars; i++) {
                     entrancePassQueue.add(new ParkingPassCar());
+                }
+                break;
+            case RESERVED:
+                for(int i = 0; i < numberOfCars; i++) {
+                    entrancePassQueue.add(new ReservedCar());
                 }
                 break;
         }
@@ -232,6 +257,13 @@ public class Simulation {
     private void carLeavesSpot(Car car) {
         simulationView.removeCarAt(car.getLocation());
         exitCarQueue.add(car);
+    }
+
+    public void close() {
+        this.stop = true;
+        if(simulationView.isShowing()) {
+            simulationView.setVisible(false);
+        }
     }
 
 }

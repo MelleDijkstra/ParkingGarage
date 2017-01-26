@@ -50,48 +50,35 @@ public class SimulationView extends JFrame implements KeyListener {
         contentPane.add(slider, BorderLayout.SOUTH);
 
         pack();
-        setVisible(true);
 
-        updateView();
         this.addKeyListener(this);
         this.addWindowListener(windowListener);
+
+        setVisible(true);
+        updateView();
     }
 
     private WindowListener windowListener = new WindowListener() {
         @Override
-        public void windowOpened(WindowEvent e) {
-
-        }
+        public void windowOpened(WindowEvent e) {}
 
         @Override
-        public void windowClosing(WindowEvent e) {
-
-        }
+        public void windowClosing(WindowEvent e) { simulation.close(); }
 
         @Override
-        public void windowClosed(WindowEvent e) {
-
-        }
+        public void windowClosed(WindowEvent e) {}
 
         @Override
-        public void windowIconified(WindowEvent e) {
-
-        }
+        public void windowIconified(WindowEvent e) {}
 
         @Override
-        public void windowDeiconified(WindowEvent e) {
-
-        }
+        public void windowDeiconified(WindowEvent e) {}
 
         @Override
-        public void windowActivated(WindowEvent e) {
-
-        }
+        public void windowActivated(WindowEvent e) {}
 
         @Override
-        public void windowDeactivated(WindowEvent e) {
-
-        }
+        public void windowDeactivated(WindowEvent e) {}
     };
 
     private ChangeListener changeListener = e -> {
@@ -140,6 +127,11 @@ public class SimulationView extends JFrame implements KeyListener {
         return false;
     }
 
+    /**
+     * Removes the Car at a specific
+     * @param location
+     * @return
+     */
     public Car removeCarAt(Location location) {
         if (!locationIsValid(location)) {
             return null;
@@ -204,7 +196,6 @@ public class SimulationView extends JFrame implements KeyListener {
     }
 
     public void tick() {
-
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
@@ -218,14 +209,16 @@ public class SimulationView extends JFrame implements KeyListener {
         }
     }
 
+    /**
+     * Check if given location is an actual location in the garage
+     * @param location the location to check
+     * @return true if it is a location in garage otherwise false
+     */
     private boolean locationIsValid(Location location) {
         int floor = location.getFloor();
         int row = location.getRow();
         int place = location.getPlace();
-        if (floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces) {
-            return false;
-        }
-        return true;
+        return !(floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces);
     }
 
     @Override
@@ -233,6 +226,7 @@ public class SimulationView extends JFrame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        System.out.println("pressed");
         // Invoked when a key has been pressed.
         if (e.getKeyCode() == KeyEvent.VK_P) {
             System.out.println("P key pressed");
@@ -257,16 +251,18 @@ public class SimulationView extends JFrame implements KeyListener {
         }
 
         /**
-         * Overridden. Tell the GUI manager how big we would like to be.
+         * Tell the GUI manager how big we would like to be.
          */
+        @Override
         public Dimension getPreferredSize() {
             return new Dimension(800, 500);
         }
 
         /**
-         * Overriden. The car park view component needs to be redisplayed. Copy the
+         * The car park view component needs to be redisplayed. Copy the
          * internal image to screen.
          */
+        @Override
         public void paintComponent(Graphics g) {
             if (carParkImage == null) {
                 return;
@@ -279,6 +275,7 @@ public class SimulationView extends JFrame implements KeyListener {
                 // Rescale the previous image.
                 g.drawImage(carParkImage, 0, 0, currentSize.width, currentSize.height, null);
             }
+            drawTime(g);
         }
 
         public void updateView() {
@@ -287,6 +284,7 @@ public class SimulationView extends JFrame implements KeyListener {
                 size = getSize();
                 carParkImage = createImage(size.width, size.height);
             }
+
             Graphics graphics = carParkImage.getGraphics();
             for (int floor = 0; floor < getNumberOfFloors(); floor++) {
                 for (int row = 0; row < getNumberOfRows(); row++) {
@@ -294,7 +292,7 @@ public class SimulationView extends JFrame implements KeyListener {
                         Location location = new Location(floor, row, place);
                         Color color;
                         Car car = getCarAt(location);
-                        // Checks if there is a car, if so then the color of that car is given.
+                        // Checks if there is a car, if so then the COLOR of that car is given.
                         if (car != null) {
                             color = car.getColor();
                         }
@@ -312,11 +310,23 @@ public class SimulationView extends JFrame implements KeyListener {
                     }
                 }
             }
+
             repaint();
         }
 
         /**
-         * Paint a place on this car park view in a given color.
+         * Draws the time of the simulation
+         * @param graphics Graphics object
+         */
+        private void drawTime(Graphics graphics) {
+            int[] time = simulation.getTime();
+            String hour = (time[1] < 10) ? "0"+time[1] : Integer.toString(time[1]);
+            String minute = (time[2] < 10) ? "0"+time[2] : Integer.toString(time[2]);
+            graphics.drawString(hour+":"+minute, 30, 30);
+        }
+
+        /**
+         * Paint a place on this car park view in a given COLOR.
          */
         private void drawPlace(Graphics graphics, Location location, Color color) {
             graphics.setColor(color);
