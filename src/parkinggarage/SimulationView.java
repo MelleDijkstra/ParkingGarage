@@ -1,24 +1,27 @@
 package parkinggarage;
 
 import com.sun.istack.internal.Nullable;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.HBox;
+import parkinggarage.controllers.SettingsController;
 import parkinggarage.models.Car;
 import parkinggarage.models.Location;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 
 public class SimulationView extends JFrame implements KeyListener {
     private CarParkView carParkView;
+
+    // private StatisticsScreen statisticsScreen;
+
     private int numberOfFloors;
     private int numberOfRows;
 
     private int numberOfPlaces;
-    private int reservedFloor;
+    public int reservedFloor;
 
     private int numberOfOpenSpots;
 
@@ -40,6 +43,8 @@ public class SimulationView extends JFrame implements KeyListener {
         contentPane.setLayout(new BorderLayout(5,5));
         contentPane.add(carParkView, BorderLayout.CENTER);
 
+        //JPanel bottomPanel = new JPanel(new SpringLayout());
+
         JSlider slider = new JSlider(100,1000,100);
         slider.setMinorTickSpacing(1);
         slider.setMajorTickSpacing(5);
@@ -48,6 +53,18 @@ public class SimulationView extends JFrame implements KeyListener {
         slider.setLabelTable(slider.createStandardLabels(50));
         slider.addChangeListener(changeListener);
         contentPane.add(slider, BorderLayout.SOUTH);
+        //bottomPanel.add(slider);
+
+        JButton btnStatistics = new JButton("Statistics");
+        btnStatistics.addActionListener(e -> {
+            // Open statistics screen
+            // statisticsScreen = new StatisticsScreen(simulation);
+            // statisticsScreen.show();
+        });
+        contentPane.add(btnStatistics, BorderLayout.NORTH);
+        //bottomPanel.add(btnStatistics);
+
+        //contentPane.add(bottomPanel, BorderLayout.SOUTH);
 
         pack();
 
@@ -237,6 +254,10 @@ public class SimulationView extends JFrame implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {}
 
+    public void setReservedFloor(int reservedFloor) {
+        this.reservedFloor = reservedFloor;
+    }
+
 
     private class CarParkView extends JPanel {
 
@@ -275,7 +296,7 @@ public class SimulationView extends JFrame implements KeyListener {
                 // Rescale the previous image.
                 g.drawImage(carParkImage, 0, 0, currentSize.width, currentSize.height, null);
             }
-            drawTime(g);
+            drawDate(g);
         }
 
         public void updateView() {
@@ -315,13 +336,16 @@ public class SimulationView extends JFrame implements KeyListener {
         }
 
         /**
-         * Draws the time of the simulation
+         * Draws the time and day of the simulation
          * @param graphics Graphics object
          */
-        private void drawTime(Graphics graphics) {
-            int[] time = simulation.getTime();
+        private void drawDate(Graphics graphics) {
+            int[] time = simulation.getDate();
+            String day = SettingsController.numToDay(time[0]);
+            if(day == null) day = ""+time[0];
             String hour = (time[1] < 10) ? "0"+time[1] : Integer.toString(time[1]);
             String minute = (time[2] < 10) ? "0"+time[2] : Integer.toString(time[2]);
+            graphics.drawString(day, 30,15);
             graphics.drawString(hour+":"+minute, 30, 30);
         }
 

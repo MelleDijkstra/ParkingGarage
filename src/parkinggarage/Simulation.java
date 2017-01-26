@@ -1,5 +1,6 @@
 package parkinggarage;
 
+import parkinggarage.controllers.SettingsController;
 import parkinggarage.models.*;
 
 import java.util.LinkedList;
@@ -52,7 +53,7 @@ public class Simulation {
     /**
      * Specifies if the simulation should stop
      */
-    private boolean stop = true;
+    private boolean stop = false;
 
     private Integer weekDayArrivals = 100; // average number of arriving cars per hour
     private Integer weekendArrivals = 200; // average number of arriving cars per hour
@@ -96,13 +97,16 @@ public class Simulation {
     }
 
     private void processSettings() {
-        day = (settings.getProperty("day") != null) ? Integer.parseInt(settings.get("day").toString()) : day;
-        hour = (settings.getProperty("hour") != null) ? Integer.parseInt(settings.get("hour").toString()) : hour;
-        minute = (settings.getProperty("minute") != null) ? Integer.parseInt(settings.get("minute").toString()) : minute;
-        weekDayArrivals = (settings.getProperty("weekDayArrivals") != null) ? Integer.parseInt(settings.get("weekDayArrivals").toString()) : weekDayArrivals;
-        weekDayPassArrivals = (settings.getProperty("weekDayPassArrivals") != null) ? Integer.parseInt(settings.get("weekDayPassArrivals").toString()) : weekDayPassArrivals;
-        weekendArrivals = (settings.getProperty("weekendArrivals") != null) ? Integer.parseInt(settings.get("weekendArrivals").toString()) : weekendArrivals;
-        weekendPassArrivals = (settings.getProperty("weekendPassArrivals") != null) ? Integer.parseInt(settings.get("weekendPassArrivals").toString()) : weekendPassArrivals;
+        day = (settings.getProperty(SettingsController.Setting.DAY) != null) ? Integer.parseInt(settings.get(SettingsController.Setting.DAY).toString()) : day;
+        hour = (settings.getProperty(SettingsController.Setting.HOUR) != null) ? Integer.parseInt(settings.get(SettingsController.Setting.DAY).toString()) : hour;
+        minute = (settings.getProperty(SettingsController.Setting.MINUTE) != null) ? Integer.parseInt(settings.get(SettingsController.Setting.MINUTE).toString()) : minute;
+
+        simulationView.reservedFloor = (settings.getProperty(SettingsController.Setting.RESERVED_FLOOR) != null) ? Integer.parseInt(settings.get(SettingsController.Setting.RESERVED_FLOOR).toString()) : simulationView.reservedFloor;
+
+//        weekDayArrivals = (settings.getProperty("weekDayArrivals") != null) ? Integer.parseInt(settings.get("weekDayArrivals").toString()) : weekDayArrivals;
+//        weekDayPassArrivals = (settings.getProperty("weekDayPassArrivals") != null) ? Integer.parseInt(settings.get("weekDayPassArrivals").toString()) : weekDayPassArrivals;
+//        weekendArrivals = (settings.getProperty("weekendArrivals") != null) ? Integer.parseInt(settings.get("weekendArrivals").toString()) : weekendArrivals;
+//        weekendPassArrivals = (settings.getProperty("weekendPassArrivals") != null) ? Integer.parseInt(settings.get("weekendPassArrivals").toString()) : weekendPassArrivals;
     }
 
     /**
@@ -161,10 +165,10 @@ public class Simulation {
     }
 
     /**
-     * Get the current time in int[day,hour,min] format
+     * Get the current time and day in int[day,hour,min] format
      * @return integer array format: int[day,hour,min]
      */
-    public int[] getTime() {
+    public int[] getDate() {
         return new int[] {day,hour,minute};
     }
 

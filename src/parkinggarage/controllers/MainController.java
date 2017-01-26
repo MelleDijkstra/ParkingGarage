@@ -48,11 +48,12 @@ public class MainController {
         if(iterations >= 1) {
             System.out.println("Iterations Specified: "+iterations);
             new Thread(() -> {
-                if (simulation == null) {
+                if (simulation != null) {
+                    simulation.close();
                     // TODO: remove iterations and only give settings (which includes the iterationCount)
-                    simulation = new Simulation(iterations, settings);
-                    simulation.run();
                 }
+                simulation = new Simulation(iterations, settings);
+                simulation.run();
             }).start();
         } else {
             new Alert(Alert.AlertType.WARNING, "Please specify a higher number").show();
