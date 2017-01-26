@@ -23,6 +23,9 @@ public class MainScreen extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("../layouts/MainScreen.fxml"));
         primaryStage.setTitle("Dashboard");
 
+        // TODO: add icon for taskbar
+        //primaryStage.getIcons().add(new Image(""));
+
         mainScene = new Scene(root, 850, 650);
         mainScene.getStylesheets().add(getClass().getResource("../resources/css/style.css").toString());
 
