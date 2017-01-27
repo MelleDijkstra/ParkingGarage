@@ -2,6 +2,7 @@ package parkinggarage;
 
 import parkinggarage.controllers.SettingsController;
 import parkinggarage.models.*;
+import parkinggarage.views.SimulationView;
 
 import java.util.LinkedList;
 import java.util.Properties;
@@ -83,7 +84,7 @@ public class Simulation {
         entrancePassQueue = new LinkedList<>();
         paymentCarQueue = new LinkedList<>();
         exitCarQueue = new LinkedList<>();
-        simulationView = new SimulationView(this, 3, 6, 30);
+        simulationView = new SimulationView(this, 3, 6, 1, 30);
     }
 
     /**
