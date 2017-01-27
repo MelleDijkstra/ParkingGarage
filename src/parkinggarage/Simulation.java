@@ -98,7 +98,7 @@ public class Simulation {
 
     private void processSettings() {
         day = (settings.getProperty(SettingsController.Setting.DAY) != null) ? Integer.parseInt(settings.get(SettingsController.Setting.DAY).toString()) : day;
-        hour = (settings.getProperty(SettingsController.Setting.HOUR) != null) ? Integer.parseInt(settings.get(SettingsController.Setting.DAY).toString()) : hour;
+        hour = (settings.getProperty(SettingsController.Setting.HOUR) != null) ? Integer.parseInt(settings.get(SettingsController.Setting.HOUR).toString()) : hour;
         minute = (settings.getProperty(SettingsController.Setting.MINUTE) != null) ? Integer.parseInt(settings.get(SettingsController.Setting.MINUTE).toString()) : minute;
 
         simulationView.reservedFloor = (settings.getProperty(SettingsController.Setting.RESERVED_FLOOR) != null) ? Integer.parseInt(settings.get(SettingsController.Setting.RESERVED_FLOOR).toString()) : simulationView.reservedFloor;
