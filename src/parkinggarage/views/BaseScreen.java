@@ -3,6 +3,7 @@ package parkinggarage.views;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ public abstract class BaseScreen {
 
         Scene mainScene = new Scene(root, getWidth(), getHeight());
         mainScene.getStylesheets().add(getClass().getResource("../resources/css/style.css").toString());
-
+        mainStage.getIcons().add(new Image(getClass().getResourceAsStream("../resources/images/car.jpg")));
         mainStage.setScene(mainScene);
     }
 

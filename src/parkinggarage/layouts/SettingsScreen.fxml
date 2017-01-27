@@ -72,7 +72,7 @@
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
             </padding>
             <Button fx:id="btnApply" mnemonicParsing="false" onAction="#btnApplyOnClick" text="Apply"/>
-            <Button fx:id="btnOk" mnemonicParsing="false" onAction="#btnOkOnClick" text="Ok"/>
+            <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#btnOkOnClick" text="Cancel"/>
         </HBox>
     </bottom>
 </BorderPane>
