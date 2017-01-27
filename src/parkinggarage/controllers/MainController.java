@@ -33,6 +33,11 @@ public class MainController {
     @FXML
     private Button btnCredits;
 
+    /**
+     * Checking for (and loading) settings file.
+     * Sets minimum for iterations.
+     * @param actionEvent
+     */
     @FXML
     public void onBtnSimulateClick(ActionEvent actionEvent) {
         int iterations = Integer.parseInt(tfIterationCount.getText());
@@ -71,6 +76,10 @@ public class MainController {
         }
     }
 
+    /**
+     * Checking for (and loading) credits screen.
+     * @param actionEvent
+     */
     @FXML
     public void onBtnCreditsClick(ActionEvent actionEvent) {
         try {

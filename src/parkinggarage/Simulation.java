@@ -36,6 +36,7 @@ public class Simulation {
      */
     private int currentIteration = 1;
 
+    // Current day and time of the simulation
     private Integer day = 0;
     private Integer hour = 0;
     private Integer minute = 0;
