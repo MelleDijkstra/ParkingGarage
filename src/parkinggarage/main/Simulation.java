@@ -1,4 +1,4 @@
-package parkinggarage;
+package parkinggarage.main;
 
 import parkinggarage.controllers.SettingsController;
 import parkinggarage.models.*;
@@ -83,7 +83,7 @@ public class Simulation {
         entrancePassQueue = new LinkedList<>();
         paymentCarQueue = new LinkedList<>();
         exitCarQueue = new LinkedList<>();
-        simulationView = new SimulationView(this, 3, 6, 30);
+        simulationView = new SimulationView(this, 3, 6, 1, 30);
     }
 
     /**
