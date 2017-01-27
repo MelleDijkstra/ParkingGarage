@@ -1,36 +1,33 @@
 package parkinggarage.views;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import java.io.IOException;
 
 /**
- * Created by melle on 10-1-2017.
+ * Created by melle on 27-1-2017.
  */
-public class MainScreen extends Application {
+public class MainScreen extends BaseScreen {
 
-    Scene mainScene;
-
-    public static void main(String args[]) {
-        // Launches JavaFX initialization
-        launch(args);
+    public MainScreen() throws IOException {
+        super();
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("../layouts/MainScreen.fxml"));
-        primaryStage.setTitle("Dashboard");
-
-        // TODO: add icon for taskbar
-        //primaryStage.getIcons().add(new Image(""));
-
-        mainScene = new Scene(root, 850, 650);
-        mainScene.getStylesheets().add(getClass().getResource("../resources/css/style.css").toString());
-
-        primaryStage.setScene(mainScene);
-        primaryStage.show();
+    public String getLayoutFile() {
+        return "MainScreen.fxml";
     }
 
+    @Override
+    public String getTitle() {
+        return "Dashboard";
+    }
+
+    @Override
+    public int getWidth() {
+        return 850;
+    }
+
+    @Override
+    public int getHeight() {
+        return 650;
+    }
 }

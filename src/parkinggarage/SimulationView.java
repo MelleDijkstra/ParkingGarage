@@ -1,6 +1,7 @@
 package parkinggarage;
 
 import com.sun.istack.internal.Nullable;
+import javafx.application.Platform;
 import javafx.event.*;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
@@ -64,18 +65,20 @@ public class SimulationView extends JFrame implements KeyListener {
         JButton btnStatistics = new JButton("Statistics");
         btnStatistics.addActionListener(e -> {
             // Open statistics screen
-            try {
-                StatisticsScreen statisticsScreen = new StatisticsScreen();
-                statisticsScreen.show();
-            } catch (NullPointerException i) {
-                System.out.println("Statistics file not found");
-                new Alert(Alert.AlertType.ERROR, "Layout file not found").show();
-                i.printStackTrace();
-            } catch (IOException i) {
-                System.out.println("Something went wrong");
-                new Alert(Alert.AlertType.ERROR, "FXML not valid").show();
-                i.printStackTrace();
-            }
+            Platform.runLater(() -> {
+                try {
+                    StatisticsScreen statisticsScreen = new StatisticsScreen();
+                    statisticsScreen.show();
+                } catch (NullPointerException i) {
+                    System.out.println("Statistics file not found");
+                    new Alert(Alert.AlertType.ERROR, "Layout file not found").show();
+                    i.printStackTrace();
+                } catch (IOException i) {
+                    System.out.println("Something went wrong");
+                    new Alert(Alert.AlertType.ERROR, "FXML not valid").show();
+                    i.printStackTrace();
+                }
+            });
         });
         contentPane.add(btnStatistics, BorderLayout.NORTH);
         //bottomPanel.add(btnStatistics);
