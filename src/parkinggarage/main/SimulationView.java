@@ -1,15 +1,10 @@
-package parkinggarage;
+package parkinggarage.main;
 
 import com.sun.istack.internal.Nullable;
-import javafx.event.*;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.HBox;
 import parkinggarage.controllers.SettingsController;
 import parkinggarage.models.Car;
 import parkinggarage.models.Location;
-import parkinggarage.views.CreditsScreen;
 import parkinggarage.views.StatisticsScreen;
 
 import javax.swing.*;
@@ -27,18 +22,18 @@ public class SimulationView extends JFrame implements KeyListener {
     private int numberOfRows;
 
     private int numberOfPlaces;
-    public int reservedFloor;
+    protected int reservedFloor;
 
     private int numberOfOpenSpots;
 
     private Car[][][] cars;
     private Simulation simulation;
 
-    public SimulationView(Simulation simulation, int numberOfFloors, int numberOfRows, int numberOfPlaces) {
+    public SimulationView(Simulation simulation, int numberOfFloors, int numberOfRows, int reservedFloor, int numberOfPlaces) {
         this.simulation = simulation;
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
-        this.reservedFloor = 1;
+        this.reservedFloor = reservedFloor;
         this.numberOfPlaces = numberOfPlaces;
         this.numberOfOpenSpots = numberOfFloors * numberOfRows * numberOfPlaces;
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];

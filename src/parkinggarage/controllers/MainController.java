@@ -5,12 +5,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import parkinggarage.Simulation;
+import parkinggarage.main.Simulation;
 import parkinggarage.views.CreditsScreen;
 import parkinggarage.views.SettingsScreen;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
