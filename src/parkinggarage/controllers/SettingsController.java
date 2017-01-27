@@ -29,6 +29,9 @@ public class SettingsController implements Initializable {
 
     private boolean dirtySettings = false;
 
+    /**
+     * Button for applying the changes which are made
+     */
     public void btnApplyOnClick(ActionEvent actionEvent) {
         saveSettings();
     }
@@ -55,6 +58,9 @@ public class SettingsController implements Initializable {
         }
     }
 
+    /**
+     * Button for leaving the settings screen
+     */
     public void btnOkOnClick(ActionEvent actionEvent) {
         if(dirtySettings) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"You have unsaved settings, save now?");
@@ -67,6 +73,9 @@ public class SettingsController implements Initializable {
         ((Stage)btnApply.getScene().getWindow()).close();
     }
 
+    /**
+     *
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadSettings();
@@ -87,6 +96,9 @@ public class SettingsController implements Initializable {
         ntfReservedFloor.textProperty().addListener((observable, oldValue, newValue) -> setSetting(Setting.RESERVED_FLOOR, newValue));
     }
 
+    /**
+     *
+     */
     private void loadSettings() {
         settings = new Properties();
         try {
@@ -108,6 +120,9 @@ public class SettingsController implements Initializable {
         }
     }
 
+    /**
+     * List of options for the day
+     */
     public static String numToDay(int daynum) {
         switch (daynum) {
             case 0:
@@ -128,6 +143,9 @@ public class SettingsController implements Initializable {
         return null;
     }
 
+    /**
+     * Convert the name of the days to numbers
+     */
     public static Integer dayToNum(String day) {
         switch (day) {
             case "Monday":
