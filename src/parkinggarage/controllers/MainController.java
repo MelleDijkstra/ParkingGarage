@@ -10,7 +10,6 @@ import parkinggarage.views.CreditsScreen;
 import parkinggarage.views.SettingsScreen;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -18,6 +17,10 @@ import java.util.Properties;
  * Created by jandu on 12/01/2017.
  */
 public class MainController {
+
+    // Views
+    private SettingsScreen settingsScreen;
+    private CreditsScreen creditsScreen;
 
     private Simulation simulation;
 
@@ -67,13 +70,16 @@ public class MainController {
 
     @FXML
     public void onBtnSettingsClick(ActionEvent actionEvent) {
-        try {
-            SettingsScreen settingsScreen = new SettingsScreen();
-            settingsScreen.show();
-        } catch (IOException e) {
-            System.out.println("Settings file not found");
-            e.printStackTrace();
+        if(settingsScreen == null) {
+            try {
+                settingsScreen = new SettingsScreen();
+                settingsScreen.show();
+            } catch (IOException e) {
+                System.out.println("Settings file not found");
+                e.printStackTrace();
+            }
         }
+        settingsScreen.show();
     }
 
     /**
@@ -82,17 +88,20 @@ public class MainController {
      */
     @FXML
     public void onBtnCreditsClick(ActionEvent actionEvent) {
-        try {
-            CreditsScreen creditsScreen = new CreditsScreen();
-            creditsScreen.show();
-        } catch (NullPointerException e) {
-            System.out.println("Credits file not found");
-            new Alert(Alert.AlertType.ERROR, "Layout file not found").show();
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("Something went wrong");
-            new Alert(Alert.AlertType.ERROR, "FXML not valid").show();
-            e.printStackTrace();
+        if(creditsScreen == null) {
+            try {
+                creditsScreen = new CreditsScreen();
+                creditsScreen.show();
+            } catch (NullPointerException e) {
+                System.out.println("Credits file not found");
+                new Alert(Alert.AlertType.ERROR, "Layout file not found").show();
+                e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("Something went wrong");
+                new Alert(Alert.AlertType.ERROR, "FXML not valid").show();
+                e.printStackTrace();
+            }
         }
+        creditsScreen.show();
     }
 }

@@ -2,21 +2,19 @@ package parkinggarage;
 
 import com.sun.istack.internal.Nullable;
 import javafx.application.Platform;
-import javafx.event.*;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.HBox;
 import parkinggarage.controllers.SettingsController;
 import parkinggarage.models.Car;
 import parkinggarage.models.Location;
-import parkinggarage.views.CreditsScreen;
 import parkinggarage.views.StatisticsScreen;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 
 public class SimulationView extends JFrame implements KeyListener {
@@ -65,6 +63,7 @@ public class SimulationView extends JFrame implements KeyListener {
         JButton btnStatistics = new JButton("Statistics");
         btnStatistics.addActionListener(e -> {
             // Open statistics screen
+            // this is needed to open a JavaFX window in swing (it should be opened on JavaFX thread)
             Platform.runLater(() -> {
                 try {
                     StatisticsScreen statisticsScreen = new StatisticsScreen();
