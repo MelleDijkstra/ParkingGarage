@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 public class SettingsController implements Initializable {
 
     public NumberTextField ntfReservedFloor;
-    public Button btnApply, btnCancel;
+    public Button btnApply, btnOk;
     public ComboBox<String> cbDays;
     public Slider sldTime;
     public Label lblTimeVal;

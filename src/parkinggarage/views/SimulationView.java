@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import parkinggarage.controllers.SettingsController;
 import parkinggarage.Simulation;
 import parkinggarage.models.Car;
+import parkinggarage.models.Garage;
 import parkinggarage.models.Location;
 
 import javax.swing.*;
@@ -17,30 +18,17 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
 
+/**
+ * The view where the simulation takes place
+ */
 public class SimulationView extends JFrame implements KeyListener {
     private CarParkView carParkView;
 
     // private StatisticsScreen statisticsScreen;
-
-    private int numberOfFloors;
-    private int numberOfRows;
-
-    private int numberOfPlaces;
-    public int reservedFloor;
-
-    private int numberOfOpenSpots;
-
-    private Car[][][] cars;
     private Simulation simulation;
 
-    public SimulationView(Simulation simulation, int numberOfFloors, int numberOfRows, int reservedFloor, int numberOfPlaces) {
+    public SimulationView(Simulation simulation) {
         this.simulation = simulation;
-        this.numberOfFloors = numberOfFloors;
-        this.numberOfRows = numberOfRows;
-        this.reservedFloor = reservedFloor;
-        this.numberOfPlaces = numberOfPlaces;
-        this.numberOfOpenSpots = numberOfFloors * numberOfRows * numberOfPlaces;
-        cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
 
         carParkView = new CarParkView();
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -125,137 +113,6 @@ public class SimulationView extends JFrame implements KeyListener {
         carParkView.updateView();
     }
 
-    public int getNumberOfFloors() {
-        return numberOfFloors;
-    }
-
-    public int getNumberOfRows() {
-        return numberOfRows;
-    }
-
-    public int getNumberOfPlaces() {
-        return numberOfPlaces;
-    }
-
-    public int getNumberOfOpenSpots() {
-        return numberOfOpenSpots;
-    }
-
-    public Car getCarAt(Location location) {
-        if (!locationIsValid(location)) {
-            return null;
-        }
-        return cars[location.getFloor()][location.getRow()][location.getPlace()];
-    }
-
-    public boolean setCarAt(Location location, Car car) {
-        if (!locationIsValid(location)) {
-            return false;
-        }
-        Car oldCar = getCarAt(location);
-        if (oldCar == null) {
-            cars[location.getFloor()][location.getRow()][location.getPlace()] = car;
-            car.setLocation(location);
-            numberOfOpenSpots--;
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Removes the Car at a specific
-     * @param location
-     * @return
-     */
-    public Car removeCarAt(Location location) {
-        if (!locationIsValid(location)) {
-            return null;
-        }
-        Car car = getCarAt(location);
-        if (car == null) {
-            return null;
-        }
-        cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
-        car.setLocation(null);
-        numberOfOpenSpots++;
-        return car;
-    }
-
-    /**
-     * Returns first free location in garage otherwise null
-     * @return The first free location
-     * @param includeReservedSpace boolean if reserved space should be included
-     */
-    @Nullable
-    public Location getFirstFreeLocation(boolean includeReservedSpace) {
-        // Check if we need to include reserved space
-        if(includeReservedSpace) {
-            for(int row = 0; row < getNumberOfRows(); row++) {
-                for(int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(this.reservedFloor,row,place);
-                    // check all rows and places of the reserved space for a free spot (car == null)
-                    if(getCarAt(location) == null) {
-                        return location;
-                    }
-                }
-            }
-        }
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            // We have already been through the reserved space
-            if(floor == this.reservedFloor) continue;
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    if (getCarAt(location) == null && (this.reservedFloor != floor || includeReservedSpace)) {
-                        return location;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    public Car getFirstLeavingCar() {
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    Car car = getCarAt(location);
-                    if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
-                        return car;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    public void tick() {
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    Car car = getCarAt(location);
-                    if (car != null) {
-                        car.tick();
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Check if given location is an actual location in the garage
-     * @param location the location to check
-     * @return true if it is a location in garage otherwise false
-     */
-    private boolean locationIsValid(Location location) {
-        int floor = location.getFloor();
-        int row = location.getRow();
-        int place = location.getPlace();
-        return !(floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces);
-    }
-
     @Override
     public void keyTyped(KeyEvent e) {}
 
@@ -271,10 +128,6 @@ public class SimulationView extends JFrame implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {}
-
-    public void setReservedFloor(int reservedFloor) {
-        this.reservedFloor = reservedFloor;
-    }
 
     private class CarParkView extends JPanel {
 
@@ -314,6 +167,7 @@ public class SimulationView extends JFrame implements KeyListener {
                 g.drawImage(carParkImage, 0, 0, currentSize.width, currentSize.height, null);
             }
             drawDate(g);
+            //g.drawRect(0,0,getWidth() -1,getHeight() -1);
         }
 
         public void updateView() {
@@ -323,27 +177,26 @@ public class SimulationView extends JFrame implements KeyListener {
                 carParkImage = createImage(size.width, size.height);
             }
 
+            Garage garage = simulation.getGarage();
+
             Graphics graphics = carParkImage.getGraphics();
-            for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-                for (int row = 0; row < getNumberOfRows(); row++) {
-                    for (int place = 0; place < getNumberOfPlaces(); place++) {
+            for (int floor = 0; floor < garage.getNumberOfFloors(); floor++) {
+                for (int row = 0; row < garage.getNumberOfRows(); row++) {
+                    for (int place = 0; place < garage.getNumberOfPlaces(); place++) {
                         Location location = new Location(floor, row, place);
                         Color color;
-                        Car car = getCarAt(location);
+                        Car car = garage.getCarAt(location);
                         // Checks if there is a car, if so then the COLOR of that car is given.
                         if (car != null) {
                             color = car.getColor();
-                        }
-                        else {
+                        } else {
                             // Checks if the location is reserved.
-                            if (floor == SimulationView.this.reservedFloor) {
+                            if (floor == garage.getReservedFloor()) {
                                 color = Color.CYAN;
                             } else {
                                 color = Color.WHITE;
                             }
-
                         }
-
                         drawPlace(graphics, location, color);
                     }
                 }
