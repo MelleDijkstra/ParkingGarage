@@ -5,6 +5,10 @@ import java.io.IOException;
 /**
  * Created by melle on 27-1-2017.
  */
+
+/**
+ * Loads the mainScreen
+ */
 public class MainScreen extends BaseScreen {
 
     public MainScreen() throws IOException {

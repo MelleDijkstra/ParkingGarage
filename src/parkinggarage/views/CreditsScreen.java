@@ -5,6 +5,10 @@ import java.io.IOException;
 /**
  * Created by Silvan on 19-1-2017.
  */
+
+/**
+ * Loads the creditsScreen
+ */
 public class CreditsScreen extends BaseScreen {
 
     public CreditsScreen() throws IOException {

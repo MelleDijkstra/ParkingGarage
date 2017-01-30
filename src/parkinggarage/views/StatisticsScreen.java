@@ -5,6 +5,10 @@ import java.io.IOException;
 /**
  * Created by jandu on 26/01/2017.
  */
+
+/**
+ * Loads the statisticsScreen
+ */
 public class StatisticsScreen extends BaseScreen {
 
     public StatisticsScreen() throws IOException {

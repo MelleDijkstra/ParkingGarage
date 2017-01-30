@@ -11,6 +11,10 @@ import java.io.IOException;
 /**
  * Created by melle on 23-1-2017.
  */
+
+/**
+ *
+ */
 public abstract class BaseScreen {
 
     protected Stage mainStage;

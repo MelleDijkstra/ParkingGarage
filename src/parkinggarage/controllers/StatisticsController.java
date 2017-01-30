@@ -8,6 +8,10 @@ import javafx.scene.chart.PieChart;
 /**
  * Created by jandu on 26/01/2017.
  */
+
+/**
+ * Shows the information in statistics view
+ */
 public class StatisticsController {
 
     public PieChart chart;
