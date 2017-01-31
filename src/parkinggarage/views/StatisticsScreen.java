@@ -1,5 +1,8 @@
 package parkinggarage.views;
 
+import parkinggarage.Simulation;
+import parkinggarage.controllers.StatisticsController;
+
 import java.io.IOException;
 
 /**
@@ -11,8 +14,16 @@ import java.io.IOException;
  */
 public class StatisticsScreen extends BaseScreen {
 
-    public StatisticsScreen() throws IOException {
+    /**
+     * Model for the statistics screen
+     */
+    Simulation simulation;
+
+    public StatisticsScreen(Simulation simulation) throws IOException {
         super();
+        this.simulation = simulation;
+        // TODO: view should not be aware of controller, other way around (JavaFX struggles)
+        ((StatisticsController)this.controller).setSimulation(simulation);
     }
 
     @Override
@@ -23,4 +34,8 @@ public class StatisticsScreen extends BaseScreen {
     @Override
     public String getTitle() { return "Statistics"; }
 
+    public void updateView() {
+        // TODO: view should not update controller
+        ((StatisticsController)controller).update();
+    }
 }

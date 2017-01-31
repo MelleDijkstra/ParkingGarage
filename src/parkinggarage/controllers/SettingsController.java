@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 /**
  * Created by jandu on 19/01/2017.
  */
-public class SettingsController implements Initializable {
+public class SettingsController extends BaseController implements Initializable {
 
     public NumberTextField ntfReservedFloor;
     public Button btnApply, btnOk;

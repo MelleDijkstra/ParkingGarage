@@ -17,9 +17,13 @@ public class ReservedCar extends Car {
     }
 
     @Override
+    public double amountToPay() {
+        return super.amountToPay() + 4.32;
+    }
+
+    @Override
     public Color getColor() {
         return COLOR;
     }
-
 
 }

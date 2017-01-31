@@ -8,6 +8,16 @@ import java.awt.*;
 public abstract class Car {
 
     /**
+     * The amount of minutes the Car is going to stay in the Garage
+     */
+    protected int stayingMinutes;
+
+    /**
+     * The price per minute for this Car
+     */
+    protected double pricePerMinute = 0.24;
+
+    /**
      * Location of the car
      */
     protected Location location;
@@ -23,7 +33,7 @@ public abstract class Car {
     private boolean isPaying;
 
     /**
-     * Flag if the Car has to pay
+     * Flag if the Car has to amountToPay
      */
     private boolean hasToPay;
 
@@ -31,7 +41,7 @@ public abstract class Car {
      * Constructor for objects of class parkinggarage.models.Car
      */
     public Car() {
-        minutesLeft = this.startingMinutes();
+        stayingMinutes = minutesLeft = this.startingMinutes();
     }
 
     /**
@@ -66,24 +76,24 @@ public abstract class Car {
     }
 
     /**
-     * Specify if the Car has to pay
-     * @param isPaying True if car has to pay, if not false
+     * Specify if the Car has to amountToPay
+     * @param isPaying True if car has to amountToPay, if not false
      */
     public void setIsPaying(boolean isPaying) {
         this.isPaying = isPaying;
     }
 
     /**
-     * Return if the Car has to pay
-     * @return true if Car has to pay, false if not
+     * Return if the Car has to amountToPay
+     * @return true if Car has to amountToPay, false if not
      */
     public boolean getHasToPay() {
         return hasToPay;
     }
 
     /**
-     * Specify if the Car has to pay
-     * @param hasToPay true if Car has to pay, if not then false
+     * Specify if the Car has to amountToPay
+     * @param hasToPay true if Car has to amountToPay, if not then false
      */
     public void setHasToPay(boolean hasToPay) {
         this.hasToPay = hasToPay;
@@ -101,6 +111,15 @@ public abstract class Car {
      * @return The time the car has to stay in the garage in minutes
      */
     protected abstract int startingMinutes();
+
+    /**
+     * Calculates the amount this Car has to amountToPay for his stay
+     * ! It doesn't check if it actually has to amountToPay !
+     * @return The price this Car has to amountToPay
+     */
+    public double amountToPay() {
+        return stayingMinutes * pricePerMinute;
+    }
 
     /**
      * Retrieves the Color of the Car
