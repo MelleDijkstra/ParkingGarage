@@ -35,6 +35,9 @@ public class StatisticsController extends BaseController implements Initializabl
         this.simulation = simulation;
     }
 
+    /**
+     * Making a pie chart with accurate data
+     */
     public void update() {
         HashMap<Garage.CarType, Integer> carStats = simulation.getGarage().getCarStats();
         Integer adhoc = carStats.get(Garage.CarType.AD_HOC);

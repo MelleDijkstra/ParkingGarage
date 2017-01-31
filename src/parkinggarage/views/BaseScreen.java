@@ -14,7 +14,8 @@ import java.io.IOException;
  */
 
 /**
- *
+ * Enables different kinds of styling
+ * Example: style.css and application icon
  */
 public abstract class BaseScreen {
 

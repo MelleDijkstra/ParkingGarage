@@ -7,7 +7,7 @@ import java.io.IOException;
  */
 
 /**
- * Loads the mainScreen
+ * Loads the mainScreen and opens Dashboard
  */
 public class MainScreen extends BaseScreen {
 
