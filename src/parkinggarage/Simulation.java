@@ -102,7 +102,7 @@ public class Simulation {
     public void run() {
         long startTime = System.currentTimeMillis();
         while(this.currentIteration <= iterationCount) {
-            System.out.println("current iteration: "+this.currentIteration);
+            //System.out.println("current iteration: "+this.currentIteration);
             tick();
             this.currentIteration++;
             if(this.stop) break;

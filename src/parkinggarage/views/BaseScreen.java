@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import parkinggarage.controllers.BaseController;
 
 import java.io.IOException;
 
@@ -13,11 +14,17 @@ import java.io.IOException;
  */
 public abstract class BaseScreen {
 
+    protected BaseController controller;
+
     protected Stage mainStage;
 
     public BaseScreen() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        Parent root = fxmlLoader.load(getClass().getResource("../layouts/"+getLayoutFile()).openStream());
+
+        controller = fxmlLoader.getController();
+
         mainStage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("../layouts/"+getLayoutFile()));
         mainStage.setTitle(getTitle());
 
         Scene mainScene = new Scene(root, getWidth(), getHeight());
@@ -33,6 +40,8 @@ public abstract class BaseScreen {
     public void hide() {
         mainStage.hide();
     }
+
+    public void close() { mainStage.close(); }
 
     public abstract String getLayoutFile();
 

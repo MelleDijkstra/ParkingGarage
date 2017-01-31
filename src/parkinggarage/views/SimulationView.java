@@ -22,6 +22,7 @@ import java.io.IOException;
  * The view where the simulation takes place
  */
 public class SimulationView extends JFrame implements KeyListener {
+    private StatisticsScreen statisticsScreen = null;
     private CarParkView carParkView;
 
     // private StatisticsScreen statisticsScreen;
@@ -53,8 +54,9 @@ public class SimulationView extends JFrame implements KeyListener {
             // Open statistics screen
             // this is needed to open a JavaFX window in swing (it should be opened on JavaFX thread)
             Platform.runLater(() -> {
+                // TODO: refactor that the view doesn't open a new view, but let a controller do the work
                 try {
-                    StatisticsScreen statisticsScreen = new StatisticsScreen();
+                    statisticsScreen = new StatisticsScreen(simulation);
                     statisticsScreen.show();
                 } catch (NullPointerException i) {
                     System.out.println("Statistics file not found");
@@ -86,7 +88,12 @@ public class SimulationView extends JFrame implements KeyListener {
         public void windowOpened(WindowEvent e) {}
 
         @Override
-        public void windowClosing(WindowEvent e) { simulation.close(); }
+        public void windowClosing(WindowEvent e) {
+            simulation.close();
+            if(statisticsScreen != null) {
+                Platform.runLater(() -> statisticsScreen.close());
+            }
+        }
 
         @Override
         public void windowClosed(WindowEvent e) {}
@@ -111,6 +118,9 @@ public class SimulationView extends JFrame implements KeyListener {
 
     public void updateView() {
         carParkView.updateView();
+        if(statisticsScreen != null) {
+            Platform.runLater(() -> statisticsScreen.updateView());
+        }
     }
 
     @Override
