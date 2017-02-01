@@ -160,11 +160,21 @@ public class Simulation {
         garage.addArrivingCars(numberOfCars, Garage.CarType.RESERVED);
     }
 
-    private int getNumberOfCars(int weekDay, int weekend) {
+    private int getNumberOfCars(int avgCarsWeekDay, int avgCarsWeekend) {
         Random random = new Random();
 
         // Get the average number of cars that arrive per hour.
-        int averageNumberOfCarsPerHour = day < 5 ? weekDay : weekend;
+        int averageNumberOfCarsPerHour;
+
+        if(day == 7 && hour >= 12 && hour < 18) {
+            averageNumberOfCarsPerHour = avgCarsWeekend;
+        }
+        else if(day >= 4 && hour > 18) {
+            averageNumberOfCarsPerHour = avgCarsWeekend;
+        }
+        else {
+            averageNumberOfCarsPerHour = avgCarsWeekDay;
+        }
 
         // Calculate the number of cars that arrive this minute.
         double standardDeviation = averageNumberOfCarsPerHour * 0.3;
