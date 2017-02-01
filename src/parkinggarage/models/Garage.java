@@ -2,6 +2,7 @@ package parkinggarage.models;
 
 import com.sun.istack.internal.Nullable;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -21,6 +22,8 @@ public class Garage {
     private int floors;
     private int rows;
     private int places;
+
+    private double income;
 
     private int reservedFloor;
 
@@ -145,7 +148,11 @@ public class Garage {
         int i = 0;
         while (paymentCarQueue.size() > 0 && i < paymentSpeed) {
             Car car = paymentCarQueue.poll();
-            // TODO Handle payment.
+            // double check if car has to pay
+            if(car.getHasToPay()) {
+                income += car.amountToPay();
+                System.out.println("Car is paying: €"+car.amountToPay()+"\tIncome: €"+income);
+            }
             carLeavesSpot(car);
             i++;
         }
@@ -266,6 +273,27 @@ public class Garage {
                 }
             }
         }
+    }
+
+    public HashMap<CarType, Integer> getCarStats() {
+        HashMap<CarType, Integer> stats = new HashMap<>();
+        int adhoc = 0, pass = 0, reserved = 0;
+        // loop trough all cars in garage
+        for(int i = 0; i < cars.length; i++) {
+            for(int j = 0; j < cars[i].length; j++) {
+                for (int k = 0;k < cars[i][j].length; k++) {
+                    Car car = cars[i][j][k];
+                    // check which class is Car is at current location
+                    if(car instanceof AdHocCar) adhoc++;
+                    if(car instanceof ParkingPassCar) pass++;
+                    if(car instanceof ReservedCar) reserved++;
+                }
+            }
+        }
+        stats.put(CarType.AD_HOC, adhoc);
+        stats.put(CarType.PASS, pass);
+        stats.put(CarType.RESERVED, reserved);
+        return stats;
     }
 
     /**

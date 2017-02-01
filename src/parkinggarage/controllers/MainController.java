@@ -16,7 +16,7 @@ import java.util.Properties;
 /**
  * Created by jandu on 12/01/2017.
  */
-public class MainController {
+public class MainController extends BaseController {
 
     // Views
     //Nieuwe bitbuckit commit

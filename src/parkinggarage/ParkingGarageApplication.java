@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 import parkinggarage.views.MainScreen;
 
 /**
+ * The start of the Application
  * Created by melle on 10-1-2017.
  */
 public class ParkingGarageApplication extends Application {
