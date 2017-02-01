@@ -5,7 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import parkinggarage.views.control.NumberTextField;
-import parkinggarage.views.control.RestrictiveDoubleTextField;
+import parkinggarage.views.control.DoubleTextField;
 
 import java.io.*;
 import java.net.URL;
@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 public class SettingsController extends BaseController implements Initializable {
 
     public NumberTextField ntfReservedFloor;
-    public RestrictiveDoubleTextField ntfPricePerMinute;
+    public DoubleTextField ntfPricePerMinute;
     public Button btnApply, btnOk;
     public ComboBox<String> cbDays;
     public Slider sldTime;
