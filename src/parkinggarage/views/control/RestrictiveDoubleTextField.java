@@ -4,7 +4,7 @@ import javafx.scene.control.TextField;
 /**
  * Created by Bjorn on 2/1/2017.
  */
-public class RestrictiveTextField extends TextField {
+public class RestrictiveDoubleTextField extends TextField {
 
     @Override
     public void replaceText(int start, int end, String text)

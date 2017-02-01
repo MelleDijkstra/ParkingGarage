@@ -19,7 +19,6 @@ import java.util.Properties;
 public class MainController extends BaseController {
 
     // Views
-    //Nieuwe bitbuckit commit
 
     private SettingsScreen settingsScreen;
     private CreditsScreen creditsScreen;
