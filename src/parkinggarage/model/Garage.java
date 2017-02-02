@@ -2,6 +2,7 @@ package parkinggarage.model;
 
 import com.sun.istack.internal.Nullable;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -180,8 +181,10 @@ public class Garage {
             Car car = paymentCarQueue.poll();
             // double check if car has to pay
             if(car.getHasToPay()) {
+                BigDecimal roundOff = new BigDecimal(car.amountToPay()).setScale(2, BigDecimal.ROUND_HALF_UP);
                 income += car.amountToPay();
-                System.out.println("Car is paying: €"+car.amountToPay()+"\tIncome: €"+income);
+                BigDecimal roundedIncome = new BigDecimal(income).setScale(2, BigDecimal.ROUND_HALF_UP);
+                System.out.println("Car is paying: €" + roundOff +"\tIncome: €"+ roundedIncome);
             }
             exitCarQueue.add(car);
             i++;
