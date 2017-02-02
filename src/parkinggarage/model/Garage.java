@@ -161,6 +161,7 @@ public class Garage {
 
     private void carsReadyToLeave() {
         // Add leaving cars to the payment queue.
+        // TODO: check if the leave procedure is still the same
         Car car = getFirstLeavingCar();
         while (car != null) {
             if (car.getHasToPay()) {
@@ -168,7 +169,6 @@ public class Garage {
                 paymentCarQueue.add(car);
             } else {
                 exitCarQueue.add(car);
-                // TODO: handle removing of car
             }
             car = getFirstLeavingCar();
         }
@@ -318,6 +318,23 @@ public class Garage {
         stats.put(CarType.PASS, pass);
         stats.put(CarType.RESERVED, reserved);
         return stats;
+    }
+
+    public HashMap<String, Integer> getQueueStats() {
+        return new HashMap<String, Integer>() {{
+            put("Entrance Queue", entranceCarQueue.size());
+            put("Entrance Pass Queue", entrancePassQueue.size());
+            put("Payment Queue", paymentCarQueue.size());
+            put("Exit Queue", exitCarQueue.size());
+        }};
+    }
+
+    public int getEntranceQueueSize() {
+        return entranceCarQueue.size();
+    }
+
+    public int getEntrancePassQueueSize() {
+        return entrancePassQueue.size();
     }
 
     /**

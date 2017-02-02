@@ -2,8 +2,8 @@ package parkinggarage.views;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
-import parkinggarage.controllers.SettingsController;
 import parkinggarage.Simulation;
+import parkinggarage.controllers.SettingsController;
 import parkinggarage.model.Location;
 
 import javax.swing.*;
@@ -14,6 +14,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The view where the simulation takes place
@@ -166,6 +168,7 @@ public class SimulationView extends JFrame implements KeyListener {
                 return;
             }
 
+            // Draw the garage
             Dimension currentSize = getSize();
             if (size.equals(currentSize)) {
                 g.drawImage(carParkImage, 0, 0, null);
@@ -173,7 +176,10 @@ public class SimulationView extends JFrame implements KeyListener {
                 // Rescale the previous image.
                 g.drawImage(carParkImage, 0, 0, currentSize.width, currentSize.height, null);
             }
+            // Draw the current date
             drawDate(g);
+            // Draw the queues
+            drawQueues(g);
         }
 
         public void updateView() {
@@ -222,6 +228,18 @@ public class SimulationView extends JFrame implements KeyListener {
             String minute = (time[2] < 10) ? "0"+time[2] : Integer.toString(time[2]);
             graphics.drawString(day, 30,15);
             graphics.drawString(hour+":"+minute, 30, 30);
+        }
+
+        /**
+         * Draws the different queues of the garage
+         */
+        private void drawQueues(Graphics g) {
+            HashMap<String, Integer> queueStats = simulation.getGarage().getQueueStats();
+            int i = 1;
+            for (Map.Entry<String, Integer> item : queueStats.entrySet()) {
+                g.drawString(item.getKey()+": "+Integer.toString(item.getValue()), 20, getHeight() - (20 * i));
+                i++;
+            }
         }
 
         /**

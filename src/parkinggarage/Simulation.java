@@ -79,6 +79,9 @@ public class Simulation {
         processSettings();
     }
 
+    /**
+     * Makes sure all settings are set which are given
+     */
     private void processSettings() {
         day = getSetting(SettingsController.Setting.DAY, day);
         hour = getSetting(SettingsController.Setting.HOUR, hour);
@@ -120,22 +123,28 @@ public class Simulation {
      */
     private void tick() {
         advanceTime();
+        garage.handleExit();
+        // Pause.
+        carsArriving();
         garage.handleEntrance();
         updateViews();
-        // Pause.
         try {
             Thread.sleep(tickPause);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        carsArriving();
-        garage.handleExit();
     }
 
+    /**
+     * Toggles the application from running state to paused
+     */
     public void toggle() {
         this.running = !this.running;
     }
 
+    /**
+     * Advances 1 minute in time
+     */
     private void advanceTime() {
         // Advance the time by one minute.
         minute++;
