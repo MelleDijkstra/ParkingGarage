@@ -1,7 +1,7 @@
 package parkinggarage;
 
 import parkinggarage.controllers.SettingsController;
-import parkinggarage.models.Garage;
+import parkinggarage.model.Garage;
 import parkinggarage.views.SimulationView;
 
 import java.util.Properties;
@@ -108,9 +108,10 @@ public class Simulation {
             if(this.stop) break;
         }
         long timeTaken = (System.currentTimeMillis() - startTime);
-        System.out.println(String.format("SIMULATION DONE - time in minutes: %d:%d",
+        System.out.println(String.format("SIMULATION DONE - time in minutes: %d:%d - earned: %f",
                 TimeUnit.MILLISECONDS.toMinutes(timeTaken),
-                TimeUnit.MILLISECONDS.toSeconds(timeTaken)));
+                TimeUnit.MILLISECONDS.toSeconds(timeTaken),
+                garage.getIncome()));
     }
 
     /**
@@ -119,7 +120,7 @@ public class Simulation {
      */
     private void tick() {
         advanceTime();
-        garage.handleExit();
+        garage.handleEntrance();
         updateViews();
         // Pause.
         try {
@@ -128,7 +129,7 @@ public class Simulation {
             e.printStackTrace();
         }
         carsArriving();
-        garage.handleEntrance();
+        garage.handleExit();
     }
 
     public void toggle() {

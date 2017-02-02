@@ -1,16 +1,16 @@
-package parkinggarage.models;
+package parkinggarage.model;
 
 import java.awt.*;
 import java.util.Random;
 
 /**
- * This is a normal arriving car and goes through the normal procedure
+ * This a car with a subscription
  */
-public class AdHocCar extends Car {
-    private static final Color COLOR = Color.red;
+public class ParkingPassCar extends Car {
+    private static final Color COLOR = Color.blue;
 
-    public AdHocCar() {
-        this.setHasToPay(true);
+    public ParkingPassCar() {
+        this.setHasToPay(false);
     }
 
     @Override
