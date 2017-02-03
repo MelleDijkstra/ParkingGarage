@@ -28,7 +28,7 @@ public class SettingsController extends BaseController implements Initializable 
     private boolean dirtySettings = false;
 
     /**
-     * Button for applying the changes which are made
+     * Button for applying the changes
      */
     public void btnApplyOnClick(ActionEvent actionEvent) {
         saveSettings();
@@ -72,7 +72,7 @@ public class SettingsController extends BaseController implements Initializable 
     }
 
     /**
-     *
+     * Converting the time from minutes into hours
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -95,7 +95,7 @@ public class SettingsController extends BaseController implements Initializable 
     }
 
     /**
-     *
+     * Checking for (and loading) settingsScreen
      */
     private void loadSettings() {
         settings = new Properties();
@@ -142,7 +142,7 @@ public class SettingsController extends BaseController implements Initializable 
     }
 
     /**
-     * Convert the name of the days to numbers
+     * Converting the name of the days to numbers
      */
     public static Integer dayToNum(String day) {
         switch (day) {
@@ -167,13 +167,16 @@ public class SettingsController extends BaseController implements Initializable 
     public void cbDayOnChange(ActionEvent actionEvent) {
         setSetting(Setting.DAY, dayToNum(cbDays.getSelectionModel().getSelectedItem()).toString());
     }
-
+    
     private void setSetting(String setting, Object value) {
         settings.put(setting, value);
         dirtySettings = true;
         btnApply.setDisable(false);
     }
 
+    /**
+     * Save the chosen settings
+     */
     public static class Setting {
         public static final String DAY = "day";
         public static final String HOUR = "hour";
