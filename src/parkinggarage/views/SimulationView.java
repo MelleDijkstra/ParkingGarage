@@ -30,6 +30,8 @@ public class SimulationView extends JFrame implements KeyListener {
     public SimulationView(Simulation simulation) {
         this.simulation = simulation;
 
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
         carParkView = new CarParkView();
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         Container contentPane = getContentPane();

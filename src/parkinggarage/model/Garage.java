@@ -3,6 +3,7 @@ package parkinggarage.model;
 import com.sun.istack.internal.Nullable;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -68,7 +69,7 @@ public class Garage {
                 // places
                 for(int p = 0; p < locations[f][r].length; p++) {
                     locations[f][r][p] = new Location(f,r,p);
-                    if(f == reservedFloor) locations[f][r][p].setReserved();
+                    if(r == 0 && p % 2 == 0) locations[f][r][p].setReserved();
                 }
             }
         }

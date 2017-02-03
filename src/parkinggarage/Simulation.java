@@ -64,7 +64,7 @@ public class Simulation {
      */
     public Simulation(int iterations) {
         iterationCount = iterations;
-        garage = new Garage(3, 6, 30, 1);
+        garage = new Garage(3, 6, 28, 1);
         simulationView = new SimulationView(this);
     }
 
