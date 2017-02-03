@@ -66,7 +66,7 @@
                <Font size="20.0" />
             </font>
          </Label>
-         <DoubleTextField fx:id="ntfPricePerMinute" layoutX="295.0" layoutY="193.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+         <DoubleTextField fx:id="dtfPricePerMinute" layoutX="295.0" layoutY="193.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
         </GridPane>
     </center>
     <bottom>

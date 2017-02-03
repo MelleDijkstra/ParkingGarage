@@ -1,11 +1,15 @@
 package parkinggarage.models;
 
+import parkinggarage.Settings;
+
 import java.awt.*;
 
 /**
  * Abstract Car class with all the information for a Car
  */
 public abstract class Car {
+
+    private Settings settings;
 
     /**
      * The amount of minutes the Car is going to stay in the Garage

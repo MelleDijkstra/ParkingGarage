@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import parkinggarage.Settings;
 import parkinggarage.Simulation;
 import parkinggarage.views.CreditsScreen;
 import parkinggarage.views.SettingsScreen;
@@ -43,15 +44,10 @@ public class MainController extends BaseController {
      * @param actionEvent
      */
     @FXML
-    public void onBtnSimulateClick(ActionEvent actionEvent) {
+    public void onBtnSimulateClick(ActionEvent actionEvent) throws IOException {
         int iterations = Integer.parseInt(tfIterationCount.getText());
         // Read the settings file to load all settings
-        Properties settings = new Properties();
-        try {
-            settings.load(new FileInputStream(SettingsController.settingsFile));
-        } catch (IOException e) {
-            System.out.println("Settings file does not exist");
-        }
+        Settings settings = Settings.Instance();
         // Simulation should run at least 1 time!
         // TODO: change to settings.getOrDefault("iterations");
         if(iterations >= 1) {
