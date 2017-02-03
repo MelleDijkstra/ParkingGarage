@@ -1,4 +1,4 @@
-package parkinggarage.models;
+package parkinggarage.model;
 
 import parkinggarage.Settings;
 
@@ -14,17 +14,12 @@ public abstract class Car {
     /**
      * The amount of minutes the Car is going to stay in the Garage
      */
-    protected int stayingMinutes;
+    protected final int stayingMinutes;
 
     /**
      * The price per minute for this Car
      */
     protected double pricePerMinute = 0.24;
-
-    /**
-     * Location of the car
-     */
-    protected Location location;
 
     /**
      * The amount of minutes before leaving the garage
@@ -42,25 +37,10 @@ public abstract class Car {
     private boolean hasToPay;
 
     /**
-     * Constructor for objects of class parkinggarage.models.Car
+     * Constructor for objects of class parkinggarage.model.Car
      */
     public Car() {
         stayingMinutes = minutesLeft = this.startingMinutes();
-    }
-
-    /**
-     * Retrieve the location of this car
-     * @return The location
-     */
-    public Location getLocation() {
-        return location;
-    }
-
-    /**
-     * @param location The new location of the Car
-     */
-    public void setLocation(Location location) {
-        this.location = location;
     }
 
     /**

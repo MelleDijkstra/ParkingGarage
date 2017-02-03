@@ -1,14 +1,12 @@
 package parkinggarage.controllers;
 
-import com.sun.javafx.scene.control.ReadOnlyUnbackedObservableList;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
 import parkinggarage.Simulation;
-import parkinggarage.models.Garage;
+import parkinggarage.model.Garage;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -16,6 +14,10 @@ import java.util.ResourceBundle;
 
 /**
  * Created by jandu on 26/01/2017.
+ */
+
+/**
+ * Shows the information in statistics view
  */
 public class StatisticsController extends BaseController implements Initializable {
 
@@ -33,6 +35,9 @@ public class StatisticsController extends BaseController implements Initializabl
         this.simulation = simulation;
     }
 
+    /**
+     * Making a pie chart with accurate data
+     */
     public void update() {
         HashMap<Garage.CarType, Integer> carStats = simulation.getGarage().getCarStats();
         Integer adhoc = carStats.get(Garage.CarType.AD_HOC);

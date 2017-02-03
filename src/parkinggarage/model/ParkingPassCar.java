@@ -1,10 +1,10 @@
-package parkinggarage.models;
+package parkinggarage.model;
 
 import java.awt.*;
 import java.util.Random;
 
 /**
- * This a car with a subscription
+ * This is a car with a subscription
  */
 public class ParkingPassCar extends Car {
     private static final Color COLOR = Color.blue;

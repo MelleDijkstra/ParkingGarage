@@ -1,7 +1,8 @@
-package parkinggarage.models;
+package parkinggarage.model;
 
 import com.sun.istack.internal.Nullable;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -41,21 +42,40 @@ public class Garage {
     private LinkedList<Car> exitCarQueue;
 
     /**
-     * Cars currently in the Garage
+     * Locations currently in the Garage
      */
-    private Car[][][] cars;
+    private Location[][][] locations;
 
     public Garage(int floors, int rows, int places, int reservedFloor) {
         this.floors = floors;
         this.rows = rows;
         this.places = places;
-        cars = new Car[floors][rows][places];
+        locations = new Location[floors][rows][places];
+        initializeLocations();
         entranceCarQueue = new LinkedList<>();
         entrancePassQueue = new LinkedList<>();
         paymentCarQueue = new LinkedList<>();
         exitCarQueue = new LinkedList<>();
         this.openSpots = this.floors * this.rows * this.places;
         this.reservedFloor = reservedFloor;
+    }
+
+    private void initializeLocations() {
+        // floors
+        for(int f = 0; f < locations.length; f++) {
+            // rows
+            for(int r = 0; r < locations[f].length;r++) {
+                // places
+                for(int p = 0; p < locations[f][r].length; p++) {
+                    locations[f][r][p] = new Location(f,r,p);
+                    if(f == reservedFloor) locations[f][r][p].setReserved();
+                }
+            }
+        }
+    }
+
+    public Location[][][] getLocations() {
+        return locations;
     }
 
     public int getReservedFloor() {
@@ -81,6 +101,8 @@ public class Garage {
     public int getOpenSpots() {
         return openSpots;
     }
+
+    public double getIncome() { return income; }
 
     public void handleEntrance() {
         carsEntering(entrancePassQueue);
@@ -114,6 +136,10 @@ public class Garage {
         }
     }
 
+    /**
+     * Assign parking space for every incoming Car
+     * @param queue The incoming cars
+     */
     private void carsEntering(Queue<Car> queue) {
         int i = 0;
         // Remove car from the front of the queue and assign to a parking space.
@@ -121,8 +147,12 @@ public class Garage {
             Location freeLocation = getFirstFreeLocation((queue.peek() instanceof ParkingPassCar || queue.peek() instanceof  ReservedCar));
             if(freeLocation != null) {
                 Car car = queue.poll();
-                setCarAt(freeLocation, car);
-                i++;
+                try {
+                    locations[freeLocation.getFloor()][freeLocation.getRow()][freeLocation.getPlace()].occupyLocation(car);
+                    i++;
+                } catch (Location.LocationOccupiedException e) {
+                    e.printStackTrace();
+                }
             } else {
                 break;
             }
@@ -131,13 +161,14 @@ public class Garage {
 
     private void carsReadyToLeave() {
         // Add leaving cars to the payment queue.
+        // TODO: check if the leave procedure is still the same
         Car car = getFirstLeavingCar();
         while (car != null) {
             if (car.getHasToPay()) {
                 car.setIsPaying(true);
                 paymentCarQueue.add(car);
             } else {
-                carLeavesSpot(car);
+                exitCarQueue.add(car);
             }
             car = getFirstLeavingCar();
         }
@@ -150,17 +181,14 @@ public class Garage {
             Car car = paymentCarQueue.poll();
             // double check if car has to pay
             if(car.getHasToPay()) {
+                BigDecimal roundOff = new BigDecimal(car.amountToPay()).setScale(2, BigDecimal.ROUND_HALF_UP);
                 income += car.amountToPay();
-                System.out.println("Car is paying: €"+car.amountToPay()+"\tIncome: €"+income);
+                BigDecimal roundedIncome = new BigDecimal(income).setScale(2, BigDecimal.ROUND_HALF_UP);
+                System.out.println("Car is paying: €" + roundOff +"\tIncome: €"+ roundedIncome);
             }
-            carLeavesSpot(car);
+            exitCarQueue.add(car);
             i++;
         }
-    }
-
-    private void carLeavesSpot(Car car) {
-        removeCarAt(car.getLocation());
-        exitCarQueue.add(car);
     }
 
     private void carsLeaving() {
@@ -176,7 +204,7 @@ public class Garage {
         if (!locationIsValid(location)) {
             return null;
         }
-        return cars[location.getFloor()][location.getRow()][location.getPlace()];
+        return locations[location.getFloor()][location.getRow()][location.getPlace()].getCar();
     }
 
     public boolean setCarAt(Location location, Car car) {
@@ -185,18 +213,21 @@ public class Garage {
         }
         Car oldCar = getCarAt(location);
         if (oldCar == null) {
-            cars[location.getFloor()][location.getRow()][location.getPlace()] = car;
-            car.setLocation(location);
-            openSpots--;
-            return true;
+            try {
+                locations[location.getFloor()][location.getRow()][location.getPlace()].occupyLocation(car);
+                openSpots--;
+                return true;
+            } catch (Location.LocationOccupiedException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
 
     /**
-     * Removes the Car at a specific
-     * @param location
-     * @return
+     * Removes the Car at a specific Location
+     * @param location The Location from where the Car needs to be removed
+     * @return The removed Car
      */
     public Car removeCarAt(Location location) {
         if (!locationIsValid(location)) {
@@ -206,8 +237,7 @@ public class Garage {
         if (car == null) {
             return null;
         }
-        cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
-        car.setLocation(null);
+        locations[location.getFloor()][location.getRow()][location.getPlace()].removeCar();
         openSpots++;
         return car;
     }
@@ -219,26 +249,16 @@ public class Garage {
      */
     @Nullable
     public Location getFirstFreeLocation(boolean includeReservedSpace) {
-        // Check if we need to include reserved space
-        if(includeReservedSpace) {
-            for(int row = 0; row < getNumberOfRows(); row++) {
-                for(int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(this.reservedFloor,row,place);
-                    // check all rows and places of the reserved space for a free spot (car == null)
-                    if(getCarAt(location) == null) {
-                        return location;
-                    }
-                }
-            }
-        }
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            // We have already been through the reserved space
-            if(floor == this.reservedFloor) continue;
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    if (getCarAt(location) == null && (this.reservedFloor != floor || includeReservedSpace)) {
-                        return location;
+        for(int f = 0; f < locations.length; f++) {
+            for (int r = 0; r < locations[f].length; r++) {
+                for (int p = 0; p < locations[f][r].length; p++) {
+                    Location location = locations[f][r][p];
+                    // check if there is no car on this location
+                    if(location.getCar() == null) {
+                        // if reserved space should be included
+                        if (!location.isReserved() || includeReservedSpace) {
+                            return location;
+                        }
                     }
                 }
             }
@@ -250,9 +270,9 @@ public class Garage {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    Car car = getCarAt(location);
+                    Car car = locations[floor][row][place].getCar();
                     if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
+                        locations[floor][row][place].removeCar();
                         return car;
                     }
                 }
@@ -275,14 +295,18 @@ public class Garage {
         }
     }
 
+    /**
+     * Goes through all locations and calculates how many of each Car are in the Garage
+     * @return HashMap with key CarType and Integer as value representing the amount of that car in the Garage
+     */
     public HashMap<CarType, Integer> getCarStats() {
         HashMap<CarType, Integer> stats = new HashMap<>();
         int adhoc = 0, pass = 0, reserved = 0;
         // loop trough all cars in garage
-        for(int i = 0; i < cars.length; i++) {
-            for(int j = 0; j < cars[i].length; j++) {
-                for (int k = 0;k < cars[i][j].length; k++) {
-                    Car car = cars[i][j][k];
+        for(int i = 0; i < locations.length; i++) {
+            for(int j = 0; j < locations[i].length; j++) {
+                for (int k = 0; k < locations[i][j].length; k++) {
+                    Car car = locations[i][j][k].getCar();
                     // check which class is Car is at current location
                     if(car instanceof AdHocCar) adhoc++;
                     if(car instanceof ParkingPassCar) pass++;
@@ -294,6 +318,23 @@ public class Garage {
         stats.put(CarType.PASS, pass);
         stats.put(CarType.RESERVED, reserved);
         return stats;
+    }
+
+    public HashMap<String, Integer> getQueueStats() {
+        return new HashMap<String, Integer>() {{
+            put("Entrance Queue", entranceCarQueue.size());
+            put("Entrance Pass Queue", entrancePassQueue.size());
+            put("Payment Queue", paymentCarQueue.size());
+            put("Exit Queue", exitCarQueue.size());
+        }};
+    }
+
+    public int getEntranceQueueSize() {
+        return entranceCarQueue.size();
+    }
+
+    public int getEntrancePassQueueSize() {
+        return entrancePassQueue.size();
     }
 
     /**

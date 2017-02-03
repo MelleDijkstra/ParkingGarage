@@ -1,6 +1,6 @@
 package parkinggarage;
 
-import parkinggarage.models.Garage;
+import parkinggarage.model.Garage;
 import parkinggarage.views.SimulationView;
 
 import java.util.Random;
@@ -78,6 +78,9 @@ public class Simulation {
         processSettings();
     }
 
+    /**
+     * Makes sure all settings are set which are given
+     */
     private void processSettings() {
         if(settings != null) {
             day     = settings.getSetting(Settings.DAY, day);
@@ -108,9 +111,10 @@ public class Simulation {
             if(this.stop) break;
         }
         long timeTaken = (System.currentTimeMillis() - startTime);
-        System.out.println(String.format("SIMULATION DONE - time in minutes: %d:%d",
+        System.out.println(String.format("SIMULATION DONE - time in minutes: %d:%d - earned: %f",
                 TimeUnit.MILLISECONDS.toMinutes(timeTaken),
-                TimeUnit.MILLISECONDS.toSeconds(timeTaken)));
+                TimeUnit.MILLISECONDS.toSeconds(timeTaken),
+                garage.getIncome()));
     }
 
     /**
@@ -120,21 +124,27 @@ public class Simulation {
     private void tick() {
         advanceTime();
         garage.handleExit();
-        updateViews();
         // Pause.
+        carsArriving();
+        garage.handleEntrance();
+        updateViews();
         try {
             Thread.sleep(tickPause);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        carsArriving();
-        garage.handleEntrance();
     }
 
+    /**
+     * Toggles the application from running state to paused
+     */
     public void toggle() {
         this.running = !this.running;
     }
 
+    /**
+     * Advances 1 minute in time
+     */
     private void advanceTime() {
         // Advance the time by one minute.
         minute++;
@@ -160,11 +170,21 @@ public class Simulation {
         garage.addArrivingCars(numberOfCars, Garage.CarType.RESERVED);
     }
 
-    private int getNumberOfCars(int weekDay, int weekend) {
+    private int getNumberOfCars(int avgCarsWeekDay, int avgCarsWeekend) {
         Random random = new Random();
 
         // Get the average number of cars that arrive per hour.
-        int averageNumberOfCarsPerHour = day < 5 ? weekDay : weekend;
+        int averageNumberOfCarsPerHour;
+
+        if(day == 7 && hour >= 12 && hour < 18) {
+            averageNumberOfCarsPerHour = avgCarsWeekend;
+        }
+        else if(day >= 4 && hour > 18) {
+            averageNumberOfCarsPerHour = avgCarsWeekend;
+        }
+        else {
+            averageNumberOfCarsPerHour = avgCarsWeekDay;
+        }
 
         // Calculate the number of cars that arrive this minute.
         double standardDeviation = averageNumberOfCarsPerHour * 0.3;
