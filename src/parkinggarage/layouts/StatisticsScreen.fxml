@@ -14,12 +14,12 @@
             <GridPane alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity">
                 <PieChart fx:id="pieMoneyStats" animated="false" legendVisible="false" title="PieChart"
                           GridPane.columnIndex="0"/>
-                <LineChart GridPane.columnIndex="1">
+                <LineChart fx:id="lchartMoneyStats" animated="false" title="Number of cars per type" xAxis="Ticks" yAxis="Amount of Money" GridPane.columnIndex="0" GridPane.rowIndex="1">
                     <xAxis>
-                        <NumberAxis side="BOTTOM"/>
+                        <NumberAxis upperBound="1000" label="Ticks" side="BOTTOM"/>
                     </xAxis>
                     <yAxis>
-                        <NumberAxis side="LEFT"/>
+                        <NumberAxis upperBound="500" label="Amount of Money" side="LEFT"/>
                     </yAxis>
                 </LineChart>
             </GridPane>
