@@ -32,11 +32,15 @@ public abstract class BaseScreen {
         mainStage = new Stage();
         mainStage.setTitle(getTitle());
 
-        Scene mainScene = new Scene(root, getWidth(), getHeight());
-        mainScene.getStylesheets().add(getClass().getResource("../resources/css/style.css").toString());
+        Scene mainScene = new Scene(root, 1000, 750);
+        if(includeStyling()) {
+            mainScene.getStylesheets().add(getClass().getResource("../resources/css/style.css").toString());
+        }
         mainStage.getIcons().add(new Image(getClass().getResourceAsStream("../resources/images/car.jpg")));
         mainStage.setScene(mainScene);
     }
+
+    protected abstract boolean includeStyling();
 
     public void show() {
         mainStage.show();

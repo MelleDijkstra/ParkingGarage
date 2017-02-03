@@ -1,5 +1,6 @@
 package parkinggarage.views;
 
+import javafx.scene.layout.AnchorPane;
 import parkinggarage.Simulation;
 import parkinggarage.controllers.StatisticsController;
 
@@ -25,6 +26,11 @@ public class StatisticsScreen extends BaseScreen {
         // TODO: view should not be aware of controller, other way around (JavaFX struggles)
         ((StatisticsController)this.controller).setSimulation(simulation);
         ((StatisticsController)this.controller).update();
+    }
+
+    @Override
+    protected boolean includeStyling() {
+        return false;
     }
 
     @Override

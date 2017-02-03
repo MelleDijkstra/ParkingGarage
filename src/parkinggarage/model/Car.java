@@ -32,7 +32,7 @@ public abstract class Car {
     /**
      * Flag if the Car has to amountToPay
      */
-    private boolean hasToPay;
+    private boolean hasToPay = true;
 
     public Car() {
         stayingMinutes = minutesLeft = this.startingMinutes();
