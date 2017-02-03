@@ -10,7 +10,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import parkinggarage.Simulation;
-import parkinggarage.models.Garage;
+import parkinggarage.model.Garage;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -18,6 +18,10 @@ import java.util.ResourceBundle;
 
 /**
  * Created by jandu on 26/01/2017.
+ */
+
+/**
+ * Shows the information in statistics view
  */
 public class StatisticsController extends BaseController implements Initializable {
 
@@ -43,6 +47,9 @@ public class StatisticsController extends BaseController implements Initializabl
         this.simulation = simulation;
     }
 
+    /**
+     * Making a pie chart with accurate data
+     */
     public void update() {
         updatePieChart();
         updateLineChart();

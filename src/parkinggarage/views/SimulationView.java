@@ -1,13 +1,10 @@
 package parkinggarage.views;
 
-import com.sun.istack.internal.Nullable;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
-import parkinggarage.controllers.SettingsController;
 import parkinggarage.Simulation;
-import parkinggarage.models.Car;
-import parkinggarage.models.Garage;
-import parkinggarage.models.Location;
+import parkinggarage.controllers.SettingsController;
+import parkinggarage.model.Location;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
@@ -17,6 +14,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The view where the simulation takes place
@@ -30,6 +29,8 @@ public class SimulationView extends JFrame implements KeyListener {
 
     public SimulationView(Simulation simulation) {
         this.simulation = simulation;
+
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         carParkView = new CarParkView();
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -169,6 +170,7 @@ public class SimulationView extends JFrame implements KeyListener {
                 return;
             }
 
+            // Draw the garage
             Dimension currentSize = getSize();
             if (size.equals(currentSize)) {
                 g.drawImage(carParkImage, 0, 0, null);
@@ -176,8 +178,10 @@ public class SimulationView extends JFrame implements KeyListener {
                 // Rescale the previous image.
                 g.drawImage(carParkImage, 0, 0, currentSize.width, currentSize.height, null);
             }
+            // Draw the current date
             drawDate(g);
-            //g.drawRect(0,0,getWidth() -1,getHeight() -1);
+            // Draw the queues
+            drawQueues(g);
         }
 
         public void updateView() {
@@ -187,21 +191,20 @@ public class SimulationView extends JFrame implements KeyListener {
                 carParkImage = createImage(size.width, size.height);
             }
 
-            Garage garage = simulation.getGarage();
+            Location[][][] locations = simulation.getGarage().getLocations();
 
             Graphics graphics = carParkImage.getGraphics();
-            for (int floor = 0; floor < garage.getNumberOfFloors(); floor++) {
-                for (int row = 0; row < garage.getNumberOfRows(); row++) {
-                    for (int place = 0; place < garage.getNumberOfPlaces(); place++) {
-                        Location location = new Location(floor, row, place);
+            for (int f = 0; f < locations.length; f++) {
+                for (int r = 0; r < locations[f].length; r++) {
+                    for (int p = 0; p < locations[f][r].length; p++) {
                         Color color;
-                        Car car = garage.getCarAt(location);
+                        Location location = locations[f][r][p];
                         // Checks if there is a car, if so then the COLOR of that car is given.
-                        if (car != null) {
-                            color = car.getColor();
+                        if (location.getCar() != null) {
+                            color = location.getCar().getColor();
                         } else {
                             // Checks if the location is reserved.
-                            if (floor == garage.getReservedFloor()) {
+                            if (location.isReserved()) {
                                 color = Color.CYAN;
                             } else {
                                 color = Color.WHITE;
@@ -230,6 +233,18 @@ public class SimulationView extends JFrame implements KeyListener {
         }
 
         /**
+         * Draws the different queues of the garage
+         */
+        private void drawQueues(Graphics g) {
+            HashMap<String, Integer> queueStats = simulation.getGarage().getQueueStats();
+            int i = 1;
+            for (Map.Entry<String, Integer> item : queueStats.entrySet()) {
+                g.drawString(item.getKey()+": "+Integer.toString(item.getValue()), 20, getHeight() - (20 * i));
+                i++;
+            }
+        }
+
+        /**
          * Paint a place on this car park view in a given COLOR.
          */
         private void drawPlace(Graphics graphics, Location location, Color color) {
@@ -238,7 +253,7 @@ public class SimulationView extends JFrame implements KeyListener {
                     location.getFloor() * 260 + (1 + (int) Math.floor(location.getRow() * 0.5)) * 75 + (location.getRow() % 2) * 20,
                     60 + location.getPlace() * 10,
                     20 - 1,
-                    10 - 1); // TODO use dynamic size or constants
+                    8); // TODO use dynamic size or constants
         }
     }
 

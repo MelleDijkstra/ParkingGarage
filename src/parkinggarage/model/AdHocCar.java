@@ -1,4 +1,4 @@
-package parkinggarage.models;
+package parkinggarage.model;
 
 import java.awt.*;
 import java.util.Random;

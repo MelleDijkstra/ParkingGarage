@@ -12,6 +12,11 @@ import java.io.IOException;
 /**
  * Created by melle on 23-1-2017.
  */
+
+/**
+ * Enables different kinds of styling
+ * Example: style.css and application icon
+ */
 public abstract class BaseScreen {
 
     protected BaseController controller;
