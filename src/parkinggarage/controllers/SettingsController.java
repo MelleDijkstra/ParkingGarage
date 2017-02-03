@@ -34,6 +34,10 @@ public class SettingsController extends BaseController implements Initializable 
      */
     public void btnApplyOnClick(ActionEvent actionEvent) {
         saveSettings();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION,"",ButtonType.OK);
+        alert.setTitle("Apply Settings");
+        alert.setHeaderText("Your settings have been applied");
+        alert.showAndWait();
     }
 
     private void saveSettings() {
@@ -43,11 +47,9 @@ public class SettingsController extends BaseController implements Initializable 
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Could not save settings! try again");
         }
-            // save settings to file
-//            settings.store(out, null);
-//            dirtySettings = false;
-//            btnApply.setDisable(true);
-
+        // save settings to file
+        dirtySettings = false;
+        btnApply.setDisable(true);
     }
 
     /**

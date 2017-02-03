@@ -1,7 +1,5 @@
 package parkinggarage;
 
-import javafx.scene.control.Alert;
-
 import java.io.*;
 import java.util.Properties;
 
