@@ -35,7 +35,7 @@ public abstract class Car {
     /**
      * Flag if the Car has to amountToPay
      */
-    private boolean hasToPay;
+    private boolean hasToPay = true;
 
     /**
      * Constructor for objects of class parkinggarage.models.Car

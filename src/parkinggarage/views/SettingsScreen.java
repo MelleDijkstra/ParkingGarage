@@ -12,6 +12,11 @@ public class SettingsScreen extends BaseScreen {
     }
 
     @Override
+    protected boolean includeStyling() {
+        return false;
+    }
+
+    @Override
     public String getLayoutFile() {
         return "SettingsScreen.fxml";
     }

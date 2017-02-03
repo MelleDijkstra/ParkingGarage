@@ -12,6 +12,11 @@ public class CreditsScreen extends BaseScreen {
     }
 
     @Override
+    protected boolean includeStyling() {
+        return true;
+    }
+
+    @Override
     public String getLayoutFile() {
         return "CreditsScreen.fxml";
     }
