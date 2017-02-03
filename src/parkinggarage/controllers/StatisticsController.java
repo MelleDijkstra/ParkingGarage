@@ -15,6 +15,10 @@ import java.util.ResourceBundle;
 /**
  * Created by jandu on 26/01/2017.
  */
+
+/**
+ * Shows the information in statistics view
+ */
 public class StatisticsController extends BaseController implements Initializable {
 
     // Controls
@@ -31,6 +35,9 @@ public class StatisticsController extends BaseController implements Initializabl
         this.simulation = simulation;
     }
 
+    /**
+     * Making a pie chart with accurate data
+     */
     public void update() {
         HashMap<Garage.CarType, Integer> carStats = simulation.getGarage().getCarStats();
         Integer adhoc = carStats.get(Garage.CarType.AD_HOC);
