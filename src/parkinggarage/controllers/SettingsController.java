@@ -4,7 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import parkinggarage.Settings;
 import parkinggarage.views.control.NumberTextField;
+import parkinggarage.views.control.DoubleTextField;
 
 import java.io.*;
 import java.net.URL;
@@ -17,43 +19,35 @@ import java.util.ResourceBundle;
 public class SettingsController extends BaseController implements Initializable {
 
     public NumberTextField ntfReservedFloor;
+    public DoubleTextField dtfPricePerMinute;
     public Button btnApply, btnOk;
     public ComboBox<String> cbDays;
     public Slider sldTime;
     public Label lblTimeVal;
 
-    private Properties settings = new Properties();
-    static final String settingsFile = "settings.ini";
+    private Settings settings;
 
     private boolean dirtySettings = false;
 
     /**
-     * Button for applying the changes
+     * Button for applying the changes which are made
      */
     public void btnApplyOnClick(ActionEvent actionEvent) {
         saveSettings();
     }
 
     private void saveSettings() {
-        OutputStream out = null;
         try {
-            out = new FileOutputStream(settingsFile);
-            // save settings to file
-            settings.store(out, null);
-            dirtySettings = false;
-            btnApply.setDisable(true);
+            settings.save();
         } catch(IOException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Could not save settings! try again");
-        } finally {
-            if(out != null) {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
+            // save settings to file
+//            settings.store(out, null);
+//            dirtySettings = false;
+//            btnApply.setDisable(true);
+
     }
 
     /**
@@ -72,7 +66,7 @@ public class SettingsController extends BaseController implements Initializable 
     }
 
     /**
-     * Converting the time from minutes into hours
+     *
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -87,29 +81,30 @@ public class SettingsController extends BaseController implements Initializable 
             // display current hour, minute
             lblTimeVal.setText(strHour+":"+strMinute);
             // stage them for saving to file
-            setSetting(Setting.HOUR, hour.toString());
-            setSetting(Setting.MINUTE, minute.toString());
+            setSetting(Settings.HOUR, hour.toString());
+            setSetting(Settings.MINUTE, minute.toString());
         });
 
-        ntfReservedFloor.textProperty().addListener((observable, oldValue, newValue) -> setSetting(Setting.RESERVED_FLOOR, newValue));
+        ntfReservedFloor.textProperty().addListener((observable, oldValue, newValue) -> setSetting(Settings.RESERVED_FLOOR, newValue));
+        dtfPricePerMinute.textProperty().addListener((observable, oldValue, newValue) -> setSetting(Settings.PRICE_PER_MINUTE, newValue));
     }
 
     /**
-     * Checking for (and loading) settingsScreen
+     *
      */
     private void loadSettings() {
-        settings = new Properties();
         try {
             // loads the settings file
-            settings.load(new FileInputStream(settingsFile));
+            settings = Settings.Instance();
             btnApply.setDisable(true);
 
-            cbDays.getSelectionModel().select(Integer.parseInt((String) settings.getOrDefault(Setting.DAY, "0")));
-            Integer hour = Integer.parseInt((String) settings.getOrDefault(Setting.HOUR,"0"));
-            Integer minutes = Integer.parseInt((String) settings.getOrDefault(Setting.MINUTE,"0"));
+            cbDays.getSelectionModel().select(Integer.parseInt(settings.getSetting(Settings.DAY, "0")));
+            Integer hour = settings.getSetting(Settings.HOUR,0);
+            Integer minutes = settings.getSetting(Settings.MINUTE,0);
             sldTime.setValue((double)hour * 60 + minutes);
             lblTimeVal.setText((hour < 10 ? "0"+hour : hour)+":"+(minutes < 10 ? "0"+minutes : minutes));
-            ntfReservedFloor.setText(settings.getOrDefault(Setting.RESERVED_FLOOR, "0").toString());
+            ntfReservedFloor.setText(settings.getSetting(Settings.RESERVED_FLOOR, "0"));
+            dtfPricePerMinute.setText(settings.getSetting(Settings.PRICE_PER_MINUTE, 0.24).toString());
         } catch(FileNotFoundException e) {
             System.out.println("Settings file does not exist");
         } catch (IOException e) {
@@ -142,7 +137,7 @@ public class SettingsController extends BaseController implements Initializable 
     }
 
     /**
-     * Converting the name of the days to numbers
+     * Convert the name of the days to numbers
      */
     public static Integer dayToNum(String day) {
         switch (day) {
@@ -165,24 +160,13 @@ public class SettingsController extends BaseController implements Initializable 
     }
 
     public void cbDayOnChange(ActionEvent actionEvent) {
-        setSetting(Setting.DAY, dayToNum(cbDays.getSelectionModel().getSelectedItem()).toString());
+        setSetting(Settings.DAY, dayToNum(cbDays.getSelectionModel().getSelectedItem()).toString());
     }
-    
-    private void setSetting(String setting, Object value) {
-        settings.put(setting, value);
+
+    private void setSetting(String Settings, Object value) {
+        settings.getProperties().put(Settings, value);
         dirtySettings = true;
         btnApply.setDisable(false);
-    }
-
-    /**
-     * Save the chosen settings
-     */
-    public static class Setting {
-        public static final String DAY = "day";
-        public static final String HOUR = "hour";
-        public static final String MINUTE = "minute";
-
-        public static final String RESERVED_FLOOR = "reserved_floor";
     }
 
 }

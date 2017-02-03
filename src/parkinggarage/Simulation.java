@@ -1,17 +1,15 @@
 package parkinggarage;
 
-import parkinggarage.controllers.SettingsController;
 import parkinggarage.model.Garage;
 import parkinggarage.views.SimulationView;
 
-import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Simulation {
 
     // Settings for the simulation
-    private Properties settings = new Properties();
+    private Settings settings;
 
     protected Garage garage;
 
@@ -29,6 +27,7 @@ public class Simulation {
     private Integer day = 0;
     private Integer hour = 0;
     private Integer minute = 0;
+    private Double price_per_minute = 0.24;
 
     // average number of arriving cars per hour
     private Integer weekDayArrivals = 100;
@@ -71,9 +70,9 @@ public class Simulation {
     /**
      * Creates a parking garage simulation with given settings
      * @param iterations The amount of iteration you want the simulation to run
-     * @param settings The settings for the simulation
+     *
      */
-    public Simulation(int iterations, Properties settings) {
+    public Simulation(int iterations, Settings settings) {
         this(iterations);
         this.settings = settings;
         processSettings();
@@ -83,21 +82,22 @@ public class Simulation {
      * Makes sure all settings are set which are given
      */
     private void processSettings() {
-        day = getSetting(SettingsController.Setting.DAY, day);
-        hour = getSetting(SettingsController.Setting.HOUR, hour);
-        minute = getSetting(SettingsController.Setting.MINUTE, minute);
+        if(settings != null) {
+            day     = settings.getSetting(Settings.DAY, day);
+            hour    = settings.getSetting(Settings.HOUR, hour);
+            minute  = settings.getSetting(Settings.MINUTE, minute);
+            price_per_minute = settings.getSetting(Settings.PRICE_PER_MINUTE, price_per_minute);
 
-        garage.setReservedFloor(getSetting(SettingsController.Setting.RESERVED_FLOOR, garage.getReservedFloor()));
+            garage.setReservedFloor(settings.getSetting(Settings.RESERVED_FLOOR, garage.getReservedFloor()));
 
 //        weekDayArrivals = (settings.getProperty("weekDayArrivals") != null) ? Integer.parseInt(settings.get("weekDayArrivals").toString()) : weekDayArrivals;
 //        weekDayPassArrivals = (settings.getProperty("weekDayPassArrivals") != null) ? Integer.parseInt(settings.get("weekDayPassArrivals").toString()) : weekDayPassArrivals;
 //        weekendArrivals = (settings.getProperty("weekendArrivals") != null) ? Integer.parseInt(settings.get("weekendArrivals").toString()) : weekendArrivals;
 //        weekendPassArrivals = (settings.getProperty("weekendPassArrivals") != null) ? Integer.parseInt(settings.get("weekendPassArrivals").toString()) : weekendPassArrivals;
+        }
     }
 
-    private Integer getSetting(String key, Integer defaultValue) {
-        return (settings.getProperty(key) != null) ? Integer.parseInt(settings.get(key).toString()) : defaultValue;
-    }
+
 
     /**
      * Runs the simulation for a specified amount of iterations
