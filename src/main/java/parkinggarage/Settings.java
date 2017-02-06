@@ -1,5 +1,7 @@
 package parkinggarage;
 
+import javafx.scene.control.Alert;
+
 import java.io.*;
 import java.util.Properties;
 
@@ -35,6 +37,7 @@ public class Settings {
             try {
                 out.close();
             } catch (IOException d) {
+                new Alert(Alert.AlertType.ERROR, d.getMessage()).show();
                 d.printStackTrace();
             }
         }

@@ -25,18 +25,18 @@ public abstract class BaseScreen {
 
     public BaseScreen() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
-        Parent root = fxmlLoader.load(getClass().getResource("../layouts/"+getLayoutFile()).openStream());
+        Parent root = fxmlLoader.load(getClass().getResource("/"+getLayoutFile()).openStream());
 
         controller = fxmlLoader.getController();
 
         mainStage = new Stage();
         mainStage.setTitle(getTitle());
 
-        Scene mainScene = new Scene(root, 1000, 750);
+        Scene mainScene = new Scene(root, getWidth(), getHeight());
         if(includeStyling()) {
-            mainScene.getStylesheets().add(getClass().getResource("../resources/css/style.css").toString());
+            mainScene.getStylesheets().add(getClass().getResource("/style.css").toString());
         }
-        mainStage.getIcons().add(new Image(getClass().getResourceAsStream("../resources/images/car.jpg")));
+        mainStage.getIcons().add(new Image(getClass().getResourceAsStream("/car.jpg")));
         mainStage.setScene(mainScene);
     }
 

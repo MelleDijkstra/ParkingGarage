@@ -30,18 +30,16 @@ public class StatisticsController extends BaseController implements Initializabl
     public PieChart pieCarStats;
 
     @FXML
-    public LineChart lchartCarStats;
-
-    private static int i = 1;
+    public LineChart<Number, Number> lchartCarStats;
 
     @FXML
     public PieChart pieMoneyStats;
 
     private Simulation simulation;
 
-    XYChart.Series adhocSeries;
-    XYChart.Series passSeries;
-    XYChart.Series reservedSeries;
+    XYChart.Series<Number, Number> adhocSeries;
+    XYChart.Series<Number, Number> passSeries;
+    XYChart.Series<Number, Number> reservedSeries;
 
     public void setSimulation(Simulation simulation) {
         this.simulation = simulation;
@@ -73,14 +71,9 @@ public class StatisticsController extends BaseController implements Initializabl
 
     private void updateLineChart() {
         HashMap<Garage.CarType, Integer> carStats = simulation.getGarage().getMobilityStats();
-        if(i % 5 == 0) {
-
-            adhocSeries.getData().add(new XYChart.Data(adhocSeries.getData().size()+1, carStats.get(Garage.CarType.AD_HOC)));
-            passSeries.getData().add(new XYChart.Data(passSeries.getData().size()+1, carStats.get(Garage.CarType.PASS)));
-            reservedSeries.getData().add(new XYChart.Data(reservedSeries.getData().size()+1, carStats.get(Garage.CarType.RESERVED)));
-        }
-        i++;
-
+        adhocSeries.getData().add(new XYChart.Data<>(adhocSeries.getData().size() + 1, carStats.get(Garage.CarType.AD_HOC)));
+        passSeries.getData().add(new XYChart.Data<>(passSeries.getData().size()+1, carStats.get(Garage.CarType.PASS)));
+        reservedSeries.getData().add(new XYChart.Data<>(reservedSeries.getData().size()+1, carStats.get(Garage.CarType.RESERVED)));
     }
 
     @Override
@@ -91,9 +84,9 @@ public class StatisticsController extends BaseController implements Initializabl
 
     private void initLineCharts() {
         //Prepare XYChart.Series objects by setting data
-        adhocSeries = new XYChart.Series();
-        passSeries = new XYChart.Series();
-        reservedSeries = new XYChart.Series();
+        adhocSeries = new XYChart.Series<>();
+        passSeries = new XYChart.Series<>();
+        reservedSeries = new XYChart.Series<>();
 
         adhocSeries.setName("AdHocCar");
         passSeries.setName("Pass");

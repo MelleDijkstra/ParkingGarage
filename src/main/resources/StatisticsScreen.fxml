@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
+
+<?import javafx.scene.control.Label?>
+<TabPane id="pane" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.112"
+         xmlns:fx="http://javafx.com/fxml/1" fx:controller="parkinggarage.controllers.StatisticsController">
+    <Tab text="Money">
+        <GridPane>
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50" hgrow="ALWAYS"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints/>
+                <RowConstraints/>
+            </rowConstraints>
+
+            <PieChart fx:id="pieMoneyStats" animated="false" legendVisible="false" title="PieChart"
+                      GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS"/>
+
+            <LineChart GridPane.hgrow="ALWAYS" animated="false" prefWidth="548.0" title="Money per car"
+                       GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                <xAxis>
+                    <NumberAxis side="BOTTOM"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis side="LEFT"/>
+                </yAxis>
+            </LineChart>
+
+            <FlowPane orientation="VERTICAL" GridPane.columnIndex="1">
+                <Text>Some text</Text>
+            </FlowPane>
+
+        </GridPane>
+    </Tab>
+    <Tab text="Mobility">
+        <GridPane>
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50" hgrow="ALWAYS"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints/>
+                <RowConstraints/>
+            </rowConstraints>
+
+            <PieChart fx:id="pieCarStats"
+                      animated="false"
+                      legendVisible="false"
+                      title="Car Mobility"
+                      GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS"/>
+
+            <LineChart fx:id="lchartCarStats"
+                       animated="false"
+                       title="Number of cars in garage per type"
+                       xAxis="Ticks"
+                       yAxis="Amount of Cars"
+                       GridPane.columnSpan="2147483647" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                <xAxis>
+                    <NumberAxis label="Ticks" side="BOTTOM" upperBound="1000"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Number of cars" side="LEFT" upperBound="500"/>
+                </yAxis>
+            </LineChart>
+
+            <GridPane GridPane.columnIndex="1">
+
+                <Label GridPane.columnIndex="0">Label: </Label>
+                <Text GridPane.columnIndex="1">500</Text>
+                <Label GridPane.rowIndex="1" GridPane.columnIndex="0">Label: </Label>
+                <Text GridPane.rowIndex="1" GridPane.columnIndex="1">1203</Text>
+
+            </GridPane>
+        </GridPane>
+    </Tab>
+</TabPane>

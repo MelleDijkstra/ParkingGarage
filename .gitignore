@@ -16,3 +16,10 @@ out/
 
 # Application specific files
 settings.ini
+
+# Maven
+log/
+target/
+
+# Exclude maven wrapper
+!/.mvn/wrapper/maven-wrapper.jar

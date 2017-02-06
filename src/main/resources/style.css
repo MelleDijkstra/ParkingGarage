@@ -1,5 +1,5 @@
 #pane {
-    -fx-background-image: url("../images/parkinggarage.jpg");
+    -fx-background-image: url("parkinggarage.jpg");
     -fx-background-repeat: no-repeat;
     -fx-background-attachment: fixed;
     -fx-background-position: center;

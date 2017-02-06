@@ -3,15 +3,15 @@ package parkinggarage.views;
 import java.io.IOException;
 
 /**
- * Created by melle on 27-1-2017.
+ * Created by Silvan on 19-1-2017.
  */
 
 /**
- * Loads the mainScreen and opens Dashboard
+ * Loads the creditsScreen
  */
-public class MainScreen extends BaseScreen {
+public class CreditsScreen extends BaseScreen {
 
-    public MainScreen() throws IOException {
+    public CreditsScreen() throws IOException {
         super();
     }
 
@@ -22,21 +22,21 @@ public class MainScreen extends BaseScreen {
 
     @Override
     public String getLayoutFile() {
-        return "MainScreen.fxml";
+        return "CreditsScreen.fxml";
     }
 
     @Override
     public String getTitle() {
-        return "Dashboard";
+        return "Credits";
     }
 
     @Override
     public int getWidth() {
-        return 850;
+        return 500;
     }
 
     @Override
     public int getHeight() {
-        return 650;
+        return 500;
     }
 }
