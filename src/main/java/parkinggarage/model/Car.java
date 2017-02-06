@@ -9,8 +9,6 @@ import java.awt.*;
  */
 public abstract class Car {
 
-    private Settings settings;
-
     /**
      * The amount of minutes the Car is going to stay in the Garage
      */
@@ -36,11 +34,16 @@ public abstract class Car {
      */
     private boolean hasToPay = true;
 
+    public Car() {
+        stayingMinutes = minutesLeft = this.startingMinutes();
+    }
+
     /**
      * Constructor for objects of class parkinggarage.model.Car
      */
-    public Car() {
-        stayingMinutes = minutesLeft = this.startingMinutes();
+    public Car(Settings settings) {
+        this();
+        pricePerMinute = settings.getSetting(Settings.PRICE_PER_MINUTE, pricePerMinute);
     }
 
     /**

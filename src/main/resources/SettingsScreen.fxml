@@ -30,7 +30,7 @@
                 <RowConstraints />
             <RowConstraints />
             </rowConstraints>
-            <Label fx:id="lblDay" text="Day:" textFill="WHITE" GridPane.columnIndex="0">
+            <Label fx:id="lblDay" text="Day:"  GridPane.columnIndex="0">
                 <font>
                     <Font size="20.0" />
                 </font>
@@ -48,20 +48,20 @@
                     </FXCollections>
                 </items>
             </ComboBox>
-            <Label fx:id="lblTime" text="Time:" textFill="WHITE" GridPane.rowIndex="1">
+            <Label fx:id="lblTime" text="Time:"  GridPane.rowIndex="1">
                 <font>
                     <Font size="20.0" />
                 </font>
             </Label>
             <Slider fx:id="sldTime" blockIncrement="1.0" max="1440.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="lblTimeVal" text="00:00" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Label fx:id="lblReservedFloor" layoutX="192.0" layoutY="153.0" text="Reserved Floor:" textFill="WHITE" GridPane.rowIndex="2">
+            <Label fx:id="lblTimeVal" text="00:00" textAlignment="CENTER"  GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label fx:id="lblReservedFloor" layoutX="192.0" layoutY="153.0" text="Reserved Floor:"  GridPane.rowIndex="2">
                 <font>
                     <Font size="20.0" />
                 </font>
             </Label>
             <NumberTextField fx:id="ntfReservedFloor" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-         <Label fx:id="lblReservedFloor2" layoutX="141.0" layoutY="208.0" text="Price per minute" textFill="WHITE" GridPane.rowIndex="3">
+         <Label fx:id="lblReservedFloor2" layoutX="141.0" layoutY="208.0" text="Price per minute"  GridPane.rowIndex="3">
             <font>
                <Font size="20.0" />
             </font>

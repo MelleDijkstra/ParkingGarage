@@ -1,10 +1,6 @@
 package parkinggarage.model;
 
-import com.sun.istack.internal.Nullable;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -259,7 +255,6 @@ public class Garage {
      * @param includeReservedSpace boolean if reserved space should be included
      * @return The first free location
      */
-    @Nullable
     public Location getFirstFreeLocation(boolean includeReservedSpace) {
         for(int f = 0; f < locations.length; f++) {
             for (int r = 0; r < locations[f].length; r++) {

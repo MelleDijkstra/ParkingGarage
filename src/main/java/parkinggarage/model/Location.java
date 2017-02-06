@@ -1,7 +1,5 @@
 package parkinggarage.model;
 
-import com.sun.istack.internal.Nullable;
-
 /**
  * This class represents the location of vehicles of this application
  * It stores the floor row and place
@@ -97,7 +95,6 @@ public class Location {
      * Get the car at this location
      * @return The car or null if there is no Car at this Location
      */
-    @Nullable
     public Car getCar() { return car; }
 
     /**
@@ -105,7 +102,7 @@ public class Location {
      * @param car The new car to be placed on the spots or null to remove car
      * @throws LocationOccupiedException if there already is a car on this Location
      */
-    public void occupyLocation(@Nullable Car car) throws LocationOccupiedException {
+    public void occupyLocation(Car car) throws LocationOccupiedException {
        if(this.car != null) throw new LocationOccupiedException();
        this.car = car;
     }
