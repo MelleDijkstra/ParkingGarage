@@ -1,0 +1,83 @@
+/* CSS Document */
+body {
+  background-image: url(images/bg.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: 'Roboto', sans-serif;
+}
+
+#inhoud, #menuknoppencontainer, #header {
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-family: arial;
+  margin-top: 16px;
+  font-size: 20pt;
+}
+
+p {
+  font-family: arial;
+  font-size: 15pt;
+}
+
+#wrapper {
+  margin: auto;
+  width: 50%;
+}
+
+/* CONTENT */
+
+#inhoud {
+  border-radius: 10px;
+  width:80%;
+  background-color: white;
+  overflow:auto;
+  float:left;
+  padding: 20px;
+}  
+
+#inhoud ul {
+  display: inline;
+  padding: 0;
+  font-family: arial;
+  font-style: italic;
+}
+
+#footer {
+  width:100%;
+  text-align:center;
+  font-weight:bold;
+}
+
+.button {
+    background-color: #808080;
+    border: none;
+    color: white;
+    padding: 2px 15px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}
+
+textarea:focus, input:focus {
+  border: 2px solid #900;
+}
+
+.list {
+  width: 60%;
+  padding: 20px;
+}
+
+.list-control {
+  width: 30%;
+  padding: 10px;
+  background: white;
+  margin-bottom: 10px;
+}
