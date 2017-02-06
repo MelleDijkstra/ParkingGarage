@@ -13,6 +13,7 @@ public class CreditsScreen extends BaseScreen {
 
     public CreditsScreen() throws IOException {
         super();
+        this.mainStage.setResizable(false);
     }
 
     @Override
