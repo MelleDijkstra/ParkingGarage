@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Text?>
 
 <?import javafx.scene.control.Label?>
-<TabPane id="pane" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.112"
+<TabPane id="pane" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.111"
          xmlns:fx="http://javafx.com/fxml/1" fx:controller="parkinggarage.controllers.StatisticsController">
     <Tab text="Money">
         <GridPane>
@@ -28,13 +28,13 @@
             <PieChart fx:id="pieMoneyStats" animated="false" legendVisible="false" title="PieChart"
                       GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS"/>
 
-            <LineChart GridPane.hgrow="ALWAYS" animated="false" prefWidth="548.0" title="Money per car"
+            <LineChart fx:id="lchartMoneyStats" GridPane.hgrow="ALWAYS" animated="false" prefWidth="548.0" title="Money per car"
                        GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                 <xAxis>
-                    <NumberAxis side="BOTTOM"/>
+                    <NumberAxis  upperBound="1000" label="Ticks" side="BOTTOM"/>
                 </xAxis>
                 <yAxis>
-                    <NumberAxis side="LEFT"/>
+                    <NumberAxis  upperBound="500" label="Amount of Money" side="LEFT"/>
                 </yAxis>
             </LineChart>
 
@@ -61,17 +61,12 @@
                       title="Car Mobility"
                       GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS"/>
 
-            <LineChart fx:id="lchartCarStats"
-                       animated="false"
-                       title="Number of cars in garage per type"
-                       xAxis="Ticks"
-                       yAxis="Amount of Cars"
-                       GridPane.columnSpan="2147483647" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+            <LineChart fx:id="lchartCarStats" GridPane.columnSpan="2147483647" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                 <xAxis>
-                    <NumberAxis label="Ticks" side="BOTTOM" upperBound="1000"/>
+                    <NumberAxis upperBound="1000" label="Ticks" side="BOTTOM"  />
                 </xAxis>
                 <yAxis>
-                    <NumberAxis label="Number of cars" side="LEFT" upperBound="500"/>
+                    <NumberAxis upperBound="500" label="Number of cars" side="LEFT"/>
                 </yAxis>
             </LineChart>
 

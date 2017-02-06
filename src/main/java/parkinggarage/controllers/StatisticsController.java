@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import parkinggarage.Simulation;
@@ -30,16 +29,23 @@ public class StatisticsController extends BaseController implements Initializabl
     public PieChart pieCarStats;
 
     @FXML
-    public LineChart<Number, Number> lchartCarStats;
+    public LineChart lchartCarStats;
+
+    @FXML
+    public LineChart lchartMoneyStats;
+
+    private static int i = 1;
 
     @FXML
     public PieChart pieMoneyStats;
 
     private Simulation simulation;
 
-    XYChart.Series<Number, Number> adhocSeries;
-    XYChart.Series<Number, Number> passSeries;
-    XYChart.Series<Number, Number> reservedSeries;
+    XYChart.Series adhocSeries;
+    XYChart.Series passSeries;
+    XYChart.Series reservedSeries;
+    XYChart.Series adhocMoneySeries;
+    XYChart.Series reservedMoneySeries;
 
     public void setSimulation(Simulation simulation) {
         this.simulation = simulation;
@@ -49,12 +55,13 @@ public class StatisticsController extends BaseController implements Initializabl
      * Making a pie chart with accurate data
      */
     public void update() {
-        updatePieChart();
-        updateLineChart();
+        updateMobilityPieChart();
+        updateMobilityLineChart();
+        updateMoneyLineChart();
         updateMoneyPieChart();
     }
 
-    private void updatePieChart() {
+    private void updateMobilityPieChart() {
         HashMap<Garage.CarType, Integer> carStats = simulation.getGarage().getMobilityStats();
         Integer adhoc = carStats.get(Garage.CarType.AD_HOC);
         Integer pass = carStats.get(Garage.CarType.PASS);
@@ -69,11 +76,26 @@ public class StatisticsController extends BaseController implements Initializabl
         stats.forEach(data -> data.nameProperty().bind(Bindings.concat(data.getName(), " ", data.pieValueProperty())));
     }
 
-    private void updateLineChart() {
+    private void updateMoneyLineChart() {
+        HashMap<Garage.CarType, Double> carMoneyLineChartStats = simulation.getGarage().getMoneyStats();
+        if(i % 5 == 0) {
+
+            adhocMoneySeries.getData().add(new XYChart.Data(adhocMoneySeries.getData().size()+1, carMoneyLineChartStats.get(Garage.CarType.AD_HOC)));
+            reservedMoneySeries.getData().add(new XYChart.Data(reservedMoneySeries.getData().size()+1, carMoneyLineChartStats.get(Garage.CarType.RESERVED)));
+        }
+        i++;
+    }
+
+    private void updateMobilityLineChart() {
         HashMap<Garage.CarType, Integer> carStats = simulation.getGarage().getMobilityStats();
-        adhocSeries.getData().add(new XYChart.Data<>(adhocSeries.getData().size() + 1, carStats.get(Garage.CarType.AD_HOC)));
-        passSeries.getData().add(new XYChart.Data<>(passSeries.getData().size()+1, carStats.get(Garage.CarType.PASS)));
-        reservedSeries.getData().add(new XYChart.Data<>(reservedSeries.getData().size()+1, carStats.get(Garage.CarType.RESERVED)));
+        if(i % 5 == 0) {
+
+            adhocSeries.getData().add(new XYChart.Data(adhocSeries.getData().size()+1, carStats.get(Garage.CarType.AD_HOC)));
+            passSeries.getData().add(new XYChart.Data(passSeries.getData().size()+1, carStats.get(Garage.CarType.PASS)));
+            reservedSeries.getData().add(new XYChart.Data(reservedSeries.getData().size()+1, carStats.get(Garage.CarType.RESERVED)));
+        }
+        i++;
+
     }
 
     @Override
@@ -84,17 +106,26 @@ public class StatisticsController extends BaseController implements Initializabl
 
     private void initLineCharts() {
         //Prepare XYChart.Series objects by setting data
-        adhocSeries = new XYChart.Series<>();
-        passSeries = new XYChart.Series<>();
-        reservedSeries = new XYChart.Series<>();
+        adhocSeries = new XYChart.Series();
+        passSeries = new XYChart.Series();
+        reservedSeries = new XYChart.Series();
+
+        adhocMoneySeries = new XYChart.Series();
+        reservedMoneySeries = new XYChart.Series();
 
         adhocSeries.setName("AdHocCar");
         passSeries.setName("Pass");
         reservedSeries.setName("Reserved");
+
+        adhocMoneySeries.setName("Adhoc");
+        reservedMoneySeries.setName("Reserved");
         //Setting the data to Line chart
         lchartCarStats.getData().add(adhocSeries);
         lchartCarStats.getData().add(passSeries);
         lchartCarStats.getData().add(reservedSeries);
+
+        lchartMoneyStats.getData().add(adhocMoneySeries);
+        lchartMoneyStats.getData().add(reservedMoneySeries);
     }
 
     private void initPieCharts() {
