@@ -12,7 +12,7 @@ public class DatabaseConnection {
 
     // JDBC driver name and database URL
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost/inventc_nl_parking";
+    static final String DB_URL = "jdbc:mysql://inventc.nl/inventc_nl_parking";
 
     //  Database credentials
     static final String USER = "inven_nl_parking";
