@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.text.Text;
 import parkinggarage.Simulation;
 import parkinggarage.model.Garage;
 
@@ -39,6 +40,21 @@ public class StatisticsController extends BaseController implements Initializabl
     @FXML
     public PieChart pieMoneyStats;
 
+    @FXML
+    public Text txtMobilityAdhoc;
+
+    @FXML
+    public Text txtMobilityPass;
+
+    @FXML
+    public Text txtMobilityReserved;
+
+    @FXML
+    public Text txtMoneyAdhoc;
+
+    @FXML
+    public Text txtMoneyReserved;
+
     private Simulation simulation;
 
     XYChart.Series adhocSeries;
@@ -59,6 +75,7 @@ public class StatisticsController extends BaseController implements Initializabl
         updateMobilityLineChart();
         updateMoneyLineChart();
         updateMoneyPieChart();
+        updateTextStatistics();
     }
 
     private void updateMobilityPieChart() {
@@ -79,9 +96,9 @@ public class StatisticsController extends BaseController implements Initializabl
     private void updateMoneyLineChart() {
         HashMap<Garage.CarType, Double> carMoneyLineChartStats = simulation.getGarage().getMoneyStats();
         if(i % 5 == 0) {
-
             adhocMoneySeries.getData().add(new XYChart.Data(adhocMoneySeries.getData().size()+1, carMoneyLineChartStats.get(Garage.CarType.AD_HOC)));
             reservedMoneySeries.getData().add(new XYChart.Data(reservedMoneySeries.getData().size()+1, carMoneyLineChartStats.get(Garage.CarType.RESERVED)));
+
         }
         i++;
     }
@@ -152,5 +169,13 @@ public class StatisticsController extends BaseController implements Initializabl
         pieMoneyStats.setData(stats);
         applyCustomColorSequence(stats, "red", "green", "blue");
         stats.forEach(data -> data.nameProperty().bind(Bindings.concat(data.getName(), " ", data.pieValueProperty())));
+    }
+
+    private void updateTextStatistics() {
+        txtMoneyAdhoc.setText(Double.toString(simulation.getGarage().getMoneyStats().get(Garage.CarType.AD_HOC)));
+        txtMoneyReserved.setText(Double.toString(simulation.getGarage().getMoneyStats().get(Garage.CarType.RESERVED)));
+        txtMobilityAdhoc.setText(Integer.toString(simulation.getGarage().getMobilityStats().get(Garage.CarType.AD_HOC)));
+        txtMobilityPass.setText(Integer.toString(simulation.getGarage().getMobilityStats().get(Garage.CarType.PASS)));
+        txtMobilityReserved.setText(Integer.toString(simulation.getGarage().getMobilityStats().get(Garage.CarType.RESERVED)));
     }
 }
