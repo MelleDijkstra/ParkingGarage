@@ -3,13 +3,12 @@ package parkinggarage;
 import parkinggarage.model.Garage;
 import parkinggarage.views.SimulationView;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 public class Simulation {
-
-    // Settings for the simulation
-    private Settings settings;
 
     protected Garage garage;
 
@@ -63,18 +62,8 @@ public class Simulation {
      */
     public Simulation(int iterations) {
         iterationCount = iterations;
-        garage = new Garage(3, 6, 28, 1);
+        garage = new Garage(3, 6, 28);
         simulationView = new SimulationView(this);
-    }
-
-    /**
-     * Creates a parking garage simulation with given settings
-     * @param iterations The amount of iteration you want the simulation to run
-     *
-     */
-    public Simulation(int iterations, Settings settings) {
-        this(iterations);
-        this.settings = settings;
         processSettings();
     }
 
@@ -82,18 +71,20 @@ public class Simulation {
      * Makes sure all settings are set which are given
      */
     private void processSettings() {
-        if(settings != null) {
+        try{
+            Settings settings = Settings.Instance();
+
             day     = settings.getSetting(Settings.DAY, day);
             hour    = settings.getSetting(Settings.HOUR, hour);
             minute  = settings.getSetting(Settings.MINUTE, minute);
             price_per_minute = settings.getSetting(Settings.PRICE_PER_MINUTE, price_per_minute);
 
-            garage.setReservedFloor(settings.getSetting(Settings.RESERVED_FLOOR, garage.getReservedFloor()));
-
 //        weekDayArrivals = (settings.getProperty("weekDayArrivals") != null) ? Integer.parseInt(settings.get("weekDayArrivals").toString()) : weekDayArrivals;
 //        weekDayPassArrivals = (settings.getProperty("weekDayPassArrivals") != null) ? Integer.parseInt(settings.get("weekDayPassArrivals").toString()) : weekDayPassArrivals;
 //        weekendArrivals = (settings.getProperty("weekendArrivals") != null) ? Integer.parseInt(settings.get("weekendArrivals").toString()) : weekendArrivals;
 //        weekendPassArrivals = (settings.getProperty("weekendPassArrivals") != null) ? Integer.parseInt(settings.get("weekendPassArrivals").toString()) : weekendPassArrivals;
+        } catch (IOException e) {
+            System.out.println("Simulation could not load settings");
         }
     }
 

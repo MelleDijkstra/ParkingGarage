@@ -28,7 +28,7 @@
             <PieChart fx:id="pieMoneyStats" animated="false" legendVisible="false" title="PieChart"
                       GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS"/>
 
-            <LineChart fx:id="lchartMoneyStats" GridPane.hgrow="ALWAYS" title="Money per car"
+            <LineChart fx:id="lchartMoneyStats" animated="false" GridPane.hgrow="ALWAYS" title="Money per car"
                        GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                 <xAxis>
                     <NumberAxis  upperBound="1000" label="Ticks" side="BOTTOM"/>
@@ -61,7 +61,7 @@
                       title="Car Mobility"
                       GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS"/>
 
-            <LineChart fx:id="lchartCarStats" GridPane.columnSpan="2147483647" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+            <LineChart fx:id="lchartCarStats" animated="false" GridPane.columnSpan="2147483647" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                 <xAxis>
                     <NumberAxis upperBound="1000" label="Ticks" side="BOTTOM"  />
                 </xAxis>

@@ -46,25 +46,16 @@ public class MainController extends BaseController {
     @FXML
     public void onBtnSimulateClick(ActionEvent actionEvent) {
         int iterations = Integer.parseInt(tfIterationCount.getText());
-        // Read the settings file to load all settings
-        Settings settings = null;
-        try {
-            settings = Settings.Instance();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         // Simulation should run at least 1 time!
         // TODO: change to settings.getOrDefault("iterations");
         if(iterations >= 1) {
             System.out.println("Iterations Specified: "+iterations);
-            // settings needs to be final in lambda | java ;(
-            Settings finalSettings = settings;
             new Thread(() -> {
                 if (simulation != null) {
                     simulation.close();
                     // TODO: remove iterations and only give settings (which includes the iterationCount)
                 }
-                simulation = (finalSettings != null) ? new Simulation(iterations, finalSettings) : new Simulation(iterations);
+                simulation = new Simulation(iterations);
                 simulation.run();
             }).start();
         } else {
