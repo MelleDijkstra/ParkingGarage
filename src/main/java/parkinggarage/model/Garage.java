@@ -362,4 +362,22 @@ public class Garage {
         moneyStats.put(CarType.RESERVED, reservedincome);
         return moneyStats;
     }
+
+    public HashMap<CarType, Double> getPotentialQueueCosts() {
+        HashMap<CarType, Double> queueCosts = new HashMap<>();
+        double adhocTotal = 0, reservedTotal = 0;
+        for (Car car : entranceCarQueue) {
+            adhocTotal += car.amountToPay();
+        }
+
+        for(Car car : entrancePassQueue) {
+            if(car instanceof ReservedCar) {
+                reservedTotal += car.amountToPay();
+            }
+        }
+
+        queueCosts.put(CarType.AD_HOC, adhocTotal);
+        queueCosts.put(CarType.RESERVED, reservedTotal);
+        return queueCosts;
+    }
 }

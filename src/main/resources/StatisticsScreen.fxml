@@ -43,6 +43,10 @@
                 <Text fx:id="txtMoneyAdhoc" GridPane.columnIndex="1"/>
                 <Label GridPane.ColumnIndex="0" GridPane.RowIndex="1">Total Money Reserved Cars: </Label>
                 <Text fx:id="txtMoneyReserved" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <Label GridPane.columnIndex="0" GridPane.rowIndex="2">Total Money of Adhoc Cars in Queue: </Label>
+                <Text fx:id="txtPotentialAdhocQueueMoney" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Label GridPane.columnIndex="0" GridPane.rowIndex="3">Total Money Of Reserved Cars in Queue: </Label>
+                <Text fx:id="txtPotentialReservedQueueMoney" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             </GridPane>
         </GridPane>
     </Tab>

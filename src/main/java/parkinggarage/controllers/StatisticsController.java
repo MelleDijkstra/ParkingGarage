@@ -12,6 +12,7 @@ import javafx.scene.text.Text;
 import parkinggarage.Simulation;
 import parkinggarage.model.Garage;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -55,6 +56,12 @@ public class StatisticsController extends BaseController implements Initializabl
     @FXML
     public Text txtMoneyReserved;
 
+    @FXML
+    public Text txtPotentialAdhocQueueMoney;
+
+    @FXML
+    public Text txtPotentialReservedQueueMoney;
+
     private Simulation simulation;
 
     XYChart.Series adhocSeries;
@@ -80,13 +87,10 @@ public class StatisticsController extends BaseController implements Initializabl
 
     private void updateMobilityPieChart() {
         HashMap<Garage.CarType, Integer> carStats = simulation.getGarage().getMobilityStats();
-        Integer adhoc = carStats.get(Garage.CarType.AD_HOC);
-        Integer pass = carStats.get(Garage.CarType.PASS);
-        Integer reserved = carStats.get(Garage.CarType.RESERVED);
         ObservableList<PieChart.Data> stats = FXCollections.observableArrayList(
-                new PieChart.Data("AdHocCar", adhoc.doubleValue()),
-                new PieChart.Data("Pass", pass.doubleValue()),
-                new PieChart.Data("Reserved", reserved.doubleValue()
+                new PieChart.Data("AdHocCar", carStats.get(Garage.CarType.AD_HOC)),
+                new PieChart.Data("Pass", carStats.get(Garage.CarType.PASS)),
+                new PieChart.Data("Reserved", carStats.get(Garage.CarType.RESERVED)
                 ));
         pieCarStats.setData(stats);
         applyCustomColorSequence(stats, "red", "blue", "green");
@@ -172,10 +176,15 @@ public class StatisticsController extends BaseController implements Initializabl
     }
 
     private void updateTextStatistics() {
-        txtMoneyAdhoc.setText(Double.toString(simulation.getGarage().getMoneyStats().get(Garage.CarType.AD_HOC)));
-        txtMoneyReserved.setText(Double.toString(simulation.getGarage().getMoneyStats().get(Garage.CarType.RESERVED)));
-        txtMobilityAdhoc.setText(Integer.toString(simulation.getGarage().getMobilityStats().get(Garage.CarType.AD_HOC)));
-        txtMobilityPass.setText(Integer.toString(simulation.getGarage().getMobilityStats().get(Garage.CarType.PASS)));
-        txtMobilityReserved.setText(Integer.toString(simulation.getGarage().getMobilityStats().get(Garage.CarType.RESERVED)));
+        HashMap<Garage.CarType, Double> moneyStats = simulation.getGarage().getMoneyStats();
+        txtMoneyAdhoc.setText("€" + new BigDecimal(moneyStats.get(Garage.CarType.AD_HOC)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+        txtMoneyReserved.setText("€" + new BigDecimal(moneyStats.get(Garage.CarType.RESERVED)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+        HashMap<Garage.CarType, Integer> mobilityStats = simulation.getGarage().getMobilityStats();
+        txtMobilityAdhoc.setText(Integer.toString(mobilityStats.get(Garage.CarType.AD_HOC)));
+        txtMobilityPass.setText(Integer.toString(mobilityStats.get(Garage.CarType.PASS)));
+        txtMobilityReserved.setText(Integer.toString(mobilityStats.get(Garage.CarType.RESERVED)));
+        HashMap<Garage.CarType, Double> potentialQueueCosts = simulation.getGarage().getPotentialQueueCosts();
+        txtPotentialAdhocQueueMoney.setText("€" + new BigDecimal(potentialQueueCosts.get(Garage.CarType.AD_HOC)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+        txtPotentialReservedQueueMoney.setText("€" + new BigDecimal(potentialQueueCosts.get(Garage.CarType.RESERVED)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
     }
 }
