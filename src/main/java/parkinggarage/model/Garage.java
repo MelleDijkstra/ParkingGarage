@@ -61,6 +61,9 @@ public class Garage {
         this.reservedFloor = reservedFloor;
     }
 
+    /**
+     * Initialize Locations
+     */
     private void initializeLocations() {
         // floors
         for(int f = 0; f < locations.length; f++) {
@@ -116,6 +119,11 @@ public class Garage {
         carsLeaving();
     }
 
+    /**
+     * Add the arriving Cars to the entranceQueue
+     * @param numberOfCars
+     * @param type
+     */
     public void addArrivingCars(int numberOfCars, CarType type) {
         // Add the cars to the back of the queue.
         switch (type) {
@@ -160,8 +168,11 @@ public class Garage {
         }
     }
 
+    /**
+     * Add leaving cars to the paymentQueue
+     */
+
     private void carsReadyToLeave() {
-        // Add leaving cars to the payment queue.
         // TODO: check if the leave procedure is still the same
         Car car = getFirstLeavingCar();
         while (car != null) {
@@ -174,6 +185,10 @@ public class Garage {
             car = getFirstLeavingCar();
         }
     }
+
+    /**
+     * Add the car to the paymentQueue
+     */
 
     private void carsPaying() {
         // Let cars pay.
@@ -198,6 +213,9 @@ public class Garage {
         }
     }
 
+    /**
+     * Add the car to the exitQueue
+     */
     private void carsLeaving() {
         // Let cars leave.
         int i = 0;
@@ -232,7 +250,7 @@ public class Garage {
     }
 
     /**
-     * Removes the Car at a specific Location
+     * Removes the Car from a specific Location
      * @param location The Location from where the Car needs to be removed
      * @return The removed Car
      */
@@ -273,6 +291,10 @@ public class Garage {
         return null;
     }
 
+    /**
+     * Get the first leaving car
+     * @return
+     */
     public Car getFirstLeavingCar() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {

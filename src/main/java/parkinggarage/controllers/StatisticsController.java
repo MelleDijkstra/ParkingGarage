@@ -52,7 +52,7 @@ public class StatisticsController extends BaseController implements Initializabl
     }
 
     /**
-     * Making a pie chart with accurate data
+     * Making a pie chart with accurate Mobility data
      */
     public void update() {
         updateMobilityPieChart();
@@ -76,6 +76,10 @@ public class StatisticsController extends BaseController implements Initializabl
         stats.forEach(data -> data.nameProperty().bind(Bindings.concat(data.getName(), " ", data.pieValueProperty())));
     }
 
+    /**
+     * Making a LineChart with accurate Money data
+     */
+
     private void updateMoneyLineChart() {
         HashMap<Garage.CarType, Double> carMoneyLineChartStats = simulation.getGarage().getMoneyStats();
         if(i % 5 == 0) {
@@ -85,6 +89,10 @@ public class StatisticsController extends BaseController implements Initializabl
         }
         i++;
     }
+
+    /**
+     * Making a LineChart with accurate Mobility data
+     */
 
     private void updateMobilityLineChart() {
         HashMap<Garage.CarType, Integer> carStats = simulation.getGarage().getMobilityStats();
@@ -104,6 +112,9 @@ public class StatisticsController extends BaseController implements Initializabl
         initLineCharts();
     }
 
+    /**
+     * Setting data
+     */
     private void initLineCharts() {
         //Prepare XYChart.Series objects by setting data
         adhocSeries = new XYChart.Series();
@@ -142,6 +153,10 @@ public class StatisticsController extends BaseController implements Initializabl
             i++;
         }
     }
+
+    /**
+     * Updating Money data
+     */
 
     private void updateMoneyPieChart() {
         HashMap<Garage.CarType, Double> carMoneyStats = simulation.getGarage().getMoneyStats();
