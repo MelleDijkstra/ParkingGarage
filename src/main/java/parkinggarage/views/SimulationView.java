@@ -35,12 +35,12 @@ public class SimulationView extends JFrame implements KeyListener {
         carParkView = new CarParkView();
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         Container contentPane = getContentPane();
-        contentPane.setLayout(new BorderLayout(5,5));
+        contentPane.setLayout(new BorderLayout(5, 5));
         contentPane.add(carParkView, BorderLayout.CENTER);
 
         //JPanel bottomPanel = new JPanel(new SpringLayout());
 
-        JSlider slider = new JSlider(100,1000,100);
+        JSlider slider = new JSlider(100, 1000, 100);
         slider.setMinorTickSpacing(1);
         slider.setMajorTickSpacing(5);
         slider.setPaintTicks(true);
@@ -51,26 +51,26 @@ public class SimulationView extends JFrame implements KeyListener {
         //bottomPanel.add(slider);
 
         JButton btnStatistics = new JButton("Statistics");
+        Platform.runLater(() -> {
+            try {
+                statisticsScreen = new StatisticsScreen(simulation);
+            } catch (NullPointerException i) {
+                System.out.println("Statistics file not found");
+                new Alert(Alert.AlertType.ERROR, "Layout file not found").show();
+                i.printStackTrace();
+            } catch (IOException i) {
+                System.out.println("Something went wrong");
+                new Alert(Alert.AlertType.ERROR, "FXML not valid").show();
+                i.printStackTrace();
+            }
+        });
         btnStatistics.addActionListener(e -> {
             // Open statistics screen
             // this is needed to open a JavaFX window in swing (it should be opened on JavaFX thread)
-            if(statisticsScreen == null) {
-                Platform.runLater(() -> {
-                    // TODO: refactor that the view doesn't open a new view, but let a controller do the work
-                    try {
-                        statisticsScreen = new StatisticsScreen(simulation);
-                        statisticsScreen.show();
-                    } catch (NullPointerException i) {
-                        System.out.println("Statistics file not found");
-                        new Alert(Alert.AlertType.ERROR, "Layout file not found").show();
-                        i.printStackTrace();
-                    } catch (IOException i) {
-                        System.out.println("Something went wrong");
-                        new Alert(Alert.AlertType.ERROR, "FXML not valid").show();
-                        i.printStackTrace();
-                    }
-                });
-            }
+            Platform.runLater(() -> {
+                // TODO: refactor that the view doesn't open a new view, but let a controller do the work
+                statisticsScreen.show();
+            });
         });
         contentPane.add(btnStatistics, BorderLayout.NORTH);
         //bottomPanel.add(btnStatistics);
@@ -88,46 +88,53 @@ public class SimulationView extends JFrame implements KeyListener {
 
     private WindowListener windowListener = new WindowListener() {
         @Override
-        public void windowOpened(WindowEvent e) {}
+        public void windowOpened(WindowEvent e) {
+        }
 
         @Override
         public void windowClosing(WindowEvent e) {
             simulation.close();
-            if(statisticsScreen != null) {
+            if (statisticsScreen != null) {
                 Platform.runLater(() -> statisticsScreen.close());
             }
         }
 
         @Override
-        public void windowClosed(WindowEvent e) {}
+        public void windowClosed(WindowEvent e) {
+        }
 
         @Override
-        public void windowIconified(WindowEvent e) {}
+        public void windowIconified(WindowEvent e) {
+        }
 
         @Override
-        public void windowDeiconified(WindowEvent e) {}
+        public void windowDeiconified(WindowEvent e) {
+        }
 
         @Override
-        public void windowActivated(WindowEvent e) {}
+        public void windowActivated(WindowEvent e) {
+        }
 
         @Override
-        public void windowDeactivated(WindowEvent e) {}
+        public void windowDeactivated(WindowEvent e) {
+        }
     };
 
     private ChangeListener changeListener = e -> {
-        JSlider slider = (JSlider)e.getSource();
+        JSlider slider = (JSlider) e.getSource();
         simulation.setTickPause(slider.getValue());
     };
 
     public void updateView() {
         carParkView.updateView();
-        if(statisticsScreen != null) {
+        if (statisticsScreen != null) {
             Platform.runLater(() -> statisticsScreen.updateView());
         }
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -140,7 +147,8 @@ public class SimulationView extends JFrame implements KeyListener {
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) {
+    }
 
     private class CarParkView extends JPanel {
 
@@ -182,6 +190,7 @@ public class SimulationView extends JFrame implements KeyListener {
             }
             // Draw the current date
             drawDate(g);
+            g.drawString("Iteration: " + simulation.getCurrentIteration(), 90, 20);
             // Draw the queues
             drawQueues(g);
         }
@@ -222,16 +231,17 @@ public class SimulationView extends JFrame implements KeyListener {
 
         /**
          * Draws the time and day of the simulation
+         *
          * @param graphics Graphics object
          */
         private void drawDate(Graphics graphics) {
             int[] time = simulation.getDate();
             String day = SettingsController.numToDay(time[0]);
-            if(day == null) day = ""+time[0];
-            String hour = (time[1] < 10) ? "0"+time[1] : Integer.toString(time[1]);
-            String minute = (time[2] < 10) ? "0"+time[2] : Integer.toString(time[2]);
-            graphics.drawString(day, 30,15);
-            graphics.drawString(hour+":"+minute, 30, 30);
+            if (day == null) day = "" + time[0];
+            String hour = (time[1] < 10) ? "0" + time[1] : Integer.toString(time[1]);
+            String minute = (time[2] < 10) ? "0" + time[2] : Integer.toString(time[2]);
+            graphics.drawString(day, 30, 15);
+            graphics.drawString(hour + ":" + minute, 30, 30);
         }
 
         /**
@@ -241,7 +251,7 @@ public class SimulationView extends JFrame implements KeyListener {
             HashMap<String, Integer> queueStats = simulation.getGarage().getQueueStats();
             int i = 1;
             for (Map.Entry<String, Integer> item : queueStats.entrySet()) {
-                g.drawString(item.getKey()+": "+Integer.toString(item.getValue()), 20, getHeight() - (20 * i));
+                g.drawString(item.getKey() + ": " + Integer.toString(item.getValue()), 20, getHeight() - (20 * i));
                 i++;
             }
         }

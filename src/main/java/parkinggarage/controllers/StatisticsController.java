@@ -8,6 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import parkinggarage.Simulation;
 import parkinggarage.model.Garage;
@@ -39,26 +41,16 @@ public class StatisticsController extends BaseController implements Initializabl
     @FXML
     public PieChart pieMoneyStats;
 
+    // textual mobility controls
     @FXML
-    public Text txtMobilityAdhoc;
+    public Text txtMobilityAdhoc, txtMobilityPass, txtMobilityReserved;
+
+    // textual money controls
+    @FXML
+    public Text txtMoneyAdhoc, txtMoneyReserved, txtMoneyTotal;
 
     @FXML
-    public Text txtMobilityPass;
-
-    @FXML
-    public Text txtMobilityReserved;
-
-    @FXML
-    public Text txtMoneyAdhoc;
-
-    @FXML
-    public Text txtMoneyReserved;
-
-    @FXML
-    public Text txtPotentialAdhocQueueMoney;
-
-    @FXML
-    public Text txtPotentialReservedQueueMoney;
+    public Text txtPotentialReservedQueueMoney, txtPotentialAdhocQueueMoney, txtPotentialTotalQueueMoney;
 
     private Simulation simulation;
 
@@ -82,23 +74,47 @@ public class StatisticsController extends BaseController implements Initializabl
      * Making a pie chart with accurate data
      */
     public void update() {
-        updateMobilityPieChart();
-        updateMobilityLineChart();
-        updateMoneyLineChart();
-        updateMoneyPieChart();
-        updateTextStatistics();
+        updateMoneyStats();
+        updateMobilityStats();
     }
+
+    /**
+     * Updates all visual mobility statistics
+     */
+    private void updateMobilityStats() {
+        // retrieve mobility statistics
+        HashMap<Garage.CarType, Integer> mobilityStats = simulation.getGarage().getMobilityStats();
+        // and use them for all different views
+        updateMobilityPieChart(mobilityStats);
+        updateMobilityLineChart(mobilityStats);
+        updateMobilityTextStats(mobilityStats);
+    }
+
+    /**
+     * Updates all visual money statistics
+     */
+    private void updateMoneyStats() {
+        // retrieve money statistics
+        HashMap<Garage.CarType, Double> carMoneyLineChartStats = simulation.getGarage().getMoneyStats();
+        // and use them for all different views
+        updateMoneyPieChart(carMoneyLineChartStats);
+        updateMoneyLineChart(carMoneyLineChartStats);
+        updateMoneyTextStats(carMoneyLineChartStats);
+    }
+
+    //////////////
+    // MOBILITY //
+    //////////////
 
     /**
      * Update pie chart
      */
-    private void updateMobilityPieChart() {
-        HashMap<Garage.CarType, Integer> carStats = simulation.getGarage().getMobilityStats();
+    private void updateMobilityPieChart(HashMap<Garage.CarType, Integer> carStats) {
         ObservableList<PieChart.Data> stats = FXCollections.observableArrayList(
-                new PieChart.Data("AdHocCar", carStats.get(Garage.CarType.AD_HOC)),
-                new PieChart.Data("Pass", carStats.get(Garage.CarType.PASS)),
-                new PieChart.Data("Reserved", carStats.get(Garage.CarType.RESERVED)
-                ));
+            new PieChart.Data("AdHocCar", carStats.get(Garage.CarType.AD_HOC)),
+            new PieChart.Data("Pass", carStats.get(Garage.CarType.PASS)),
+            new PieChart.Data("Reserved", carStats.get(Garage.CarType.RESERVED)
+        ));
         pieCarStats.setData(stats);
         applyCustomColorSequence(stats, "red", "blue", "green");
         stats.forEach(data -> data.nameProperty().bind(Bindings.concat(data.getName(), " ", data.pieValueProperty())));
@@ -107,20 +123,76 @@ public class StatisticsController extends BaseController implements Initializabl
     /**
      * Update line chart
      */
-    private void updateMoneyLineChart() {
-        HashMap<Garage.CarType, Double> carMoneyLineChartStats = simulation.getGarage().getMoneyStats();
-        adhocMoneySeries.getData().add(new XYChart.Data<>(adhocMoneySeries.getData().size()+1, carMoneyLineChartStats.get(Garage.CarType.AD_HOC)));
-        reservedMoneySeries.getData().add(new XYChart.Data<>(reservedMoneySeries.getData().size()+1, carMoneyLineChartStats.get(Garage.CarType.RESERVED)));
+    private void updateMobilityLineChart(HashMap<Garage.CarType, Integer> carStats) {
+        adhocSeries.getData().add(getLineChartData(adhocSeries.getData().size()+1, carStats.get(Garage.CarType.AD_HOC)));
+        passSeries.getData().add(getLineChartData(passSeries.getData().size()+1, carStats.get(Garage.CarType.PASS)));
+        reservedSeries.getData().add(getLineChartData(reservedSeries.getData().size()+1, carStats.get(Garage.CarType.RESERVED)));
     }
+
+    /**
+     * Update textual mobility statistics
+     */
+    private void updateMobilityTextStats(HashMap<Garage.CarType, Integer> mobilityStats) {
+        txtMobilityAdhoc.setText(Integer.toString(mobilityStats.get(Garage.CarType.AD_HOC)));
+        txtMobilityPass.setText(Integer.toString(mobilityStats.get(Garage.CarType.PASS)));
+        txtMobilityReserved.setText(Integer.toString(mobilityStats.get(Garage.CarType.RESERVED)));
+    }
+
+    ///////////
+    // MONEY //
+    ///////////
 
     /**
      * Update line chart
      */
-    private void updateMobilityLineChart() {
-        HashMap<Garage.CarType, Integer> carStats = simulation.getGarage().getMobilityStats();
-        adhocSeries.getData().add(new XYChart.Data<>(adhocSeries.getData().size()+1, carStats.get(Garage.CarType.AD_HOC)));
-        passSeries.getData().add(new XYChart.Data<>(passSeries.getData().size()+1, carStats.get(Garage.CarType.PASS)));
-        reservedSeries.getData().add(new XYChart.Data<>(reservedSeries.getData().size()+1, carStats.get(Garage.CarType.RESERVED)));
+    private void updateMoneyLineChart(HashMap<Garage.CarType, Double> moneyStats) {
+        adhocMoneySeries.getData().add(getLineChartData(adhocMoneySeries.getData().size()+1, moneyStats.get(Garage.CarType.AD_HOC)));
+        reservedMoneySeries.getData().add(getLineChartData(reservedMoneySeries.getData().size()+1, moneyStats.get(Garage.CarType.RESERVED)));
+    }
+
+    /**
+     * Updates the money chart
+     */
+    private void updateMoneyPieChart(HashMap<Garage.CarType, Double> moneyStats) {
+        ObservableList<PieChart.Data> stats = FXCollections.observableArrayList(
+                new PieChart.Data("AdHocCar", new BigDecimal(moneyStats.get(Garage.CarType.AD_HOC)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue()),
+                new PieChart.Data("Reserved", new BigDecimal(moneyStats.get(Garage.CarType.RESERVED)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue())
+        );
+        pieMoneyStats.setData(stats);
+        applyCustomColorSequence(stats, "red", "green", "blue");
+        stats.forEach(data -> data.nameProperty().bind(Bindings.concat(data.getName(), " ", data.pieValueProperty())));
+    }
+
+    /**
+     * Update textual money statistics
+     */
+    private void updateMoneyTextStats(HashMap<Garage.CarType, Double> moneyStats) {
+        txtMoneyAdhoc.setText(decimalToMoney(moneyStats.get(Garage.CarType.AD_HOC)));
+        txtMoneyReserved.setText(decimalToMoney(moneyStats.get(Garage.CarType.RESERVED)));
+        txtMoneyTotal.setText(decimalToMoney(moneyStats.get(Garage.CarType.AD_HOC)+moneyStats.get(Garage.CarType.RESERVED)));
+
+        HashMap<Garage.CarType, Double> potentialQueueCosts = simulation.getGarage().getPotentialQueueCosts();
+        txtPotentialAdhocQueueMoney.setText(decimalToMoney(potentialQueueCosts.get(Garage.CarType.AD_HOC)));
+        txtPotentialReservedQueueMoney.setText(decimalToMoney(potentialQueueCosts.get(Garage.CarType.RESERVED)));
+        txtPotentialTotalQueueMoney.setText(decimalToMoney(potentialQueueCosts.get(Garage.CarType.AD_HOC)+potentialQueueCosts.get(Garage.CarType.RESERVED)));
+    }
+
+    private String decimalToMoney(Double m) {
+        return "€" + new BigDecimal(m).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+    }
+
+    /**
+     * Generates a single XYChart.Data item
+     * @param x The x value on the chart
+     * @param y The y value on the chart
+     * @return The XYChart.Data value to be used on a chart
+     */
+    private XYChart.Data<Number, Number> getLineChartData(Number x, Number y) {
+        XYChart.Data<Number, Number> data = new XYChart.Data<>(x,y);
+        Rectangle rect = new Rectangle(1,1);
+        rect.setVisible(false);
+        data.setNode(rect);
+        return data;
     }
 
     @Override
@@ -141,7 +213,7 @@ public class StatisticsController extends BaseController implements Initializabl
         adhocMoneySeries = new XYChart.Series<>();
         reservedMoneySeries = new XYChart.Series<>();
 
-        adhocSeries.setName("AdHocCar");
+        adhocSeries.setName("AdhocCar");
         passSeries.setName("Pass");
         reservedSeries.setName("Reserved");
 
@@ -169,36 +241,9 @@ public class StatisticsController extends BaseController implements Initializabl
         int i = 0;
         for (PieChart.Data data : pieChartData) {
             data.getNode().setStyle(
-                    "-fx-pie-color: " + pieColors[i % pieColors.length] + ";"
+                "-fx-pie-color: " + pieColors[i % pieColors.length] + ";"
             );
             i++;
         }
-    }
-
-    /**
-     * Updates the money chart
-     */
-    private void updateMoneyPieChart() {
-        HashMap<Garage.CarType, Double> carMoneyStats = simulation.getGarage().getMoneyStats();
-        ObservableList<PieChart.Data> stats = FXCollections.observableArrayList(
-                new PieChart.Data("AdHocCar", carMoneyStats.get(Garage.CarType.AD_HOC)),
-                new PieChart.Data("Reserved", carMoneyStats.get(Garage.CarType.RESERVED))
-        );
-        pieMoneyStats.setData(stats);
-        applyCustomColorSequence(stats, "red", "green", "blue");
-        stats.forEach(data -> data.nameProperty().bind(Bindings.concat(data.getName(), " ", data.pieValueProperty())));
-    }
-
-    private void updateTextStatistics() {
-        HashMap<Garage.CarType, Double> moneyStats = simulation.getGarage().getMoneyStats();
-        txtMoneyAdhoc.setText("€" + new BigDecimal(moneyStats.get(Garage.CarType.AD_HOC)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-        txtMoneyReserved.setText("€" + new BigDecimal(moneyStats.get(Garage.CarType.RESERVED)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-        HashMap<Garage.CarType, Integer> mobilityStats = simulation.getGarage().getMobilityStats();
-        txtMobilityAdhoc.setText(Integer.toString(mobilityStats.get(Garage.CarType.AD_HOC)));
-        txtMobilityPass.setText(Integer.toString(mobilityStats.get(Garage.CarType.PASS)));
-        txtMobilityReserved.setText(Integer.toString(mobilityStats.get(Garage.CarType.RESERVED)));
-        HashMap<Garage.CarType, Double> potentialQueueCosts = simulation.getGarage().getPotentialQueueCosts();
-        txtPotentialAdhocQueueMoney.setText("€" + new BigDecimal(potentialQueueCosts.get(Garage.CarType.AD_HOC)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-        txtPotentialReservedQueueMoney.setText("€" + new BigDecimal(potentialQueueCosts.get(Garage.CarType.RESERVED)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
     }
 }

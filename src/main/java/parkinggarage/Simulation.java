@@ -4,9 +4,9 @@ import parkinggarage.model.Garage;
 import parkinggarage.views.SimulationView;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 public class Simulation {
 
@@ -102,10 +102,10 @@ public class Simulation {
             if(this.stop) break;
         }
         long timeTaken = (System.currentTimeMillis() - startTime);
-        System.out.println(String.format("SIMULATION DONE - time in minutes: %d:%d - earned: %f",
+        System.out.println(String.format("SIMULATION DONE - time in minutes: %d:%d - earned: €%s",
                 TimeUnit.MILLISECONDS.toMinutes(timeTaken),
                 TimeUnit.MILLISECONDS.toSeconds(timeTaken),
-                garage.getIncome()));
+                new BigDecimal(garage.getIncome()).setScale(2,BigDecimal.ROUND_HALF_UP)));
     }
 
     /**
@@ -115,10 +115,10 @@ public class Simulation {
     private void tick() {
         advanceTime();
         garage.handleExit();
-        // Pause.
         carsArriving();
         garage.handleEntrance();
         updateViews();
+        // Pause.
         try {
             Thread.sleep(tickPause);
         } catch (InterruptedException e) {
@@ -208,4 +208,11 @@ public class Simulation {
         }
     }
 
+    /**
+     * Retrieve the current iterationCount
+     * @return The current iteration
+     */
+    public int getCurrentIteration() {
+        return currentIteration;
+    }
 }
