@@ -5,9 +5,9 @@ import parkinggarage.Settings;
 import java.awt.*;
 import java.io.IOException;
 
-/**
- * Abstract Car class with all the information for a Car
- */
+    /**
+    * Abstract Car class with all the information for a Car
+    */
 public abstract class Car {
 
     /**

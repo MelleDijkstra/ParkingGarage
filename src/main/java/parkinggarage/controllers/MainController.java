@@ -39,7 +39,7 @@ public class MainController extends BaseController {
     private Button btnCredits;
 
     /**
-     * Checking for (and loading) settings file.
+     * Button to start the simulation
      * Sets minimum for iterations.
      * @param actionEvent
      */

@@ -92,7 +92,7 @@ public class SettingsController extends BaseController implements Initializable 
     }
 
     /**
-     *
+     * Checking for (and loading) the Settings file
      */
     private void loadSettings() {
         try {
@@ -164,6 +164,12 @@ public class SettingsController extends BaseController implements Initializable 
     public void cbDayOnChange(ActionEvent actionEvent) {
         setSetting(Settings.DAY, dayToNum(cbDays.getSelectionModel().getSelectedItem()).toString());
     }
+
+    /**
+     * Applying the settings
+     * @param Settings
+     * @param value
+     */
 
     private void setSetting(String Settings, Object value) {
         settings.getProperties().put(Settings, value);
