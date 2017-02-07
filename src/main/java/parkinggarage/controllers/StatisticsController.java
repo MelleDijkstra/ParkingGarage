@@ -31,12 +31,10 @@ public class StatisticsController extends BaseController implements Initializabl
     public PieChart pieCarStats;
 
     @FXML
-    public LineChart lchartCarStats;
+    public LineChart<Number, Number> lchartCarStats;
 
     @FXML
-    public LineChart lchartMoneyStats;
-
-    private static int i = 1;
+    public LineChart<Number, Number> lchartMoneyStats;
 
     @FXML
     public PieChart pieMoneyStats;
@@ -64,12 +62,18 @@ public class StatisticsController extends BaseController implements Initializabl
 
     private Simulation simulation;
 
-    XYChart.Series adhocSeries;
-    XYChart.Series passSeries;
-    XYChart.Series reservedSeries;
-    XYChart.Series adhocMoneySeries;
-    XYChart.Series reservedMoneySeries;
+    // All the different line chart series data
+    private XYChart.Series<Number, Number> adhocSeries;
+    private XYChart.Series<Number, Number> passSeries;
+    private XYChart.Series<Number, Number> reservedSeries;
 
+    private XYChart.Series<Number, Number> adhocMoneySeries;
+    private XYChart.Series<Number, Number> reservedMoneySeries;
+
+    /**
+     * Sets the simulation for this controller
+     * @param simulation The simulation instance
+     */
     public void setSimulation(Simulation simulation) {
         this.simulation = simulation;
     }
@@ -85,6 +89,9 @@ public class StatisticsController extends BaseController implements Initializabl
         updateTextStatistics();
     }
 
+    /**
+     * Update pie chart
+     */
     private void updateMobilityPieChart() {
         HashMap<Garage.CarType, Integer> carStats = simulation.getGarage().getMobilityStats();
         ObservableList<PieChart.Data> stats = FXCollections.observableArrayList(
@@ -97,6 +104,9 @@ public class StatisticsController extends BaseController implements Initializabl
         stats.forEach(data -> data.nameProperty().bind(Bindings.concat(data.getName(), " ", data.pieValueProperty())));
     }
 
+    /**
+     * Update line chart
+     */
     private void updateMoneyLineChart() {
         HashMap<Garage.CarType, Double> carMoneyLineChartStats = simulation.getGarage().getMoneyStats();
         if(i % 5 == 0) {
@@ -107,16 +117,14 @@ public class StatisticsController extends BaseController implements Initializabl
         i++;
     }
 
+    /**
+     * Update line chart
+     */
     private void updateMobilityLineChart() {
         HashMap<Garage.CarType, Integer> carStats = simulation.getGarage().getMobilityStats();
-        if(i % 5 == 0) {
-
-            adhocSeries.getData().add(new XYChart.Data(adhocSeries.getData().size()+1, carStats.get(Garage.CarType.AD_HOC)));
-            passSeries.getData().add(new XYChart.Data(passSeries.getData().size()+1, carStats.get(Garage.CarType.PASS)));
-            reservedSeries.getData().add(new XYChart.Data(reservedSeries.getData().size()+1, carStats.get(Garage.CarType.RESERVED)));
-        }
-        i++;
-
+        adhocSeries.getData().add(new XYChart.Data<>(adhocSeries.getData().size()+1, carStats.get(Garage.CarType.AD_HOC)));
+        passSeries.getData().add(new XYChart.Data<>(passSeries.getData().size()+1, carStats.get(Garage.CarType.PASS)));
+        reservedSeries.getData().add(new XYChart.Data<>(reservedSeries.getData().size()+1, carStats.get(Garage.CarType.RESERVED)));
     }
 
     @Override
@@ -125,14 +133,17 @@ public class StatisticsController extends BaseController implements Initializabl
         initLineCharts();
     }
 
+    /**
+     * Initializes the charts
+     */
     private void initLineCharts() {
         //Prepare XYChart.Series objects by setting data
-        adhocSeries = new XYChart.Series();
-        passSeries = new XYChart.Series();
-        reservedSeries = new XYChart.Series();
+        adhocSeries = new XYChart.Series<>();
+        passSeries = new XYChart.Series<>();
+        reservedSeries = new XYChart.Series<>();
 
-        adhocMoneySeries = new XYChart.Series();
-        reservedMoneySeries = new XYChart.Series();
+        adhocMoneySeries = new XYChart.Series<>();
+        reservedMoneySeries = new XYChart.Series<>();
 
         adhocSeries.setName("AdHocCar");
         passSeries.setName("Pass");
@@ -150,10 +161,14 @@ public class StatisticsController extends BaseController implements Initializabl
     }
 
     private void initPieCharts() {
-        pieCarStats.setAnimated(false);
-        pieMoneyStats.setAnimated(false);
+        // initialize the pie charts
     }
 
+    /**
+     * Set the colors for the pieChart data
+     * @param pieChartData The data
+     * @param pieColors The colors
+     */
     private void applyCustomColorSequence(ObservableList<PieChart.Data> pieChartData, String... pieColors) {
         int i = 0;
         for (PieChart.Data data : pieChartData) {
@@ -164,6 +179,9 @@ public class StatisticsController extends BaseController implements Initializabl
         }
     }
 
+    /**
+     * Updates the money chart
+     */
     private void updateMoneyPieChart() {
         HashMap<Garage.CarType, Double> carMoneyStats = simulation.getGarage().getMoneyStats();
         ObservableList<PieChart.Data> stats = FXCollections.observableArrayList(

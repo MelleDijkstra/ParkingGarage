@@ -12,11 +12,11 @@ public class DatabaseConnection {
 
     // JDBC driver name and database URL
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost/cheery";
+    static final String DB_URL = "jdbc:mysql://inventc.nl/inventc_nl_parking";
 
     //  Database credentials
-    static final String USER = "root";
-    static final String PASS = "";
+    static final String USER = "inven_nl_parking";
+    static final String PASS = "4hc9HH4MgozU";
 
     public DatabaseConnection() {
         try {
@@ -30,13 +30,13 @@ public class DatabaseConnection {
             // Execute query
             System.out.println("Create statement");
             Statement stmt = connection.createStatement();
-            String sql = "SELECT * FROM users;";
+            String sql = "SELECT * FROM reservation;";
             System.out.println("Executing statement");
             ResultSet rs = stmt.executeQuery(sql);
             System.out.println("Gathering resultset:");
 
             while(rs.next()) {
-                System.out.println("\t"+rs.getString("firstname"));
+                System.out.println("\t"+rs.getString("name"));
             }
 
             System.out.println("DONE");
