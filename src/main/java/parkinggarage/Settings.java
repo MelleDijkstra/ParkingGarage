@@ -6,14 +6,16 @@ import java.io.*;
 import java.util.Properties;
 
 /**
- * Created by Bjorn on 2/1/2017.
+ * This settings file has all the specifications for the simulation.
+ * It is a Singleton class so that the settings are only loaded once!
+ * Created by Melle/Bjorn on 2/1/2017.
  */
 public class Settings {
 
     private static Settings instance;
 
     private Properties properties = new Properties();
-    public static final String settingsFile = "settings.ini";
+    public static final String settingsFile = "./settings.ini";
 
     public static final String PRICE_PER_MINUTE = "price_per_minute";
     public static final String RESERVED_FLOOR = "reserved_floor";
@@ -24,7 +26,9 @@ public class Settings {
 
     private Settings() throws IOException {
         properties = new Properties();
-        properties.load(new FileInputStream(settingsFile));
+        File sFile = new File(settingsFile);
+        if(!sFile.exists()) sFile.createNewFile();
+        properties.load(new FileInputStream(sFile));
     }
 
     public void save() throws IOException {
