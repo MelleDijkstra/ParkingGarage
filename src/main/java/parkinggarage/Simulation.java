@@ -29,12 +29,12 @@ public class Simulation {
     private Double price_per_minute = 0.24;
 
     // average number of arriving cars per hour
-    private Integer weekDayArrivals = 100;
-    private Integer weekendArrivals = 200;
-    private Integer weekDayPassArrivals = 50;
-    private Integer weekendPassArrivals = 15;
-    private Integer weekDayReservedArrivals = 33;
-    private Integer weekendReservedArrivals = 50;
+    private Integer weekDayArrivals = 250;
+    private Integer weekendArrivals = 300;
+    private Integer weekDayPassArrivals = 120;
+    private Integer weekendPassArrivals = 150;
+    private Integer weekDayReservedArrivals = 330;
+    private Integer weekendReservedArrivals = 500;
 
     /**
      * The amount of waiting time for each iteration
@@ -167,13 +167,9 @@ public class Simulation {
         // Get the average number of cars that arrive per hour.
         int averageNumberOfCarsPerHour;
 
-        if(day == 7 && hour >= 12 && hour < 18) {
+        if((day == 7 && hour >= 12 && hour < 18) || (day >= 4 && hour > 18)) {
             averageNumberOfCarsPerHour = avgCarsWeekend;
-        }
-        else if(day >= 4 && hour > 18) {
-            averageNumberOfCarsPerHour = avgCarsWeekend;
-        }
-        else {
+        } else {
             averageNumberOfCarsPerHour = avgCarsWeekDay;
         }
 

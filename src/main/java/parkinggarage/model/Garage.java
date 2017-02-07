@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Random;
 
 /**
  * This Garage Class contains all information and logic for the Cars in the Garage.
@@ -49,10 +50,17 @@ public class Garage {
      */
     private Location[][][] locations;
 
+    /**
+     * Creates a Garage object
+     * @param floors The number of floors for the garage
+     * @param rows Number of rows per floor
+     * @param places Number of places for each floor
+     */
     public Garage(int floors, int rows, int places) {
         this.floors = floors;
         this.rows = rows;
         this.places = places;
+        processSettings();
         locations = new Location[floors][rows][places];
         initializeLocations();
         entranceCarQueue = new LinkedList<>();
@@ -60,7 +68,6 @@ public class Garage {
         paymentCarQueue = new LinkedList<>();
         exitCarQueue = new LinkedList<>();
         this.openSpots = this.floors * this.rows * this.places;
-        processSettings();
     }
 
     private void processSettings() {
@@ -76,11 +83,11 @@ public class Garage {
         // floors
         for(int f = 0; f < locations.length; f++) {
             // rows
-            for(int r = 0; r < locations[f].length;r++) {
+            for(int r = 0; r < locations[f].length; r++) {
                 // places
                 for(int p = 0; p < locations[f][r].length; p++) {
                     locations[f][r][p] = new Location(f,r,p);
-                    if(r == 0 && p % 2 == 0) locations[f][r][p].setReserved();
+                    if(f == reservedFloor) locations[f][r][p].setReserved();
                 }
             }
         }
@@ -127,22 +134,32 @@ public class Garage {
 
     public void addArrivingCars(int numberOfCars, CarType type) {
         // Add the cars to the back of the queue.
-        switch (type) {
-            case AD_HOC:
-                for (int i = 0; i < numberOfCars; i++) {
-                    entranceCarQueue.add(new AdHocCar());
-                }
-                break;
-            case PASS:
-                for (int i = 0; i < numberOfCars; i++) {
-                    entrancePassQueue.add(new ParkingPassCar());
-                }
-                break;
-            case RESERVED:
-                for (int i = 0; i < numberOfCars; i++) {
-                    entrancePassQueue.add(new ReservedCar());
-                }
-                break;
+        Random r = new Random();
+        for(int i = 0; i < numberOfCars; i++) {
+            // the change someone drives away because the queue is too long
+            double entranceChange = 100 - (entranceCarQueue.size() * 1.10);
+            double entrancePassChange = 100 - (entrancePassQueue.size() * 1.10);
+            System.out.println("entrance change: "+Math.round(entranceChange)+"% - entrance pass: "+Math.round(entrancePassChange)+"%");
+            switch (type) {
+                case AD_HOC:
+                    System.out.println("change for entering: "+entranceChange);
+                    if(r.nextInt(100) <= entranceChange) {
+                        entranceCarQueue.add(new AdHocCar());
+                    } else {
+                        // The car left because the queue was to big
+                        // TODO: handle leaving cars when queue to big, (maybe add to statistics)
+                        System.out.println("Car left :(");
+                    }
+                    break;
+                case PASS:
+                    if(r.nextInt(100) <= entrancePassChange)
+                        entrancePassQueue.add(new ParkingPassCar());
+                    break;
+                case RESERVED:
+                    if(r.nextInt(100) <= entrancePassChange)
+                        entrancePassQueue.add(new ReservedCar());
+                    break;
+            }
         }
     }
 
@@ -244,6 +261,22 @@ public class Garage {
      * @return The first free location
      */
     public Location getFirstFreeLocation(boolean includeReservedSpace) {
+        // TODO: make only 1 loop instead of 2 loops (which is needed now so reserved space is chosen first before normal places)
+        if(includeReservedSpace) {
+            // If reserved space needs to be checked first
+            for(int f = 0; f < locations.length; f++) {
+                for (int r = 0; r < locations[f].length; r++) {
+                    for (int p = 0; p < locations[f][r].length; p++) {
+                        Location location = locations[f][r][p];
+                        // check if there is no car on this location and it is reserved
+                        if(location.getCar() == null && location.isReserved()) {
+                            return location;
+                        }
+                    }
+                }
+            }
+        }
+        // go through garage again to check for normal places
         for(int f = 0; f < locations.length; f++) {
             for (int r = 0; r < locations[f].length; r++) {
                 for (int p = 0; p < locations[f][r].length; p++) {

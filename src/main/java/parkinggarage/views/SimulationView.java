@@ -21,7 +21,7 @@ import java.util.Map;
  * The view where the simulation takes place
  */
 public class SimulationView extends JFrame implements KeyListener {
-    private StatisticsScreen statisticsScreen = null;
+    private StatisticsScreen statisticsScreen;
     private CarParkView carParkView;
 
     // private StatisticsScreen statisticsScreen;
@@ -54,21 +54,23 @@ public class SimulationView extends JFrame implements KeyListener {
         btnStatistics.addActionListener(e -> {
             // Open statistics screen
             // this is needed to open a JavaFX window in swing (it should be opened on JavaFX thread)
-            Platform.runLater(() -> {
-                // TODO: refactor that the view doesn't open a new view, but let a controller do the work
-                try {
-                    statisticsScreen = new StatisticsScreen(simulation);
-                    statisticsScreen.show();
-                } catch (NullPointerException i) {
-                    System.out.println("Statistics file not found");
-                    new Alert(Alert.AlertType.ERROR, "Layout file not found").show();
-                    i.printStackTrace();
-                } catch (IOException i) {
-                    System.out.println("Something went wrong");
-                    new Alert(Alert.AlertType.ERROR, "FXML not valid").show();
-                    i.printStackTrace();
-                }
-            });
+            if(statisticsScreen == null) {
+                Platform.runLater(() -> {
+                    // TODO: refactor that the view doesn't open a new view, but let a controller do the work
+                    try {
+                        statisticsScreen = new StatisticsScreen(simulation);
+                        statisticsScreen.show();
+                    } catch (NullPointerException i) {
+                        System.out.println("Statistics file not found");
+                        new Alert(Alert.AlertType.ERROR, "Layout file not found").show();
+                        i.printStackTrace();
+                    } catch (IOException i) {
+                        System.out.println("Something went wrong");
+                        new Alert(Alert.AlertType.ERROR, "FXML not valid").show();
+                        i.printStackTrace();
+                    }
+                });
+            }
         });
         contentPane.add(btnStatistics, BorderLayout.NORTH);
         //bottomPanel.add(btnStatistics);
