@@ -1,6 +1,5 @@
 package parkinggarage.views;
 
-import javafx.scene.layout.AnchorPane;
 import parkinggarage.Simulation;
 import parkinggarage.controllers.StatisticsController;
 
@@ -44,5 +43,15 @@ public class StatisticsScreen extends BaseScreen {
     public void updateView() {
         // TODO: view should not update controller
         ((StatisticsController)controller).update();
+    }
+
+    @Override
+    public int getWidth() {
+        return 1000;
+    }
+
+    @Override
+    public int getHeight() {
+        return 500;
     }
 }

@@ -28,7 +28,7 @@
             <PieChart fx:id="pieMoneyStats" animated="false" legendVisible="false" title="PieChart"
                       GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS"/>
 
-            <LineChart fx:id="lchartMoneyStats" GridPane.hgrow="ALWAYS" animated="false" prefWidth="548.0" title="Money per car"
+            <LineChart fx:id="lchartMoneyStats" GridPane.hgrow="ALWAYS" title="Money per car"
                        GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                 <xAxis>
                     <NumberAxis  upperBound="1000" label="Ticks" side="BOTTOM"/>

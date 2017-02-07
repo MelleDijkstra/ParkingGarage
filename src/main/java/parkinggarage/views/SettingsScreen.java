@@ -13,6 +13,7 @@ public class SettingsScreen extends BaseScreen {
 
     public SettingsScreen() throws IOException {
         super();
+        this.mainStage.setResizable(false);
     }
 
     @Override
