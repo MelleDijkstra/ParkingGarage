@@ -109,12 +109,8 @@ public class StatisticsController extends BaseController implements Initializabl
      */
     private void updateMoneyLineChart() {
         HashMap<Garage.CarType, Double> carMoneyLineChartStats = simulation.getGarage().getMoneyStats();
-        if(i % 5 == 0) {
-            adhocMoneySeries.getData().add(new XYChart.Data(adhocMoneySeries.getData().size()+1, carMoneyLineChartStats.get(Garage.CarType.AD_HOC)));
-            reservedMoneySeries.getData().add(new XYChart.Data(reservedMoneySeries.getData().size()+1, carMoneyLineChartStats.get(Garage.CarType.RESERVED)));
-
-        }
-        i++;
+        adhocMoneySeries.getData().add(new XYChart.Data<>(adhocMoneySeries.getData().size()+1, carMoneyLineChartStats.get(Garage.CarType.AD_HOC)));
+        reservedMoneySeries.getData().add(new XYChart.Data<>(reservedMoneySeries.getData().size()+1, carMoneyLineChartStats.get(Garage.CarType.RESERVED)));
     }
 
     /**
