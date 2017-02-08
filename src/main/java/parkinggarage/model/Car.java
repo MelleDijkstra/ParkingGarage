@@ -3,10 +3,11 @@ package parkinggarage.model;
 import parkinggarage.Settings;
 
 import java.awt.*;
+import java.io.IOException;
 
-/**
- * Abstract Car class with all the information for a Car
- */
+    /**
+    * Abstract Car class with all the information for a Car
+    */
 public abstract class Car {
 
     /**
@@ -36,14 +37,18 @@ public abstract class Car {
 
     public Car() {
         stayingMinutes = minutesLeft = this.startingMinutes();
+        processSettings();
     }
 
     /**
-     * Constructor for objects of class parkinggarage.model.Car
+     * Process the settings for every Car
      */
-    public Car(Settings settings) {
-        this();
-        pricePerMinute = settings.getSetting(Settings.PRICE_PER_MINUTE, pricePerMinute);
+    protected void processSettings() {
+        try {
+            pricePerMinute = Settings.Instance().getSetting(Settings.PRICE_PER_MINUTE, pricePerMinute);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

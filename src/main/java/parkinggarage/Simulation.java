@@ -3,6 +3,8 @@ package parkinggarage;
 import parkinggarage.model.Garage;
 import parkinggarage.views.SimulationView;
 
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -31,12 +33,12 @@ public class Simulation {
 
     // average number of arriving cars per hour
     // TODO: store in more efficient way (List maybe?)
-    private Integer weekDayArrivals = 100;
-    private Integer weekendArrivals = 200;
-    private Integer weekDayPassArrivals = 50;
-    private Integer weekendPassArrivals = 15;
-    private Integer weekDayReservedArrivals = 33;
-    private Integer weekendReservedArrivals = 50;
+    private Integer weekDayArrivals = 250;
+    private Integer weekendArrivals = 300;
+    private Integer weekDayPassArrivals = 120;
+    private Integer weekendPassArrivals = 150;
+    private Integer weekDayReservedArrivals = 330;
+    private Integer weekendReservedArrivals = 500;
 
     /**
      * The amount of waiting time for each iteration
@@ -64,7 +66,7 @@ public class Simulation {
      */
     public Simulation(int iterations) {
         iterationCount = iterations;
-        garage = new Garage(3, 6, 28, 1);
+        garage = new Garage(3, 6, 28);
         simulationView = new SimulationView(this);
     }
 
@@ -83,18 +85,22 @@ public class Simulation {
      * Makes sure all settings are set which are given
      */
     private void processSettings() {
-        if(settings != null) {
+        try{
+            Settings settings = Settings.Instance();
+
             day     = settings.getSetting(Settings.DAY, day);
             hour    = settings.getSetting(Settings.HOUR, hour);
             minute  = settings.getSetting(Settings.MINUTE, minute);
             price_per_minute = settings.getSetting(Settings.PRICE_PER_MINUTE, price_per_minute);
 
-            garage.setReservedFloor(settings.getSetting(Settings.RESERVED_FLOOR, garage.getReservedFloor()));
+            //garage.setReservedFloor(settings.getSetting(Settings.RESERVED_FLOOR, garage.getReservedFloor()));
 
 //        weekDayArrivals = (settings.getProperty("weekDayArrivals") != null) ? Integer.parseInt(settings.get("weekDayArrivals").toString()) : weekDayArrivals;
 //        weekDayPassArrivals = (settings.getProperty("weekDayPassArrivals") != null) ? Integer.parseInt(settings.get("weekDayPassArrivals").toString()) : weekDayPassArrivals;
 //        weekendArrivals = (settings.getProperty("weekendArrivals") != null) ? Integer.parseInt(settings.get("weekendArrivals").toString()) : weekendArrivals;
 //        weekendPassArrivals = (settings.getProperty("weekendPassArrivals") != null) ? Integer.parseInt(settings.get("weekendPassArrivals").toString()) : weekendPassArrivals;
+        } catch (IOException e) {
+            System.out.println("Simulation could not load settings");
         }
     }
 
@@ -112,10 +118,10 @@ public class Simulation {
             if(this.stop) break;
         }
         long timeTaken = (System.currentTimeMillis() - startTime);
-        System.out.println(String.format("SIMULATION DONE - time in minutes: %d:%d - earned: %f",
+        System.out.println(String.format("SIMULATION DONE - time in minutes: %d:%d - earned: €%s",
                 TimeUnit.MILLISECONDS.toMinutes(timeTaken),
                 TimeUnit.MILLISECONDS.toSeconds(timeTaken),
-                garage.getIncome()));
+                new BigDecimal(garage.getIncome()).setScale(2,BigDecimal.ROUND_HALF_UP)));
     }
 
     /**
@@ -129,6 +135,7 @@ public class Simulation {
         carsArriving();
         garage.handleEntrance();
         updateViews();
+        // Pause.
         try {
             Thread.sleep(tickPause);
         } catch (InterruptedException e) {
@@ -177,13 +184,9 @@ public class Simulation {
         // Get the average number of cars that arrive per hour.
         int averageNumberOfCarsPerHour;
 
-        if(day == 7 && hour >= 12 && hour < 18) {
+        if((day == 7 && hour >= 12 && hour < 18) || (day >= 4 && hour > 18)) {
             averageNumberOfCarsPerHour = avgCarsWeekend;
-        }
-        else if(day >= 4 && hour > 18) {
-            averageNumberOfCarsPerHour = avgCarsWeekend;
-        }
-        else {
+        } else {
             averageNumberOfCarsPerHour = avgCarsWeekDay;
         }
 
@@ -205,11 +208,6 @@ public class Simulation {
         this.tickPause = tickPause;
     }
 
-    public void setWeekdayArrivingCars(int arrivingCars) {
-        this.weekDayArrivals = arrivingCars;
-
-    }
-
     public Garage getGarage() {
         return garage;
     }
@@ -225,6 +223,14 @@ public class Simulation {
         if(simulationView.isShowing()) {
             simulationView.setVisible(false);
         }
+    }
+
+    /**
+     * Retrieve the current iterationCount
+     * @return The current iteration
+     */
+    public int getCurrentIteration() {
+        return currentIteration;
     }
 
     public void setWeekDayArrivals(Integer weekDayArrivals) {

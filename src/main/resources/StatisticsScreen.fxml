@@ -3,85 +3,190 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.control.Label?>
-<TabPane id="pane" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.112"
-         xmlns:fx="http://javafx.com/fxml/1" fx:controller="parkinggarage.controllers.StatisticsController">
+<TabPane id="pane" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parkinggarage.controllers.StatisticsController">
     <Tab text="Money">
         <GridPane>
             <columnConstraints>
-                <ColumnConstraints percentWidth="50" hgrow="ALWAYS"/>
-                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />
+                <ColumnConstraints hgrow="ALWAYS" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints/>
-                <RowConstraints/>
+                <RowConstraints />
+                <RowConstraints />
             </rowConstraints>
 
-            <PieChart fx:id="pieMoneyStats" animated="false" legendVisible="false" title="PieChart"
-                      GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS"/>
+            <PieChart fx:id="pieMoneyStats" animated="false" legendVisible="false" title="Money per car" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
 
-            <LineChart GridPane.hgrow="ALWAYS" animated="false" prefWidth="548.0" title="Money per car"
-                       GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+            <LineChart fx:id="lchartMoneyStats" animated="false" title="Money per car" GridPane.columnSpan="2147483647" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                 <xAxis>
-                    <NumberAxis side="BOTTOM"/>
+                    <NumberAxis label="Ticks" side="BOTTOM" upperBound="1000" />
                 </xAxis>
                 <yAxis>
-                    <NumberAxis side="LEFT"/>
+                    <NumberAxis label="Amount of Money" side="LEFT" upperBound="500" />
                 </yAxis>
             </LineChart>
 
-            <FlowPane orientation="VERTICAL" GridPane.columnIndex="1">
-                <Text>Some text</Text>
-            </FlowPane>
-
+            <GridPane alignment="CENTER" hgap="10.0" vgap="10.0" GridPane.columnIndex="1">
+                <Label text="Money in Garage">
+                    <font>
+                        <Font name="System Bold" size="17.0" />
+                    </font>
+                </Label>
+                <Label text="Total money adhoc cars:" GridPane.rowIndex="1">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Label>
+                <Text fx:id="txtMoneyAdhoc" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Text>
+                <Label text="Total money reserved cars:" GridPane.rowIndex="2">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Label>
+                <Text fx:id="txtMoneyReserved" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Text>
+                <Label text="Total money all cars:" GridPane.rowIndex="3">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Label>
+                <Text fx:id="txtMoneyTotal" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Text>
+                <Label text="Money in Queues" GridPane.rowIndex="4">
+                    <font>
+                        <Font name="System Bold" size="17.0" />
+                    </font>
+                </Label>
+                <Label text="Money of adhoc cars in queue:" GridPane.rowIndex="5">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Label>
+                <Text fx:id="txtPotentialAdhocQueueMoney" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Text>
+                <Label text="Money of reserved cars in queue:" GridPane.rowIndex="6">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Label>
+                <Text fx:id="txtPotentialReservedQueueMoney" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Text>
+                <Label text="Money of cars in queue:" GridPane.rowIndex="7">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Label>
+                <Text fx:id="txtPotentialTotalQueueMoney" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Text>
+                <columnConstraints>
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+               <RowConstraints />
+                </rowConstraints>
+            </GridPane>
         </GridPane>
     </Tab>
     <Tab text="Mobility">
         <GridPane>
             <columnConstraints>
-                <ColumnConstraints percentWidth="50" hgrow="ALWAYS"/>
-                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="50" />
+                <ColumnConstraints hgrow="ALWAYS" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints/>
-                <RowConstraints/>
+                <RowConstraints />
+                <RowConstraints />
             </rowConstraints>
 
-            <PieChart fx:id="pieCarStats"
-                      animated="false"
-                      legendVisible="false"
-                      title="Car Mobility"
-                      GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS"/>
+            <PieChart fx:id="pieCarStats" animated="false" legendVisible="false" title="Car Mobility" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
 
-            <LineChart fx:id="lchartCarStats"
-                       animated="false"
-                       title="Number of cars in garage per type"
-                       xAxis="Ticks"
-                       yAxis="Amount of Cars"
-                       GridPane.columnSpan="2147483647" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+            <LineChart fx:id="lchartCarStats" animated="false" GridPane.columnSpan="2147483647" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                 <xAxis>
-                    <NumberAxis label="Ticks" side="BOTTOM" upperBound="1000"/>
+                    <NumberAxis label="Ticks" side="BOTTOM" upperBound="1000" />
                 </xAxis>
                 <yAxis>
-                    <NumberAxis label="Number of cars" side="LEFT" upperBound="500"/>
+                    <NumberAxis label="Number of Cars" side="LEFT" upperBound="500" />
                 </yAxis>
             </LineChart>
 
-            <GridPane GridPane.columnIndex="1">
-
-                <Label GridPane.columnIndex="0">Label: </Label>
-                <Text GridPane.columnIndex="1">500</Text>
-                <Label GridPane.rowIndex="1" GridPane.columnIndex="0">Label: </Label>
-                <Text GridPane.rowIndex="1" GridPane.columnIndex="1">1203</Text>
-
+            <GridPane alignment="CENTER" hgap="10.0" vgap="10.0" GridPane.columnIndex="1">
+                <Label text="Total adhoc Cars:" GridPane.columnIndex="0">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Label>
+                <Text fx:id="txtMobilityAdhoc" GridPane.columnIndex="1">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Text>
+                <Label text="Total pass cars:" GridPane.ColumnIndex="0" GridPane.RowIndex="1">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Label>
+                <Text fx:id="txtMobilityPass" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Text>
+                <Label text="Total reserved cars:" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Label>
+                <Text fx:id="txtMobilityReserved" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Text>
+                <columnConstraints>
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                </rowConstraints>
             </GridPane>
         </GridPane>
     </Tab>
