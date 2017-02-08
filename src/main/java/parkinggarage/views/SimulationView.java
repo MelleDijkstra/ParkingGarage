@@ -253,6 +253,14 @@ public class SimulationView extends JFrame implements KeyListener {
             for (Map.Entry<String, Integer> item : queueStats.entrySet()) {
                 g.drawString(item.getKey() + ": " + Integer.toString(item.getValue()), 20, getHeight() - (20 * i));
                 i++;
+                if(item.getValue() > 10) {
+                    g.setColor(Color.RED);
+                    g.fillPolygon(new int[] {172, 182, 192}, new int[] {getHeight() - (20 * i) + 20 , getHeight() - (20 * i) + 5, getHeight() - (20 * i) + 20 }, 3);
+                    g.setColor(Color.WHITE);
+                    g.fillRect(181, getHeight() - (20 * i) + 10, 2, 5);
+                    g.fillOval(181,getHeight() - (20 * i) + 16, 2, 2);
+                    g.setColor(Color.BLACK);
+                }
             }
         }
 
