@@ -4,10 +4,7 @@ import parkinggarage.Settings;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Random;
+import java.util.*;
 
 /**
  * This Garage Class contains all information and logic for the Cars in the Garage.
@@ -144,7 +141,8 @@ public class Garage {
                 case AD_HOC:
                     System.out.println("change for entering: "+entranceChange);
                     if(r.nextInt(100) <= entranceChange) {
-                        entranceCarQueue.add(new AdHocCar());
+                        // 3% change if the car parks wrong
+                        entranceCarQueue.add(new AdHocCar(r.nextInt(100) <= 3));
                     } else {
                         // The car left because the queue was to big
                         // TODO: handle leaving cars when queue to big, (maybe add to statistics)
@@ -157,7 +155,7 @@ public class Garage {
                     break;
                 case RESERVED:
                     if(r.nextInt(100) <= entrancePassChange)
-                        entrancePassQueue.add(new ReservedCar());
+                        entrancePassQueue.add(new ReservedCar(r.nextInt(100) <= 3));
                     break;
             }
         }

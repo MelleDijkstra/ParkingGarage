@@ -34,10 +34,6 @@ public class SettingsController extends BaseController implements Initializable 
      */
     public void btnApplyOnClick(ActionEvent actionEvent) {
         saveSettings();
-        Alert alert = new Alert(Alert.AlertType.INFORMATION,"",ButtonType.OK);
-        alert.setTitle("Apply Settings");
-        alert.setHeaderText("Your settings have been applied");
-        alert.showAndWait();
     }
 
     private void saveSettings() {
@@ -68,7 +64,7 @@ public class SettingsController extends BaseController implements Initializable 
     }
 
     /**
-     *
+     * Initialize this controller
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {

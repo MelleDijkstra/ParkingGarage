@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import parkinggarage.Simulation;
 import parkinggarage.controllers.SettingsController;
 import parkinggarage.model.Location;
+import parkinggarage.model.Reservation;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
@@ -13,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -190,9 +192,20 @@ public class SimulationView extends JFrame implements KeyListener {
             }
             // Draw the current date
             drawDate(g);
-            g.drawString("Iteration: " + simulation.getCurrentIteration(), 90, 20);
+            drawReservations(g);
+            g.drawString("Iteration: " + simulation.getCurrentIteration(), 100, 20);
             // Draw the queues
             drawQueues(g);
+        }
+
+        private void drawReservations(Graphics g) {
+            int i = 1;
+            for(Reservation reservation : simulation.getReservations()) {
+                if(simulation.getDate()[0] == reservation.getDay()) {
+                    g.drawString(reservation.getName(), getWidth() - 150, getHeight() - (20 * i));
+                    i++;
+                }
+            }
         }
 
         public void updateView() {
@@ -209,10 +222,12 @@ public class SimulationView extends JFrame implements KeyListener {
                 for (int r = 0; r < locations[f].length; r++) {
                     for (int p = 0; p < locations[f][r].length; p++) {
                         Color color;
+                        boolean skewedParker = false;
                         Location location = locations[f][r][p];
                         // Checks if there is a car, if so then the COLOR of that car is given.
                         if (location.getCar() != null) {
                             color = location.getCar().getColor();
+                            skewedParker = location.getCar().isSkewedParker();
                         } else {
                             // Checks if the location is reserved.
                             if (location.isReserved()) {
@@ -221,7 +236,7 @@ public class SimulationView extends JFrame implements KeyListener {
                                 color = Color.WHITE;
                             }
                         }
-                        drawPlace(graphics, location, color);
+                        drawPlace(graphics, location, color, skewedParker);
                     }
                 }
             }
@@ -259,13 +274,25 @@ public class SimulationView extends JFrame implements KeyListener {
         /**
          * Paint a place on this car park view in a given COLOR.
          */
-        private void drawPlace(Graphics graphics, Location location, Color color) {
-            graphics.setColor(color);
-            graphics.fillRect(
-                    location.getFloor() * 260 + (1 + (int) Math.floor(location.getRow() * 0.5)) * 75 + (location.getRow() % 2) * 20,
-                    60 + location.getPlace() * 10,
-                    20 - 1,
-                    8); // TODO use dynamic size or constants
+        private void drawPlace(Graphics graphics, Location location, Color color, boolean skewedParker) {
+            Graphics2D g2d = (Graphics2D)graphics;
+//            // save old translation so it can be reset after drawing
+//            AffineTransform oldRotation = g2d.getTransform();
+//            if(skewedParker) {
+//                g2d.rotate(Math.toRadians(1));
+//            }
+            g2d.setColor(color);
+            int x = location.getFloor() * 260 + (1 + (int) Math.floor(location.getRow() * 0.5)) * 75 + (location.getRow() % 2) * 20;
+            int y = 60 + location.getPlace() * 10;
+            g2d.fillRect(x, y,20 - 1,9); // TODO use dynamic size or constants
+            if(skewedParker) {
+                Color old = g2d.getColor();
+                g2d.setColor(Color.BLACK);
+                g2d.fillPolygon(new int[]{x+5, x+9, x+15}, new int[]{y+7,y+2,y+7}, 3);
+                g2d.setColor(old);
+            }
+            // reset rotation so other cars aren't rotated
+//            g2d.setTransform(oldRotation);
         }
     }
 

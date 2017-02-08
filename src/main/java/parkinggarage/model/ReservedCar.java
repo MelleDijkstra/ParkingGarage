@@ -10,6 +10,10 @@ import java.util.Random;
 public class ReservedCar extends Car {
     public static final Color COLOR = Color.GREEN;
 
+    public ReservedCar(boolean skewedParker) {
+        super(skewedParker);
+    }
+
     @Override
     protected int startingMinutes() {
         Random random = new Random();

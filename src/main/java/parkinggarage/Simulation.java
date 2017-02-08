@@ -1,16 +1,27 @@
 package parkinggarage;
 
+import parkinggarage.db.DatabaseConnection;
 import parkinggarage.model.Garage;
+import parkinggarage.model.Reservation;
 import parkinggarage.views.SimulationView;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Simulation {
 
-    protected Garage garage;
+    /**
+     * The Garage object to use for ths simulation
+     */
+    private Garage garage;
+
+    /**
+     * The database connection to load specific simulation data
+     */
+    DatabaseConnection db;
 
     /**
      * The Simulation View which displays the actual simulation
@@ -57,6 +68,11 @@ public class Simulation {
     private final int iterationCount;
 
     /**
+     * The reservations made for the garage
+     */
+    private ArrayList<Reservation> reservations;
+
+    /**
      * Creates a parking garage simulation
      * @param iterations The amount of iteration to run
      */
@@ -64,7 +80,21 @@ public class Simulation {
         iterationCount = iterations;
         garage = new Garage(3, 6, 28);
         simulationView = new SimulationView(this);
+        reservations = new ArrayList<>();
         processSettings();
+        retrieveReservationsFromDatabase();
+    }
+
+    /**
+     * Retrieves the reservations from the database
+     */
+    private void retrieveReservationsFromDatabase() {
+        // Make connection in a new thread so the simulation can keep running
+        new Thread(() -> {
+            db = new DatabaseConnection();
+            reservations = db.getReservations();
+            db.close();
+        }).start();
     }
 
     /**
@@ -74,9 +104,9 @@ public class Simulation {
         try{
             Settings settings = Settings.Instance();
 
-            day     = settings.getSetting(Settings.DAY, day);
-            hour    = settings.getSetting(Settings.HOUR, hour);
-            minute  = settings.getSetting(Settings.MINUTE, minute);
+            day              = settings.getSetting(Settings.DAY, day);
+            hour             = settings.getSetting(Settings.HOUR, hour);
+            minute           = settings.getSetting(Settings.MINUTE, minute);
             price_per_minute = settings.getSetting(Settings.PRICE_PER_MINUTE, price_per_minute);
 
 //        weekDayArrivals = (settings.getProperty("weekDayArrivals") != null) ? Integer.parseInt(settings.get("weekDayArrivals").toString()) : weekDayArrivals;
@@ -115,6 +145,7 @@ public class Simulation {
     private void tick() {
         advanceTime();
         garage.handleExit();
+        checkReservations();
         carsArriving();
         garage.handleEntrance();
         updateViews();
@@ -150,6 +181,22 @@ public class Simulation {
         while (day > 6) {
             day -= 7;
         }
+    }
+
+    /**
+     * Checks if spots should be reserved before any reservations come in
+     */
+    public void checkReservations() {
+        // TODO: check if any reservations need to be made
+        // TODO: Locations should be reserved for an amount of time not unlimited
+    }
+
+    /**
+     * Retrieve reservations currently in simulation
+     * @return The reservations
+     */
+    public ArrayList<Reservation> getReservations() {
+        return reservations;
     }
 
     private void carsArriving() {

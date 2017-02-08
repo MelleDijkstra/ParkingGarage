@@ -9,7 +9,8 @@ import java.util.Random;
 public class AdHocCar extends Car {
     private static final Color COLOR = Color.red;
 
-    public AdHocCar() {
+    public AdHocCar(boolean skewedParker) {
+        super(skewedParker);
         this.setHasToPay(true);
     }
 

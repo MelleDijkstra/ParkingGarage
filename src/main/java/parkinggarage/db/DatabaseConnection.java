@@ -1,6 +1,9 @@
 package parkinggarage.db;
 
+import parkinggarage.model.Reservation;
+
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * Created by melle on 3-2-2017.
@@ -8,42 +11,23 @@ import java.sql.*;
 public class DatabaseConnection {
 
     // The connection to the database
-    Connection connection = null;
+    public Connection connection;
 
     // JDBC driver name and database URL
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://inventc.nl/inventc_nl_parking";
+    static final String DB_URL = "jdbc:mysql://13.94.252.194/c10_parkinggarage";
 
     //  Database credentials
-    static final String USER = "inven_nl_parking";
-    static final String PASS = "4hc9HH4MgozU";
+    static final String USER = "c10_silvan";
+    static final String PASS = "parkinggarage";
 
     public DatabaseConnection() {
         try {
             // Load the JDBC DRIVER
             Class.forName(JDBC_DRIVER);
-
             // Open a connection
-            System.out.println("Connecting to database");
+            System.out.println("-- Connecting to database --");
             connection = DriverManager.getConnection(DB_URL, USER, PASS);
-
-            // Execute query
-            System.out.println("Create statement");
-            Statement stmt = connection.createStatement();
-            String sql = "SELECT * FROM reservation;";
-            System.out.println("Executing statement");
-            ResultSet rs = stmt.executeQuery(sql);
-            System.out.println("Gathering resultset:");
-
-            while(rs.next()) {
-                System.out.println("\t"+rs.getString("name"));
-            }
-
-            System.out.println("DONE");
-            // Close connections
-            rs.close();
-            stmt.close();
-            connection.close();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
@@ -58,8 +42,37 @@ public class DatabaseConnection {
         }
     }
 
-    public static void main(String[] args) {
-        DatabaseConnection db = new DatabaseConnection();
-    }
+    public ArrayList<Reservation> getReservations() {
+        ArrayList<Reservation> reservations = new ArrayList<>();
+        try {
+            // Execute query
+            Statement stmt = connection.createStatement();
+            String sql = "SELECT * FROM reservation;";
+            System.out.println("Executing: "+sql);
+            ResultSet rs = stmt.executeQuery(sql);
 
+            while(rs.next()) {
+                reservations.add(new Reservation(
+                        rs.getString("name"),
+                        rs.getInt("day"),
+                        rs.getInt("hours"),
+                        rs.getInt("minutes"),
+                        rs.getInt("duration")
+                        ));
+                System.out.println(String.format("\t name:%s day:%d hour:%d min:%d dur:%d",
+                        rs.getString("name"),
+                        rs.getInt("day"),
+                        rs.getInt("hours"),
+                        rs.getInt("minutes"),
+                        rs.getInt("duration")));
+            }
+            // Closing resources
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+        return reservations;
+    }
 }
