@@ -1,5 +1,7 @@
 package parkinggarage.model;
 
+import javafx.scene.control.Alert;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedList;

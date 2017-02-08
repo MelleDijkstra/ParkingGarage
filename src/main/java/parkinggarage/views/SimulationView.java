@@ -20,12 +20,15 @@ import java.util.Map;
 /**
  * The view where the simulation takes place
  */
+
+
 public class SimulationView extends JFrame implements KeyListener {
     private StatisticsScreen statisticsScreen = null;
     private CarParkView carParkView;
 
     // private StatisticsScreen statisticsScreen;
     private Simulation simulation;
+
 
     public SimulationView(Simulation simulation) {
         this.simulation = simulation;
@@ -38,17 +41,83 @@ public class SimulationView extends JFrame implements KeyListener {
         contentPane.setLayout(new BorderLayout(5,5));
         contentPane.add(carParkView, BorderLayout.CENTER);
 
-        //JPanel bottomPanel = new JPanel(new SpringLayout());
+        Container rightPane = getContentPane();
+        rightPane.setLayout(new BorderLayout(5,5));
+        rightPane.add(carParkView, BorderLayout.LINE_START);
 
-        JSlider slider = new JSlider(100,1000,100);
-        slider.setMinorTickSpacing(1);
-        slider.setMajorTickSpacing(5);
-        slider.setPaintTicks(true);
-        slider.setPaintLabels(true);
-        slider.setLabelTable(slider.createStandardLabels(50));
-        slider.addChangeListener(changeListener);
-        contentPane.add(slider, BorderLayout.SOUTH);
-        //bottomPanel.add(slider);
+        JPanel sliderPane = new JPanel();
+        sliderPane.setLayout(new BoxLayout(sliderPane, BoxLayout.Y_AXIS));
+        sliderPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 50));
+
+        /*
+         * Make multiple JSliders for settings
+         * tickSlider is the slider for the amount of ticks
+         * carsSLider is the slider fot the amount of cars entering
+         */
+
+        HashMap<String, JSlider> sliders = new HashMap<String, JSlider>() {{
+            put("Adhoc slider",                 new JSlider(0,100));
+            put("ParkingPassCar slider",        new JSlider(0,100));
+            put("ReservedCar slider",           new JSlider(0,100));
+            put("Adhoc weekend slider",         new JSlider(0,100));
+            put("ParkingPass weekend slider",   new JSlider(0,100));
+            put("Reserved weekend slider",      new JSlider(0,100));
+        }};
+
+        int j = 0;
+
+        for(Map.Entry<String, JSlider> entry : sliders.entrySet()) {
+            JSlider slider = entry.getValue();
+            // Generate label
+            JLabel label = new JLabel(entry.getKey());
+            // Initialize JSlider
+            int finalJ = j;
+            slider.addChangeListener(e -> {
+                switch(finalJ) {
+                    case 0:
+                        simulation.setWeekdayArrivingCars(slider.getValue());
+                        break;
+                    case 1:
+                        simulation.setWeekDayPassArrivals(slider.getValue());
+                        break;
+                    case 2:
+                        simulation.setWeekDayReservedArrivals(slider.getValue());
+                        break;
+                    case 3:
+                        simulation.setWeekendArrivals(slider.getValue());
+                        break;
+                    case 4:
+                        simulation.setWeekendPassArrivals(slider.getValue());
+                        break;
+                    case 5:
+                        simulation.setWeekendReservedArrivals(slider.getValue());
+                        break;
+                }
+            });
+            slider.setMinorTickSpacing(1);
+            slider.setMajorTickSpacing(5);
+            slider.setPaintTicks(true);
+            slider.setPaintLabels(true);
+            slider.setLabelTable(slider.createStandardLabels(50));
+
+            sliderPane.add(label);
+            sliderPane.add(entry.getValue());
+            j++;
+        }
+
+
+        JSlider tickSlider = new JSlider(100,1000,100);
+        tickSlider.setMinorTickSpacing(1);
+        tickSlider.setMajorTickSpacing(5);
+        tickSlider.setPaintTicks(true);
+        tickSlider.setPaintLabels(true);
+        tickSlider.setLabelTable(tickSlider.createStandardLabels(50));
+        tickSlider.addChangeListener(tickChangeListener);
+
+        contentPane.add(tickSlider, BorderLayout.SOUTH);
+        rightPane.add(sliderPane);
+
+
 
         JButton btnStatistics = new JButton("Statistics");
         btnStatistics.addActionListener(e -> {
@@ -112,9 +181,14 @@ public class SimulationView extends JFrame implements KeyListener {
         public void windowDeactivated(WindowEvent e) {}
     };
 
-    private ChangeListener changeListener = e -> {
+    private ChangeListener tickChangeListener = e -> {
         JSlider slider = (JSlider)e.getSource();
         simulation.setTickPause(slider.getValue());
+    };
+
+    private ChangeListener carsChangeListener = e -> {
+        JSlider slider = (JSlider)e.getSource();
+        simulation.setWeekdayArrivingCars(slider.getValue());
     };
 
     public void updateView() {

@@ -30,6 +30,7 @@ public class Simulation {
     private Double price_per_minute = 0.24;
 
     // average number of arriving cars per hour
+    // TODO: store in more efficient way (List maybe?)
     private Integer weekDayArrivals = 100;
     private Integer weekendArrivals = 200;
     private Integer weekDayPassArrivals = 50;
@@ -204,6 +205,11 @@ public class Simulation {
         this.tickPause = tickPause;
     }
 
+    public void setWeekdayArrivingCars(int arrivingCars) {
+        this.weekDayArrivals = arrivingCars;
+
+    }
+
     public Garage getGarage() {
         return garage;
     }
@@ -221,4 +227,27 @@ public class Simulation {
         }
     }
 
+    public void setWeekDayArrivals(Integer weekDayArrivals) {
+        this.weekDayArrivals = weekDayArrivals;
+    }
+
+    public void setWeekendArrivals(Integer weekendArrivals) {
+        this.weekendArrivals = weekendArrivals;
+    }
+
+    public void setWeekDayPassArrivals(Integer weekDayPassArrivals) {
+        this.weekDayPassArrivals = weekDayPassArrivals;
+    }
+
+    public void setWeekendPassArrivals(Integer weekendPassArrivals) {
+        this.weekendPassArrivals = weekendPassArrivals;
+    }
+
+    public void setWeekDayReservedArrivals(Integer weekDayReservedArrivals) {
+        this.weekDayReservedArrivals = weekDayReservedArrivals;
+    }
+
+    public void setWeekendReservedArrivals(Integer weekendReservedArrivals) {
+        this.weekendReservedArrivals = weekendReservedArrivals;
+    }
 }
