@@ -7,6 +7,9 @@ import parkinggarage.controllers.SettingsController;
 import parkinggarage.model.Location;
 import parkinggarage.model.Reservation;
 
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
@@ -14,8 +17,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.geom.AffineTransform;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -157,6 +160,8 @@ public class SimulationView extends JFrame implements KeyListener {
         private Dimension size;
         private Image carParkImage;
 
+        private boolean wavPlayed;
+
         /**
          * Constructor for objects of class CarPark
          */
@@ -200,8 +205,8 @@ public class SimulationView extends JFrame implements KeyListener {
 
         private void drawReservations(Graphics g) {
             int i = 1;
-            for(Reservation reservation : simulation.getReservations()) {
-                if(simulation.getDate()[0] == reservation.getDay()) {
+            for (Reservation reservation : simulation.getReservations()) {
+                if (simulation.getDate()[0] == reservation.getDay()) {
                     g.drawString(reservation.getName(), getWidth() - 150, getHeight() - (20 * i));
                     i++;
                 }
@@ -268,6 +273,30 @@ public class SimulationView extends JFrame implements KeyListener {
             for (Map.Entry<String, Integer> item : queueStats.entrySet()) {
                 g.drawString(item.getKey() + ": " + Integer.toString(item.getValue()), 20, getHeight() - (20 * i));
                 i++;
+                if (item.getValue() > 10) {
+                    // open the sound file as a Java input streamFile file = new File("clip.wav");
+                    //File file = new File();
+                    //if(file.exists()) {
+                    if(!wavPlayed)
+                        try {
+                            InputStream in = getClass().getResourceAsStream("/warning.wav");
+                            AudioStream audio = new AudioStream(in);
+                            AudioPlayer.player.start(audio);
+                            this.wavPlayed = !this.wavPlayed;
+                        } catch (IOException e) {
+                            System.out.println("File not found");
+                        }
+                    //}
+                    //else {
+                    //    System.out.println("Bavianenvoer");
+                    //}
+                    g.setColor(Color.RED);
+                    g.fillPolygon(new int[]{172, 182, 192}, new int[]{getHeight() - (20 * i) + 20, getHeight() - (20 * i) + 5, getHeight() - (20 * i) + 20}, 3);
+                    g.setColor(Color.WHITE);
+                    g.fillRect(181, getHeight() - (20 * i) + 10, 2, 5);
+                    g.fillOval(181, getHeight() - (20 * i) + 16, 2, 2);
+                    g.setColor(Color.BLACK);
+                }
             }
         }
 
@@ -275,7 +304,7 @@ public class SimulationView extends JFrame implements KeyListener {
          * Paint a place on this car park view in a given COLOR.
          */
         private void drawPlace(Graphics graphics, Location location, Color color, boolean skewedParker) {
-            Graphics2D g2d = (Graphics2D)graphics;
+            Graphics2D g2d = (Graphics2D) graphics;
 //            // save old translation so it can be reset after drawing
 //            AffineTransform oldRotation = g2d.getTransform();
 //            if(skewedParker) {
@@ -284,11 +313,11 @@ public class SimulationView extends JFrame implements KeyListener {
             g2d.setColor(color);
             int x = location.getFloor() * 260 + (1 + (int) Math.floor(location.getRow() * 0.5)) * 75 + (location.getRow() % 2) * 20;
             int y = 60 + location.getPlace() * 10;
-            g2d.fillRect(x, y,20 - 1,9); // TODO use dynamic size or constants
-            if(skewedParker) {
+            g2d.fillRect(x, y, 20 - 1, 9); // TODO use dynamic size or constants
+            if (skewedParker) {
                 Color old = g2d.getColor();
                 g2d.setColor(Color.BLACK);
-                g2d.fillPolygon(new int[]{x+5, x+9, x+15}, new int[]{y+7,y+2,y+7}, 3);
+                g2d.fillPolygon(new int[]{x + 5, x + 9, x + 15}, new int[]{y + 7, y + 2, y + 7}, 3);
                 g2d.setColor(old);
             }
             // reset rotation so other cars aren't rotated

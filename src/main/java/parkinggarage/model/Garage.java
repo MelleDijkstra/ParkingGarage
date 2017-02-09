@@ -24,8 +24,8 @@ public class Garage {
     private int places;
 
     private double totalIncome;
-    private double adhocincome;
-    private double reservedincome;
+    private double adhocIncome;
+    private double reservedIncome;
 
     private int reservedFloor;
 
@@ -214,9 +214,9 @@ public class Garage {
             // double check if car has to pay
             if(car.getHasToPay()) {
                 if (car instanceof AdHocCar) {
-                    adhocincome += car.amountToPay();
+                    adhocIncome += car.amountToPay();
                 } else if (car instanceof ReservedCar) {
-                    reservedincome += car.amountToPay();
+                    reservedIncome += car.amountToPay();
                 }
                 BigDecimal roundOff = new BigDecimal(car.amountToPay()).setScale(2, BigDecimal.ROUND_HALF_UP);
                 totalIncome += car.amountToPay();
@@ -378,8 +378,8 @@ public class Garage {
 
     public HashMap<CarType, Double> getMoneyStats() {
         HashMap<CarType, Double> moneyStats = new HashMap<>();
-        moneyStats.put(CarType.AD_HOC, adhocincome);
-        moneyStats.put(CarType.RESERVED, reservedincome);
+        moneyStats.put(CarType.AD_HOC, adhocIncome);
+        moneyStats.put(CarType.RESERVED, reservedIncome);
         return moneyStats;
     }
 
