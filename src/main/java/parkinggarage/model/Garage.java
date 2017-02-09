@@ -50,7 +50,7 @@ public class Garage {
     /**
      * Creates a Garage object
      * @param floors The number of floors for the garage
-     * @param rows Number of rows per floor
+     * @param rows   Number of rows per floor
      * @param places Number of places for each floor
      */
     public Garage(int floors, int rows, int places) {
@@ -68,7 +68,7 @@ public class Garage {
     }
 
     private void processSettings() {
-        try{
+        try {
             Settings settings = Settings.Instance();
             reservedFloor = settings.getSetting(Settings.RESERVED_FLOOR, reservedFloor);
         } catch (IOException e) {
@@ -78,13 +78,13 @@ public class Garage {
 
     private void initializeLocations() {
         // floors
-        for(int f = 0; f < locations.length; f++) {
+        for (int f = 0; f < locations.length; f++) {
             // rows
-            for(int r = 0; r < locations[f].length; r++) {
+            for (int r = 0; r < locations[f].length; r++) {
                 // places
-                for(int p = 0; p < locations[f][r].length; p++) {
-                    locations[f][r][p] = new Location(f,r,p);
-                    if(f == reservedFloor) locations[f][r][p].setReserved();
+                for (int p = 0; p < locations[f][r].length; p++) {
+                    locations[f][r][p] = new Location(f, r, p);
+                    if (f == reservedFloor) locations[f][r][p].setReserved();
                 }
             }
         }
@@ -110,7 +110,9 @@ public class Garage {
         return openSpots;
     }
 
-    public double getIncome() { return totalIncome; }
+    public double getIncome() {
+        return totalIncome;
+    }
 
     /**
      * Handle all the operations which are needed for Cars entering
@@ -132,15 +134,15 @@ public class Garage {
     public void addArrivingCars(int numberOfCars, CarType type) {
         // Add the cars to the back of the queue.
         Random r = new Random();
-        for(int i = 0; i < numberOfCars; i++) {
+        for (int i = 0; i < numberOfCars; i++) {
             // the change someone drives away because the queue is too long
             double entranceChange = 100 - (entranceCarQueue.size() * 1.10);
             double entrancePassChange = 100 - (entrancePassQueue.size() * 1.10);
-            System.out.println("entrance change: "+Math.round(entranceChange)+"% - entrance pass: "+Math.round(entrancePassChange)+"%");
+            System.out.println("entrance change: " + Math.round(entranceChange) + "% - entrance pass: " + Math.round(entrancePassChange) + "%");
             switch (type) {
                 case AD_HOC:
-                    System.out.println("change for entering: "+entranceChange);
-                    if(r.nextInt(100) <= entranceChange) {
+                    System.out.println("change for entering: " + entranceChange);
+                    if (r.nextInt(100) <= entranceChange) {
                         // 3% change if the car parks wrong
                         entranceCarQueue.add(new AdHocCar(r.nextInt(100) <= 3));
                     } else {
@@ -150,11 +152,11 @@ public class Garage {
                     }
                     break;
                 case PASS:
-                    if(r.nextInt(100) <= entrancePassChange)
+                    if (r.nextInt(100) <= entrancePassChange)
                         entrancePassQueue.add(new ParkingPassCar());
                     break;
                 case RESERVED:
-                    if(r.nextInt(100) <= entrancePassChange)
+                    if (r.nextInt(100) <= entrancePassChange)
                         entrancePassQueue.add(new ReservedCar(r.nextInt(100) <= 3));
                     break;
             }
@@ -163,6 +165,7 @@ public class Garage {
 
     /**
      * Assign parking space for every incoming Car
+     *
      * @param queue The incoming cars
      */
     private void carsEntering(Queue<Car> queue) {
@@ -212,7 +215,7 @@ public class Garage {
         while (paymentCarQueue.size() > 0 && i < paymentSpeed) {
             Car car = paymentCarQueue.poll();
             // double check if car has to pay
-            if(car.getHasToPay()) {
+            if (car.getHasToPay()) {
                 if (car instanceof AdHocCar) {
                     adhocIncome += car.amountToPay();
                 } else if (car instanceof ReservedCar) {
@@ -242,6 +245,7 @@ public class Garage {
 
     /**
      * Get Car at specified location
+     *
      * @param location The location specified
      * @return The Car at this location or null
      */
@@ -260,14 +264,14 @@ public class Garage {
      */
     public Location getFirstFreeLocation(boolean includeReservedSpace) {
         // TODO: make only 1 loop instead of 2 loops (which is needed now so reserved space is chosen first before normal places)
-        if(includeReservedSpace) {
+        if (includeReservedSpace) {
             // If reserved space needs to be checked first
-            for(int f = 0; f < locations.length; f++) {
+            for (int f = 0; f < locations.length; f++) {
                 for (int r = 0; r < locations[f].length; r++) {
                     for (int p = 0; p < locations[f][r].length; p++) {
                         Location location = locations[f][r][p];
                         // check if there is no car on this location and it is reserved
-                        if(location.getCar() == null && location.isReserved()) {
+                        if (location.getCar() == null && location.isReserved()) {
                             return location;
                         }
                     }
@@ -275,12 +279,12 @@ public class Garage {
             }
         }
         // go through garage again to check for normal places
-        for(int f = 0; f < locations.length; f++) {
+        for (int f = 0; f < locations.length; f++) {
             for (int r = 0; r < locations[f].length; r++) {
                 for (int p = 0; p < locations[f][r].length; p++) {
                     Location location = locations[f][r][p];
                     // check if there is no car on this location
-                    if(location.getCar() == null) {
+                    if (location.getCar() == null) {
                         // if reserved space should be included
                         if (!location.isReserved() || includeReservedSpace) {
                             return location;
@@ -308,6 +312,9 @@ public class Garage {
         return null;
     }
 
+    /**
+     * A single update for the Garage
+     */
     public void tick() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
@@ -322,16 +329,17 @@ public class Garage {
         }
     }
 
-    public HashMap<CarType, Integer> getMobilityStats() {
     /**
      * Goes through all locations and calculates how many of each Car are in the Garage
+     *
      * @return HashMap with key CarType and Integer as value representing the amount of that car in the Garage
      */
+    public HashMap<CarType, Integer> getMobilityStats() {
         HashMap<CarType, Integer> stats = new HashMap<>();
         int adhoc = 0, pass = 0, reserved = 0;
         // loop trough all cars in garage
-        for(int i = 0; i < locations.length; i++) {
-            for(int j = 0; j < locations[i].length; j++) {
+        for (int i = 0; i < locations.length; i++) {
+            for (int j = 0; j < locations[i].length; j++) {
                 for (int k = 0; k < locations[i][j].length; k++) {
                     Car car = locations[i][j][k].getCar();
                     // check which class is Car is at current location
@@ -347,6 +355,22 @@ public class Garage {
         return stats;
     }
 
+    /**
+     * Reserves a location at the given parameters
+     * @param floor
+     * @param row
+     * @param place
+     */
+    public void reserveLocation(int floor, int row, int place) {
+        if(locationIsValid(floor, row, place)) {
+            locations[floor][row][place].setReserved();
+        }
+    }
+
+    /**
+     * Retrieve current information about the size of all queues
+     * @return current queue information
+     */
     public HashMap<String, Integer> getQueueStats() {
         return new HashMap<String, Integer>() {{
             put("Entrance Queue", entranceCarQueue.size());
@@ -366,16 +390,31 @@ public class Garage {
 
     /**
      * Check if given location is an actual location in the garage
+     *
      * @param location the location to check
      * @return true if it is a location in garage otherwise false
      */
     private boolean locationIsValid(Location location) {
-        int floor = location.getFloor();
-        int row = location.getRow();
-        int place = location.getPlace();
+        return locationIsValid(location.getFloor(), location.getRow(), location.getPlace());
+    }
+
+    /**
+     * Check if given location is an actual location in the garage
+     *
+     * @param floor
+     * @param place
+     * @param row
+     * @return true if it is a location in garage otherwise false
+     */
+    private boolean locationIsValid(int floor, int row, int place) {
         return !(floor < 0 || floor >= floors || row < 0 || row > rows || place < 0 || place > places);
     }
 
+    /**
+     * Retrieve all money statistics per CarType
+     *
+     * @return Money statistics
+     */
     public HashMap<CarType, Double> getMoneyStats() {
         HashMap<CarType, Double> moneyStats = new HashMap<>();
         moneyStats.put(CarType.AD_HOC, adhocIncome);
@@ -383,6 +422,11 @@ public class Garage {
         return moneyStats;
     }
 
+    /**
+     * Retrieve all money from potential customers currently in queues
+     *
+     * @return Potential queue money per CarType
+     */
     public HashMap<CarType, Double> getPotentialQueueCosts() {
         HashMap<CarType, Double> queueCosts = new HashMap<>();
         double adhocTotal = 0, reservedTotal = 0;
@@ -390,8 +434,8 @@ public class Garage {
             adhocTotal += car.amountToPay();
         }
 
-        for(Car car : entrancePassQueue) {
-            if(car instanceof ReservedCar) {
+        for (Car car : entrancePassQueue) {
+            if (car instanceof ReservedCar) {
                 reservedTotal += car.amountToPay();
             }
         }

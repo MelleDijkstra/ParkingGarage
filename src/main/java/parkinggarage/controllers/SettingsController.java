@@ -83,7 +83,11 @@ public class SettingsController extends BaseController implements Initializable 
             setSetting(Settings.MINUTE, minute.toString());
         });
 
-        ntfReservedFloor.textProperty().addListener((observable, oldValue, newValue) -> setSetting(Settings.RESERVED_FLOOR, newValue));
+        ntfReservedFloor.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue.isEmpty()) {
+                setSetting(Settings.RESERVED_FLOOR, String.valueOf(Integer.parseInt(newValue) - 1));
+            }
+        });
         dtfPricePerMinute.textProperty().addListener((observable, oldValue, newValue) -> setSetting(Settings.PRICE_PER_MINUTE, newValue));
     }
 
@@ -101,7 +105,7 @@ public class SettingsController extends BaseController implements Initializable 
             Integer minutes = settings.getSetting(Settings.MINUTE,0);
             sldTime.setValue((double)hour * 60 + minutes);
             lblTimeVal.setText((hour < 10 ? "0"+hour : hour)+":"+(minutes < 10 ? "0"+minutes : minutes));
-            ntfReservedFloor.setText(settings.getSetting(Settings.RESERVED_FLOOR, "0"));
+            ntfReservedFloor.setText(String.valueOf(settings.getSetting(Settings.RESERVED_FLOOR, 0) + 1));
             dtfPricePerMinute.setText(settings.getSetting(Settings.PRICE_PER_MINUTE, 0.24).toString());
         } catch(FileNotFoundException e) {
             System.out.println("Settings file does not exist");
@@ -112,7 +116,7 @@ public class SettingsController extends BaseController implements Initializable 
     }
 
     /**
-     * List of options for the day
+     * Convert the number of the day to a String
      */
     public static String numToDay(int daynum) {
         switch (daynum) {
@@ -135,7 +139,7 @@ public class SettingsController extends BaseController implements Initializable 
     }
 
     /**
-     * Convert the name of the days to numbers
+     * Convert the name of the day to a number
      */
     public static Integer dayToNum(String day) {
         switch (day) {
@@ -162,11 +166,10 @@ public class SettingsController extends BaseController implements Initializable 
     }
 
     /**
-     * Applying the settings
-     * @param Settings
-     * @param value
+     * Applying the settings to be saved to file (doesn't save to file yet)
+     * @param Settings The settings key
+     * @param value THe settings value for in the file
      */
-
     private void setSetting(String Settings, Object value) {
         settings.getProperties().put(Settings, value);
         dirtySettings = true;

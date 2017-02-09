@@ -19,27 +19,28 @@ public class Reservation {
     /**
      * Hour of arrival
      */
-    private int hours;
+    private int hour;
 
     /**
      * Minute of arrival
      */
-    private int minutes;
+    private int minute;
 
     /**
-     * Duration in minutes
+     * Duration in minute
      */
     private int duration;
 
-    public Reservation(int day, int hours, int minutes, int duration) {
+    public Reservation(int day, int hour, int minute, int duration) {
         this.day = day;
-        this.hours = hours;
-        this.minutes = minutes;
+        this.hour = hour;
+        this.minute = minute;
         this.duration = duration;
+        this.name = "";
     }
 
-    public Reservation(String name, int day, int hours, int minutes, int duration) {
-        this(day, hours, minutes, duration);
+    public Reservation(String name, int day, int hour, int minute, int duration) {
+        this(day, hour, minute, duration);
         this.name = name;
     }
 
@@ -51,15 +52,20 @@ public class Reservation {
         return day;
     }
 
-    public int getHours() {
-        return hours;
+    public int getHour() {
+        return hour;
     }
 
-    public int getMinutes() {
-        return minutes;
+    public int getMinute() {
+        return minute;
     }
 
     public int getDuration() {
         return duration;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("reservation{name:%s,day:%d,hour:%d,minute:%d,duration:%d}",name,day,hour,minute,duration);
     }
 }

@@ -2,6 +2,7 @@ package parkinggarage;
 
 import parkinggarage.db.DatabaseConnection;
 import parkinggarage.model.Garage;
+import parkinggarage.model.Location;
 import parkinggarage.model.Reservation;
 import parkinggarage.views.SimulationView;
 
@@ -188,8 +189,16 @@ public class Simulation {
      * Checks if spots should be reserved before any reservations come in
      */
     public void checkReservations() {
-        // TODO: check if any reservations need to be made
-        // TODO: Locations should be reserved for an amount of time not unlimited
+        for(Reservation reservation : reservations) {
+            System.out.println(reservation.toString());
+            if(reservation.getDay() == day && reservation.getHour() == hour && reservation.getMinute() == minute) {
+                Location location = garage.getFirstFreeLocation(false);
+                if(location != null) {
+                    // TODO: Locations should be reserved for an amount of time not unlimited
+                    garage.reserveLocation(location.getFloor(), location.getRow(), location.getPlace());
+                }
+            }
+        }
     }
 
     /**
