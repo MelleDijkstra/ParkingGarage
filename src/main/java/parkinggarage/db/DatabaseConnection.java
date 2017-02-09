@@ -21,6 +21,9 @@ public class DatabaseConnection {
     static final String USER = "c10_silvan";
     static final String PASS = "parkinggarage";
 
+    /**
+     *
+     */
     public DatabaseConnection() {
         try {
             // Load the JDBC DRIVER

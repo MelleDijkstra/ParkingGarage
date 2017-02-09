@@ -144,10 +144,10 @@ public class Simulation {
      */
     private void tick() {
         advanceTime();
-        garage.handleExit();
         checkReservations();
         carsArriving();
         garage.handleEntrance();
+        garage.handleExit();
         updateViews();
         // Pause.
         try {
