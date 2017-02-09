@@ -5,7 +5,8 @@ import javafx.scene.control.Alert;
 import parkinggarage.Simulation;
 import parkinggarage.controllers.SettingsController;
 import parkinggarage.model.Location;
-
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
@@ -14,6 +15,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +28,8 @@ public class SimulationView extends JFrame implements KeyListener {
 
     // private StatisticsScreen statisticsScreen;
     private Simulation simulation;
+
+    private boolean wavPlayed;
 
     public SimulationView(Simulation simulation) {
         this.simulation = simulation;
@@ -253,6 +257,30 @@ public class SimulationView extends JFrame implements KeyListener {
             for (Map.Entry<String, Integer> item : queueStats.entrySet()) {
                 g.drawString(item.getKey() + ": " + Integer.toString(item.getValue()), 20, getHeight() - (20 * i));
                 i++;
+                if(item.getValue() > 10) {
+                        // open the sound file as a Java input streamFile file = new File("clip.wav");
+                    //File file = new File();
+                    //if(file.exists()) {
+                        while(!wavPlayed)
+                            try {
+                            InputStream in = getClass().getResourceAsStream("/warning.wav");
+                            AudioStream audio = new AudioStream(in);
+                            AudioPlayer.player.start(audio);
+                            togglePlaying();
+                        } catch (IOException e) {
+                            System.out.println("File not found");
+                        }
+                    //}
+                    //else {
+                    //    System.out.println("Bavianenvoer");
+                    //}
+                    g.setColor(Color.RED);
+                    g.fillPolygon(new int[] {172, 182, 192}, new int[] {getHeight() - (20 * i) + 20 , getHeight() - (20 * i) + 5, getHeight() - (20 * i) + 20 }, 3);
+                    g.setColor(Color.WHITE);
+                    g.fillRect(181, getHeight() - (20 * i) + 10, 2, 5);
+                    g.fillOval(181,getHeight() - (20 * i) + 16, 2, 2);
+                    g.setColor(Color.BLACK);
+                }
             }
         }
 
@@ -267,6 +295,10 @@ public class SimulationView extends JFrame implements KeyListener {
                     20 - 1,
                     8); // TODO use dynamic size or constants
         }
+    }
+
+    private void togglePlaying() {
+        this.wavPlayed = !this.wavPlayed;
     }
 
 }
