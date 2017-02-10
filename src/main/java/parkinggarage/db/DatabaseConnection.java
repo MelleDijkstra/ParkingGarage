@@ -22,7 +22,7 @@ public class DatabaseConnection {
     static final String PASS = "parkinggarage";
 
     /**
-     *
+     * Trying to connect tot the database
      */
     public DatabaseConnection() {
         try {
@@ -45,6 +45,10 @@ public class DatabaseConnection {
         }
     }
 
+    /**
+     * Getting data of the database
+     * @return database data
+     */
     public ArrayList<Reservation> getReservations() {
         ArrayList<Reservation> reservations = new ArrayList<>();
         try {
