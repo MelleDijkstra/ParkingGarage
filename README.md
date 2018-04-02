@@ -11,6 +11,8 @@ A parking garage simulation
 
 ![stats money](project-files/stats-money.png)
 
+![reservation](project-files/reservation.png)
+
 Credits:
 
 - Melle Dijkstra
